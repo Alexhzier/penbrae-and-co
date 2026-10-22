@@ -15,6 +15,7 @@ $basket_count = ( function_exists( 'WC' ) && WC()->cart ) ? WC()->cart->get_cart
 <head>
 	<meta charset="<?php bloginfo( 'charset' ); ?>">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="icon" type="image/svg+xml" href="<?php echo esc_url( PENBRAE_THEME_URI . '/assets/images/favicon.svg' ); ?>">
 	<?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?>>
