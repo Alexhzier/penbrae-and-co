@@ -1,5 +1,5 @@
 /**
- * PENBRAE & CO LTD — LOCAL PREVIEW SERVER
+ * PENBRAE & CO LTD — PREVIEW & STATIC BUILD SERVER
  * Serves the CSS/JS/Image assets and templates of `wp-content/themes/penbrae/`.
  */
 
@@ -9,47 +9,61 @@ const path = require('path');
 const url = require('url');
 
 const PORT = process.env.PORT || 3847;
+const SITE_URL = 'https://penbrae-and-co.vercel.app';
 const THEME_DIR = path.join(__dirname, '..', 'wp-content', 'themes', 'penbrae');
 
 const STALLS = {
   teas: {
     slug: 'teas',
     number: 'STALL I',
-    kicker: 'STALL I · CALM, CEREMONIAL, DELICATE, CONTEMPLATIVE',
+    kicker: 'STALL I · SINGLE-ORIGIN ORTHODOX & SMOKE-CURED LEAF',
     title: 'The Tea Stall',
     mood: 'Calm, ceremonial, delicate, contemplative.',
     deck: 'Single-harvest orthodox Assamica, high-altitude white buds, and bamboo-smoked reserve lots from Upper Assam and Arunachal Pradesh.',
     region: 'Dibrugarh, Tinsukia & Lohit Valley',
-    elevation: '140m – 1,680m ASL',
+    elevation: '140m – 1,520m ASL',
     craft: 'Withered on woven bamboo trays & hand-rolled',
-    season: 'Second Flush & Autumnal Tippy Flush',
-    heroImg: '/assets/images/stall-tea-orthodox.jpg'
+    season: 'Early Spring & Autumnal Tippy Flush',
+    heroImg: '/assets/images/stall-tea-orthodox.jpg',
+    regions: [
+      { key: 'assam', label: 'Assam' },
+      { key: 'arunachal', label: 'Arunachal Pradesh' }
+    ]
   },
   spices: {
     slug: 'spices',
     number: 'STALL II',
-    kicker: 'STALL II · WARM, TEXTURED, AROMATIC, EXPRESSIVE',
+    kicker: 'STALL II · HEIRLOOM RHIZOMES & CANOPY PEPPERS',
     title: 'The Spice Stall',
     mood: 'Warm, textured, aromatic, expressive.',
     deck: 'High-curcumin single-origin Lakadong turmeric, sun-cured Sohra hill ginger, and citrus-husked wild canopy peppers.',
     region: 'West Jaintia Hills, Sohra & Ziro Valley',
-    elevation: '950m – 1,680m ASL',
+    elevation: '1,280m – 1,680m ASL',
     craft: 'Limestone upland cultivation & bamboo-mat sun-curing',
     season: 'Winter Rhizome & Autumn Canopy Harvest',
-    heroImg: '/assets/images/stall-spice-lakadong.jpg'
+    heroImg: '/assets/images/stall-spice-lakadong.jpg',
+    regions: [
+      { key: 'meghalaya', label: 'Meghalaya' },
+      { key: 'arunachal', label: 'Arunachal Pradesh' }
+    ]
   },
   chillies: {
     slug: 'chillies',
     number: 'STALL III',
-    kicker: 'STALL III · BOLD, ENERGETIC, INTENSE, SOPHISTICATED',
+    kicker: 'STALL III · HEARTH-SMOKED & SUN-CURED CULTIVARS',
     title: 'The Chilli Stall',
     mood: 'Bold, energetic, intense, sophisticated.',
-    deck: 'Alder-smoked Naga King Chilli (Raja Mircha) from Mon District and sun-ripened crimson Hathei chillies from Ukhrul Ridge.',
-    region: 'Mon District (Nagaland) & Ukhrul (Manipur)',
-    elevation: '1,350m – 1,750m ASL',
+    deck: 'Alder-smoked Naga King Chilli (Raja Mircha) from Mon District, sun-ripened crimson Hathei chillies from Ukhrul Ridge, and upland forest bird’s-eye pods.',
+    region: 'Mon District (Nagaland), Ukhrul (Manipur) & Khasi Uplands',
+    elevation: '1,180m – 1,750m ASL',
     craft: 'Alder-hearth smoke lofts & ridge sun-drying',
     season: 'Late Monsoon & Post-Monsoon Harvest',
-    heroImg: '/assets/images/stall-chilli-smoked.jpg'
+    heroImg: '/assets/images/stall-chilli-smoked.jpg',
+    regions: [
+      { key: 'nagaland', label: 'Nagaland' },
+      { key: 'manipur', label: 'Manipur' },
+      { key: 'meghalaya', label: 'Meghalaya' }
+    ]
   }
 };
 
@@ -111,7 +125,7 @@ const PRODUCTS = {
     title: 'Namdapha High-Canopy Silver Bud White Tea',
     latin: 'Camellia sinensis var. assamica (Wild Forest Jat)',
     region: 'Namdapha & Patkai Foothills, Arunachal Pradesh',
-    regionFilter: 'arunachal nagaland',
+    regionFilter: 'arunachal',
     elevation: '1,520m ASL',
     elevationNum: 1520,
     harvest: 'Early Spring Canopy Pluck',
@@ -161,7 +175,7 @@ const PRODUCTS = {
     title: 'Sohra Sun-Cured Hill Ginger (Ing Makhir)',
     latin: 'Zingiber officinale var. rubrum',
     region: 'Sohra (Cherrapunji) Escarpment, Meghalaya',
-    regionFilter: 'meghalaya assam',
+    regionFilter: 'meghalaya',
     elevation: '1,420m ASL',
     elevationNum: 1420,
     harvest: 'December Escarpment Harvest',
@@ -186,7 +200,7 @@ const PRODUCTS = {
     title: 'Arunachal Citrus-Husk Wild Hill Pepper',
     latin: 'Zanthoxylum rhetsa / Zanthoxylum armatum',
     region: 'Ziro Valley, Lower Subansiri, Arunachal Pradesh',
-    regionFilter: 'arunachal manipur',
+    regionFilter: 'arunachal',
     elevation: '1,680m ASL',
     elevationNum: 1680,
     harvest: 'October Canopy Harvest',
@@ -221,6 +235,7 @@ const PRODUCTS = {
     imgVessel: '/assets/images/chilli-hathei-crimson.jpg',
     imgOrigin: '/assets/images/journal-preservation-loft.jpg',
     scoville: '850,000+ SHU (High Heat · Deep Smoke)',
+    scovillePct: 88,
     tasting: 'Smouldering alder wood, dried sour cherry, black cardamom, slow-building volcanic warmth.',
     prep: 'Steep a 1cm ribbon of pod in simmering broths, dals, or chilli oils; remove before serving for gentle infusion, or pound whole for intense heat.',
     description: 'Cultivated in rotational jhum hill plots alongside nitrogen-fixing Himalayan alder trees in Mon District, then cured for fourteen days on bamboo racks above domestic alder-wood hearths.',
@@ -247,6 +262,7 @@ const PRODUCTS = {
     imgVessel: '/assets/images/stall-chilli-smoked.jpg',
     imgOrigin: '/assets/images/landscape-meghalaya-hills.jpg',
     scoville: '35,000 SHU (Moderate Warmth · High Colour)',
+    scovillePct: 28,
     tasting: 'Sun-dried red bell fruitiness, toasted carob, sweet tamarind, brilliant natural crimson staining.',
     prep: 'Bloom generously in warm oil to impart a deep ruby-red colour and sweet, rounded fruitiness without overwhelming heat.',
     description: 'Grown exclusively on the mineral-rich shale slopes surrounding Sirarakhong village in Manipur’s Ukhrul District, where cool mountain air and bright autumn sunshine produce an unmatched natural carotene depth.',
@@ -263,7 +279,7 @@ const PRODUCTS = {
     title: 'Upland Sun-Cured Bird’s-Eye Forest Chilli',
     latin: 'Capsicum frutescens (Sohmynken Beb Landrace)',
     region: 'Khasi & Barak Uplands, Meghalaya / Manipur Border',
-    regionFilter: 'meghalaya manipur nagaland',
+    regionFilter: 'meghalaya manipur',
     elevation: '1,180m ASL',
     elevationNum: 1180,
     harvest: 'November Escarpment Sun-Cure',
@@ -273,6 +289,7 @@ const PRODUCTS = {
     imgVessel: '/assets/images/chilli-hathei-crimson.jpg',
     imgOrigin: '/assets/images/landscape-meghalaya-hills.jpg',
     scoville: '140,000 SHU (Crisp Citrus Heat)',
+    scovillePct: 52,
     tasting: 'Bright calamansi peel, wild red berry, crisp vertical heat, clean finish.',
     prep: 'Crush two whole pods in a stone mortar with salt, ginger, and fermented bamboo shoot or infuse into warm oil.',
     description: 'Tiny, upward-pointing heirloom forest chillies cultivated on terraced limestone and shale ridges, prized for their bright citrus aromatics and immediate, clean heat.',
@@ -284,14 +301,283 @@ const PRODUCTS = {
   }
 };
 
-function renderHeader(activePath, bodyClass = '') {
+const MAKERS_DATA = {
+  'upper-assam-orthodox-collective': {
+    code: 'M-01',
+    stall: 'TEA STALL',
+    name: 'Brahmaputra Smallholder Tea Collective',
+    deck: 'Hand-rolled orthodox tippy Assam & Singpho hearth-smoked bamboo reserve lots cultivated along the southern bank of the Brahmaputra.',
+    region: 'Dibrugarh & Tinsukia, Upper Assam',
+    coords: '27°28′N 94°54′E · 140m ASL',
+    badge: 'DIBRUGARH · 140m ASL',
+    img: '/assets/images/maker-hands-crafting.jpg',
+    caption: 'Hand-rolling withered leaf on woven bamboo tables.',
+    process: 'Ambient bamboo-tray withering, hand-rolling, and controlled oxidation',
+    products: ['upper-assam-tippy-orthodox', 'singpho-bamboo-smoked-tea'],
+    journalSlug: 'orthodox-vs-ctc-assam-leaf',
+    storySlug: 'mist-over-the-brahmaputra-autumn-pluck',
+    audioTitle: 'Field Audio Study: Morning Pluck & Bamboo Rolling Table (Dibrugarh)',
+    audioTranscript: 'Simulated field recording transcript (Dibrugarh, Upper Assam): Ambient sound of morning river mist dripping from Albizia shade trees onto broad Assamica tea leaves, followed by the rhythmic hand-rolling of withered leaf across woven bamboo tables to preserve unbroken golden tips.'
+  },
+  'jaintia-hills-lakadong-growers': {
+    code: 'M-02',
+    stall: 'SPICE STALL',
+    name: 'West Jaintia Hills Lakadong Growers',
+    deck: 'High-curcumin single-origin Lakadong turmeric & sun-cured heirloom hill ginger from the limestone plateaus of Meghalaya.',
+    region: 'Laskein Block, West Jaintia Hills, Meghalaya',
+    coords: '25°26′N 92°17′E · 1,280m ASL',
+    badge: 'WEST JAINTIA HILLS · 1,280m ASL',
+    img: '/assets/images/stall-spice-lakadong.jpg',
+    caption: 'Hand-sliced Lakadong turmeric rhizomes cured on woven bamboo mats.',
+    process: 'Limestone upland cultivation, spring-water washing, and winter sun-curing',
+    products: ['lakadong-turmeric-reserve', 'sohra-hill-ginger'],
+    journalSlug: 'tempering-lakadong-and-smoked-chilli',
+    storySlug: 'limestone-and-curcumin-jaintia-hills',
+    audioTitle: 'Field Audio Study: Washing & Slicing Lakadong Rhizomes (Laskein Block)',
+    audioTranscript: 'Simulated field recording transcript (West Jaintia Hills, Meghalaya): Crisp winter mountain breeze across limestone terraces, spring-water washing of freshly dug Lakadong turmeric fingers, and the steady rhythm of iron blades slicing deep saffron-orange rhizomes onto bamboo drying mats.'
+  },
+  'nagaland-alder-smoke-stewards': {
+    code: 'M-03',
+    stall: 'CHILLI STALL',
+    name: 'Mon District Alder-Smoke Chilli Stewards',
+    deck: 'Jhum-cultivated Raja Mircha slow-cured for fourteen days on bamboo racks above smouldering alder-wood hearths.',
+    region: 'Mon & Kohima Uplands, Nagaland',
+    coords: '26°43′N 95°01′E · 1,460m ASL',
+    badge: 'MON DISTRICT · 1,460m ASL',
+    img: '/assets/images/stall-chilli-smoked.jpg',
+    caption: 'Whole Naga King Chilli pods cured over domestic alder-wood hearths.',
+    process: 'Rotational alder agroforestry and 14-day hearth-loft smoke preservation',
+    products: ['alder-smoked-naga-king-chilli'],
+    journalSlug: 'alder-trees-and-jhum-agroforestry',
+    storySlug: 'alder-smoke-and-monsoon-mist',
+    audioTitle: 'Field Audio Study: Alder-Wood Hearth Loft in Mon District',
+    audioTranscript: 'Simulated field recording transcript (Mon District, Nagaland): Low crackle of seasoned Himalayan alder wood smouldering in a domestic hearth, monsoon rain pattering against a timber roof, and the dry rustle of whole Raja Mircha chilli pods being turned across overhead slatted bamboo racks.'
+  },
+  'ziro-valley-forest-foragers': {
+    code: 'M-04',
+    stall: 'SPICE & TEA STALLS',
+    name: 'Lower Subansiri Forest Foragers',
+    deck: 'Canopy-harvested wild Sichuan-type hill pepper and high-altitude silver white tea buds from Arunachal Pradesh.',
+    region: 'Ziro Valley & Patkai Foothills, Arunachal Pradesh',
+    coords: '27°32′N 93°49′E · 1,680m ASL',
+    badge: 'ZIRO VALLEY · 1,680m ASL',
+    img: '/assets/images/spice-wild-pepper.jpg',
+    caption: 'Sun-dried aromatic Zanthoxylum pericarp husks after seed separation.',
+    process: 'Autumn canopy foraging and gentle sun-drying on elevated bamboo mats',
+    products: ['arunachal-wild-hill-pepper', 'namdapha-wild-forest-white-tea'],
+    journalSlug: 'smoke-mist-and-limestone-terroir',
+    storySlug: 'limestone-and-curcumin-jaintia-hills',
+    audioTitle: 'Field Audio Study: Winnowing Wild Hill Pepper Husks in Ziro Valley',
+    audioTranscript: 'Simulated field recording transcript (Ziro Valley, Arunachal Pradesh): Wind moving through high-altitude pine and bamboo groves at 1,680m, accompanied by the crisp sound of sun-dried Zanthoxylum peppercorn husks being tossed in woven bamboo winnowing trays to separate the dark seeds.'
+  },
+  'ukhrul-hathei-cultivators': {
+    code: 'M-05',
+    stall: 'CHILLI STALL',
+    name: 'Ukhrul Ridge Hathei Cultivator Guild',
+    deck: 'Sun-ripened crimson Hathei chilli and upland bird’s-eye pods prized for deep natural carotene staining and bright citrus heat.',
+    region: 'Sirarakhong Village, Ukhrul District, Manipur',
+    coords: '25°05′N 94°21′E · 1,750m ASL',
+    badge: 'SIRARAKHONG · 1,750m ASL',
+    img: '/assets/images/chilli-hathei-crimson.jpg',
+    caption: 'Sun-curing crimson Hathei pods on woven bamboo winnowing trays.',
+    process: 'High-ridge mineral shale cultivation and bright autumn ridge sun-drying',
+    products: ['sirarakhong-hathei-chilli', 'barak-valley-smoked-birdseye'],
+    journalSlug: 'tempering-lakadong-and-smoked-chilli',
+    storySlug: 'alder-smoke-and-monsoon-mist',
+    audioTitle: 'Field Audio Study: Autumn Ridge Sun-Curing in Sirarakhong Village',
+    audioTranscript: 'Simulated field recording transcript (Sirarakhong, Ukhrul District, Manipur): Clear autumn wind sweeping across 1,750m shale ridges as cultivators spread ripe crimson Hathei chillies across wide bamboo baskets in the afternoon sun.'
+  }
+};
+
+const STORIES_DATA = {
+  'mist-over-the-brahmaputra-autumn-pluck': {
+    slug: 'mist-over-the-brahmaputra-autumn-pluck',
+    title: 'Mist Over the Brahmaputra: The Autumn Tippy Pluck',
+    deck: 'How cool November nights slow leaf growth in Upper Assam, concentrating malted honey and muscatel aromatics in the golden terminal bud.',
+    badge: 'DIBRUGARH · 27°28′N 94°54′E',
+    heroImg: '/assets/images/hero-assam-mist.jpg',
+    detailImg: '/assets/images/stall-tea-orthodox.jpg',
+    productSlug: 'upper-assam-tippy-orthodox',
+    relatedProducts: ['upper-assam-tippy-orthodox', 'singpho-bamboo-smoked-tea', 'namdapha-wild-forest-white-tea'],
+    audioTitle: 'Field Audio Study: Dawn Pluck & Bamboo Withering Troughs (Dibrugarh)',
+    audioLocation: '27°28′N 94°54′E · Upper Assam · 01:34',
+    audioTranscript: 'Simulated field recording transcript (Upper Assam): Early morning river fog lifting off smallholder plots along the Brahmaputra, two-leaf-and-a-bud plucking into bamboo baskets, and slow ambient air circulation across elevated withering trays.'
+  },
+  'limestone-and-curcumin-jaintia-hills': {
+    slug: 'limestone-and-curcumin-jaintia-hills',
+    title: 'Limestone & Curcumin: Winter Harvest in the West Jaintia Hills',
+    deck: 'Inside Laskein Block, where mineral-rich limestone uplands and dry January sunshine yield the world’s highest-curcumin heirloom turmeric.',
+    badge: 'WEST JAINTIA HILLS · 1,280m ASL',
+    heroImg: '/assets/images/landscape-meghalaya-hills.jpg',
+    detailImg: '/assets/images/stall-spice-lakadong.jpg',
+    productSlug: 'lakadong-turmeric-reserve',
+    relatedProducts: ['lakadong-turmeric-reserve', 'sohra-hill-ginger', 'arunachal-wild-hill-pepper'],
+    audioTitle: 'Field Audio Study: Winter Rhizome Harvest & Slicing (West Jaintia Hills)',
+    audioLocation: '25°26′N 92°17′E · Meghalaya · 01:34',
+    audioTranscript: 'Simulated field recording transcript (Meghalaya): Hand-lifting mature Lakadong rhizomes from friable limestone soil in January, washing in cold hill stream water, and slicing rhizome fingers for sun-curing on woven bamboo mats.'
+  },
+  'alder-smoke-and-monsoon-mist': {
+    slug: 'alder-smoke-and-monsoon-mist',
+    title: 'Alder Smoke & Monsoon Mist: Curing Raja Mircha in Mon District',
+    deck: 'Why fourteen days on slatted bamboo racks above smouldering Himalayan alder hearths turns fierce heat into layered culinary depth.',
+    badge: 'MON DISTRICT · 1,460m ASL',
+    heroImg: '/assets/images/journal-preservation-loft.jpg',
+    detailImg: '/assets/images/stall-chilli-smoked.jpg',
+    productSlug: 'alder-smoked-naga-king-chilli',
+    relatedProducts: ['alder-smoked-naga-king-chilli', 'sirarakhong-hathei-chilli', 'barak-valley-smoked-birdseye'],
+    audioTitle: 'Field Audio Study: Fourteen-Day Alder Hearth Curing Loft (Mon District)',
+    audioLocation: '26°43′N 95°01′E · Nagaland · 01:34',
+    audioTranscript: 'Simulated field recording transcript (Nagaland): Steady embers of Alnus nepalensis (Himalayan alder) warming the slatted bamboo drying rack above a domestic hearth while monsoon mist settles over the hills of Mon District.'
+  }
+};
+
+const JOURNALS_DATA = {
+  'smoke-mist-and-limestone-terroir': {
+    slug: 'smoke-mist-and-limestone-terroir',
+    kicker: 'THE PENBRAE JOURNAL · TERROIR & TRADITION',
+    title: 'Smoke, Mist & Limestone: Why Preservation Is the Second Harvest of Northeast India',
+    deck: 'From bamboo smoke-lofts in Mon District to sun-warmed slate courtyards in Meghalaya, how traditional preservation shapes the flavour of Northeast India.',
+    img: '/assets/images/journal-preservation-loft.jpg',
+    badge: 'ISSUE 01 · 8 MIN READ',
+    products: ['singpho-bamboo-smoked-tea', 'arunachal-wild-hill-pepper'],
+    makerSlug: 'ziro-valley-forest-foragers',
+    storySlug: 'alder-smoke-and-monsoon-mist',
+    paragraphs: [
+      'Across the hills of Meghalaya, Nagaland, and Upper Assam, moisture is an ever-present force. When annual rainfall is measured in metres rather than millimetres, a freshly harvested chilli pod, citrus-pepper husk, or tea shoot cannot simply be left in an open shed. Without skilled post-harvest intervention, subtropical humidity quickly erases weeks of careful cultivation.',
+      'Out of this climatic necessity arose a remarkable regional vocabulary of preservation: slatted bamboo drying lofts suspended above domestic hearths in Mon District; green bamboo cylinders packed with pan-fired Assamica tea leaves among the Singpho; and thinly sliced Lakadong rhizomes turned by hand across elevated mats during the crisp, dry mornings of January.',
+      'For the cook or tea drinker in Cardiff, these methods are never mere technicalities. Smoke, sun, and bamboo vessel curing transform fleeting raw harvests into enduring culinary architecture—imparting notes of toasted wood, resin, and mineral clarity that industrial dehydrators cannot replicate.'
+    ],
+    pullquote: 'In the monsoon belt of Northeast India, preservation is not an afterthought—it is where raw harvest becomes culinary architecture.',
+    audioTitle: 'Field Audio Study: Bamboo Smoke-Loft & Monsoon Rain (Northeast India)',
+    audioLocation: '27°15′N 95°10′E · Upper Assam / Arunachal Border · 01:34',
+    audioTranscript: 'Simulated field recording transcript: Gentle crackle of hearth embers beneath green bamboo cylinders of Singpho Phalap tea and overhead drying trays during a late-afternoon valley rain.'
+  },
+  'orthodox-vs-ctc-assam-leaf': {
+    slug: 'orthodox-vs-ctc-assam-leaf',
+    kicker: 'THE PENBRAE JOURNAL · TEA TRADITIONS',
+    title: 'Beyond the Breakfast Blend: Reading Whole-Leaf Orthodox Assam',
+    deck: 'How smallholder hand-rolling on woven bamboo mats preserves golden pubescent tips, toasted malt, and honeyed muscatel notes.',
+    img: '/assets/images/stall-tea-orthodox.jpg',
+    badge: 'ISSUE 01 · 6 MIN READ',
+    products: ['upper-assam-tippy-orthodox', 'namdapha-wild-forest-white-tea'],
+    makerSlug: 'upper-assam-orthodox-collective',
+    storySlug: 'mist-over-the-brahmaputra-autumn-pluck',
+    paragraphs: [
+      'For over a century, the British tea trade knew Assam primarily through commodity CTC (Crush-Tear-Curl) granules—engineered to yield a rapid, astringent dark liquor designed for milk and sugar. In doing so, the extraordinary aromatic complexity of unbroken Camellia sinensis var. assamica leaf was largely obscured.',
+      'When plucked as two leaves and a silver-gold terminal bud during the cool, misty mornings of late November and rolled gently by hand on woven bamboo tables, the broad Assamica leaf behaves entirely differently. Cell walls rupture gradually rather than shattering, allowing essential oils and polyphenols to oxidize at a measured pace.',
+      'Steeped at 92°C without milk, a single-origin autumn orthodox Assam reveals layers of toasted barley malt, dark heather honey, and ripe orchard plum with a clean, non-astringent mineral finish across three consecutive infusions.'
+    ],
+    pullquote: 'When the broad Assamica leaf is rolled gently by hand rather than crushed by steel rollers, astringency gives way to heather honey, toasted malt, and orchard fruit.',
+    audioTitle: 'Field Audio Study: Hand-Rolling Autumn Tippy Leaf (Dibrugarh)',
+    audioLocation: '27°28′N 94°54′E · Dibrugarh, Upper Assam · 01:34',
+    audioTranscript: 'Simulated field recording transcript (Dibrugarh): The rhythmic circular motion of withered tea shoots being rolled by hand across woven bamboo mats, followed by arrival cupping notes in Cardiff.'
+  },
+  'tempering-lakadong-and-smoked-chilli': {
+    slug: 'tempering-lakadong-and-smoked-chilli',
+    kicker: 'THE PENBRAE JOURNAL · CULINARY NOTES',
+    title: 'Tempering in Warm Fat: Lakadong & Alder-Smoked Chilli',
+    deck: 'Kitchen guidance on bloom temperatures, lipid solubility of curcumin, and infusing whole smoked pods without scorching volatile aromatics.',
+    img: '/assets/images/stall-spice-lakadong.jpg',
+    badge: 'ISSUE 01 · 5 MIN READ',
+    products: ['lakadong-turmeric-reserve', 'sirarakhong-hathei-chilli'],
+    makerSlug: 'jaintia-hills-lakadong-growers',
+    storySlug: 'limestone-and-curcumin-jaintia-hills',
+    paragraphs: [
+      'High-curcumin Lakadong turmeric and sun-cured heirloom chillies contain volatile aromatic compounds and fat-soluble pigments that respond dramatically to temperature. Dropped raw into boiling water, their brightest top notes remain locked inside the plant fibre; dropped into smoking-hot oil, their delicate sugars scorch within seconds.',
+      'In our Cardiff test kitchen, we recommend warming ghee or cold-pressed rapeseed oil to a gentle shimmer (roughly 120°C–130°C) before adding half a teaspoon of stone-milled Lakadong rhizome or a ribbon of Sirarakhong Hathei chilli. Within twenty seconds, lipid-soluble curcuminoids and carotenes dissolve into a luminous saffron-ruby oil.',
+      'Pair Lakadong turmeric with freshly cracked black or wild hill pepper to enhance bioavailability and add a bright citrus-pine counterpoint to slow-braised legumes, roast root vegetables, or broth.'
+    ],
+    pullquote: 'Treat single-harvest spices like fragile aromatics rather than background colour: twenty seconds in warm fat unlocks months of upland sunshine.',
+    audioTitle: 'Field Audio Study: Stone-Milling & Tempering Trials (Cardiff & Jaintia Hills)',
+    audioLocation: '51°28′N 03°10′W · Cardiff Tasting Kitchen · 01:34',
+    audioTranscript: 'Simulated field recording transcript: Small-batch grinding of sun-cured Lakadong turmeric slices and the gentle sizzle of whole spice tempering in warm ghee.'
+  },
+  'alder-trees-and-jhum-agroforestry': {
+    slug: 'alder-trees-and-jhum-agroforestry',
+    kicker: 'THE PENBRAE JOURNAL · ARTISAN INTERVIEWS',
+    title: 'Nitrogen-Fixing Alder Trees & Rotational Hill Plots in Nagaland',
+    deck: 'Why Himalayan alder is both the ecological partner of upland soil fertility and the aromatic fuel of the Naga drying hearth.',
+    img: '/assets/images/stall-chilli-smoked.jpg',
+    badge: 'ISSUE 01 · 7 MIN READ',
+    products: ['alder-smoked-naga-king-chilli', 'barak-valley-smoked-birdseye'],
+    makerSlug: 'nagaland-alder-smoke-stewards',
+    storySlug: 'alder-smoke-and-monsoon-mist',
+    paragraphs: [
+      'Across the steep ridges of Nagaland, smallholder cultivators have practiced alder-based agroforestry for centuries. The Himalayan alder (Alnus nepalensis) is a non-leguminous nitrogen-fixing tree whose root nodules naturally replenish upland soils between rotational cropping cycles.',
+      'Rather than clearing hill slopes bare, growers pollard the alder trunks at chest height when opening a plot for Raja Mircha chillies, upland rice, and heirloom job’s tears. The pruned alder branches provide clean, resin-free firewood for the domestic hearth, while the living root system stabilizes the hillside against monsoon erosion.',
+      'When ripe Naga King Chillies are harvested at the end of the rains, they are laid across bamboo racks directly above those same alder-wood hearths—completing an ecological circle you can taste in every smoky, fruit-forward pod.'
+    ],
+    pullquote: 'The same Himalayan alder tree that nourishes the hill soil with nitrogen provides the sweet, clean woodsmoke that cures the harvest.',
+    audioTitle: 'Field Audio Study: Alder Agroforestry & Hearth Curing (Mon District)',
+    audioLocation: '26°43′N 95°01′E · Mon District, Nagaland · 01:34',
+    audioTranscript: 'Simulated field recording transcript (Nagaland): Wind through pollarded Himalayan alder trees on a terraced hillside in Mon District, followed by the quiet crackle of the curing hearth.'
+  }
+};
+
+function escapeAttr(str) {
+  return String(str || '')
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+function renderHeader(activePath, bodyClass = '', seo = {}) {
+  const pageTitle = seo.title || 'Penbrae & Co Ltd — Rare Teas, Spices & Chillies from Northeast India | Cardiff';
+  const pageDesc = seo.description || 'Penbrae & Co Ltd is a Cardiff-based importer of rare single-harvest teas, heirloom spices, and smoked chillies from smallholder growers across Northeast India.';
+  const canonicalPath = seo.canonicalPath !== undefined ? seo.canonicalPath : (activePath || '/');
+  const canonicalUrl = SITE_URL + (canonicalPath === '/' ? '' : canonicalPath);
+  const ogType = seo.ogType || 'website';
+  const ogImage = seo.ogImage ? (seo.ogImage.startsWith('http') ? seo.ogImage : SITE_URL + seo.ogImage) : SITE_URL + '/assets/images/hero-assam-mist.jpg';
+  const robotsMeta = seo.noindex ? '<meta name="robots" content="noindex, follow">' : '<meta name="robots" content="index, follow">';
+
+  const baseOrgSchema = {
+    '@type': 'Organization',
+    '@id': SITE_URL + '/#organization',
+    name: 'Penbrae & Co Ltd',
+    url: SITE_URL,
+    logo: SITE_URL + '/assets/images/favicon.svg',
+    description: 'Cardiff-based purveyors of small-lot single-harvest teas, heirloom rhizomes, and smoked chillies from Northeast India.',
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Cardiff',
+      addressRegion: 'Wales',
+      addressCountry: 'GB'
+    }
+  };
+
+  const graph = [baseOrgSchema];
+  if (Array.isArray(seo.schema)) {
+    seo.schema.forEach(item => graph.push(item));
+  } else if (seo.schema) {
+    graph.push(seo.schema);
+  }
+
+  const jsonLdString = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@graph': graph
+  });
+
   return `<!DOCTYPE html>
 <html lang="en-GB">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Penbrae &amp; Co Ltd — Rare Teas, Spices &amp; Chillies from Northeast India (Cardiff)</title>
-  <meta name="description" content="Penbrae & Co Ltd — Cardiff-based importers of rare, handcrafted teas, spices, and chillies from Northeast India.">
+  <title>${escapeAttr(pageTitle)}</title>
+  <meta name="description" content="${escapeAttr(pageDesc)}">
+  ${robotsMeta}
+  <link rel="canonical" href="${escapeAttr(canonicalUrl)}">
+  <meta property="og:site_name" content="Penbrae &amp; Co Ltd">
+  <meta property="og:locale" content="en_GB">
+  <meta property="og:type" content="${escapeAttr(ogType)}">
+  <meta property="og:title" content="${escapeAttr(pageTitle)}">
+  <meta property="og:description" content="${escapeAttr(pageDesc)}">
+  <meta property="og:url" content="${escapeAttr(canonicalUrl)}">
+  <meta property="og:image" content="${escapeAttr(ogImage)}">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="${escapeAttr(pageTitle)}">
+  <meta name="twitter:description" content="${escapeAttr(pageDesc)}">
+  <meta name="twitter:image" content="${escapeAttr(ogImage)}">
   <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -300,28 +586,29 @@ function renderHeader(activePath, bodyClass = '') {
   <link rel="stylesheet" href="/assets/css/design-system.css">
   <link rel="stylesheet" href="/assets/css/components.css">
   <link rel="stylesheet" href="/assets/css/pages.css">
+  <script type="application/ld+json">${jsonLdString}</script>
 </head>
 <body class="${bodyClass}">
-<a class="skip-link" href="#main-content">Skip to main editorial content</a>
+<a class="skip-link" href="#main-content">Skip to main content</a>
 
 <div class="editorial-dispatch-bar" role="region" aria-label="Provenance and Dispatch Notice">
-  <span>PENBRAE &amp; CO LTD · CARDIFF, WALES — SMALL-LOT IMPORTERS OF NORTHEAST INDIAN TEAS, SPICES &amp; CHILLIES</span>
-  <span class="editorial-dispatch-bar__coords">51°28′N 03°10′W ↔ 26°12′N 92°56′E · CURRENCY: GBP (£)</span>
+  <span>PENBRAE &amp; CO LTD · CARDIFF, WALES — SMALL-LOT TEAS, SPICES &amp; CHILLIES FROM NORTHEAST INDIA</span>
+  <span class="editorial-dispatch-bar__coords">FREE UK DISPATCH OVER £50 · CURRENCY: GBP (£)</span>
 </div>
 
 <header class="site-masthead" role="banner">
   <div class="site-masthead__inner">
     <button type="button" class="mobile-menu-toggle" data-mobile-nav-toggle aria-expanded="false" aria-controls="penbrae-mobile-drawer">
-      Index [≡]
+      Menu [≡]
     </button>
 
-    <nav aria-label="Primary Editorial Navigation">
+    <nav aria-label="Primary Navigation">
       <ul class="site-nav-primary">
         <li><a href="/stalls" ${activePath === '/stalls' ? 'aria-current="page"' : ''}>The Stalls</a></li>
         <li><a href="/stall/teas" ${activePath === '/stall/teas' ? 'aria-current="page"' : ''}>Teas</a></li>
         <li><a href="/stall/spices" ${activePath === '/stall/spices' ? 'aria-current="page"' : ''}>Spices</a></li>
         <li><a href="/stall/chillies" ${activePath === '/stall/chillies' ? 'aria-current="page"' : ''}>Chillies</a></li>
-        <li><a href="/makers" ${activePath === '/makers' ? 'aria-current="page"' : ''}>Meet the Makers</a></li>
+        <li><a href="/makers" ${activePath === '/makers' ? 'aria-current="page"' : ''}>Makers</a></li>
       </ul>
     </nav>
 
@@ -332,54 +619,54 @@ function renderHeader(activePath, bodyClass = '') {
 
     <div class="site-nav-utility">
       <a href="/journal" class="hide-mobile" ${activePath.startsWith('/journal') ? 'aria-current="page"' : ''}>Journal</a>
-      <a href="/about" class="hide-mobile" ${activePath === '/about' ? 'aria-current="page"' : ''}>Provenance</a>
-      <a href="/subscribe" class="hide-mobile" ${activePath === '/subscribe' ? 'aria-current="page"' : ''}>Dispatch</a>
+      <a href="/about" class="hide-mobile" ${activePath === '/about' ? 'aria-current="page"' : ''}>About</a>
+      <a href="/subscribe" class="hide-mobile" ${activePath === '/subscribe' ? 'aria-current="page"' : ''}>Newsletter</a>
       <a href="/my-account" class="hide-mobile" ${activePath === '/my-account' ? 'aria-current="page"' : ''}>Account</a>
-      <button type="button" data-basket-open aria-label="Open shopping basket drawer">
+      <button type="button" data-basket-open aria-label="Open shopping basket">
         <span>Basket</span>
-        <span class="basket-count-pill" data-basket-count>1</span>
+        <span class="basket-count-pill" data-basket-count>0</span>
       </button>
     </div>
   </div>
 
-  <nav id="penbrae-mobile-drawer" class="mobile-nav-drawer" aria-label="Mobile Navigation Index" aria-hidden="true">
-    <div class="kicker-index" style="margin-bottom:0.75rem;">Navigation Index — Products, Makers &amp; Stories</div>
+  <nav id="penbrae-mobile-drawer" class="mobile-nav-drawer" aria-label="Mobile Navigation" aria-hidden="true">
+    <div class="kicker-index" style="margin-bottom:0.75rem;">Menu — Stalls, Makers &amp; Journal</div>
     <ul class="mobile-nav-drawer__list">
-      <li><a href="/stalls"><span>The Three Stalls Overview</span><span class="kicker-index">01</span></a></li>
+      <li><a href="/stalls"><span>All Three Stalls</span><span class="kicker-index">Overview</span></a></li>
       <li><a href="/stall/teas"><span>The Tea Stall</span><span class="kicker-index">Assam &amp; Arunachal</span></a></li>
       <li><a href="/stall/spices"><span>The Spice Stall</span><span class="kicker-index">Meghalaya &amp; Ziro</span></a></li>
       <li><a href="/stall/chillies"><span>The Chilli Stall</span><span class="kicker-index">Nagaland &amp; Manipur</span></a></li>
-      <li><a href="/makers"><span>Meet the Makers (Interactive Atlas)</span><span class="kicker-index">Map</span></a></li>
-      <li><a href="/story/mist-over-the-brahmaputra-autumn-pluck"><span>Product Provenance Stories</span><span class="kicker-index">Archive</span></a></li>
-      <li><a href="/journal"><span>The Penbrae Journal</span><span class="kicker-index">Issue 01</span></a></li>
-      <li><a href="/about"><span>About Penbrae &amp; Co</span><span class="kicker-index">Cardiff</span></a></li>
-      <li><a href="/subscribe"><span>Subscribe to the Dispatch</span><span class="kicker-index">Letters</span></a></li>
-      <li><a href="/basket"><span>Basket &amp; Checkout</span><span class="kicker-index">GBP £</span></a></li>
+      <li><a href="/makers"><span>Meet the Makers</span><span class="kicker-index">Interactive Map</span></a></li>
+      <li><a href="/journal"><span>The Penbrae Journal</span><span class="kicker-index">Essays</span></a></li>
+      <li><a href="/about"><span>About Penbrae &amp; Co</span><span class="kicker-index">Our Story</span></a></li>
+      <li><a href="/subscribe"><span>Seasonal Newsletter</span><span class="kicker-index">Subscribe</span></a></li>
+      <li><a href="/my-account"><span>Customer Account</span><span class="kicker-index">Orders</span></a></li>
+      <li><a href="/basket"><span>Shopping Basket</span><span class="kicker-index">GBP (£)</span></a></li>
     </ul>
   </nav>
 </header>
 
 <div id="penbrae-basket-backdrop" class="basket-drawer-backdrop"></div>
-<aside id="penbrae-basket-drawer" class="basket-drawer" role="dialog" aria-modal="true" aria-label="Shopping Basket Ledger" aria-hidden="true">
+<aside id="penbrae-basket-drawer" class="basket-drawer" role="dialog" aria-modal="true" aria-label="Shopping Basket" aria-hidden="true">
   <div class="basket-drawer__header">
     <div>
-      <div class="kicker-index">CARDIFF DISPATCH LEDGER</div>
-      <h2 style="font-size:1.55rem;margin:0.2rem 0 0 0;">Your Basket</h2>
+      <div class="kicker-index">SHOPPING BASKET</div>
+      <h2 style="font-size:1.55rem;margin:0.2rem 0 0 0;">Your Selected Lots</h2>
     </div>
     <button type="button" data-basket-close class="filter-pill" aria-label="Close basket drawer">Close [×]</button>
   </div>
   <div id="penbrae-basket-drawer-items" class="basket-drawer__items"></div>
   <div class="basket-drawer__footer">
     <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:0.5rem;">
-      <span style="font-family:var(--font-mono);font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-ink-muted);">Estimated Subtotal (GBP)</span>
-      <span id="penbrae-basket-drawer-subtotal" class="tabular-nums" style="font-family:var(--font-editorial);font-size:1.75rem;">£28.00</span>
+      <span style="font-family:var(--font-mono);font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-ink-muted);">Subtotal (GBP)</span>
+      <span id="penbrae-basket-drawer-subtotal" class="tabular-nums" style="font-family:var(--font-editorial);font-size:1.75rem;">£0.00</span>
     </div>
     <p style="font-size:0.8rem;color:var(--color-ink-muted);margin-bottom:1rem;">
-      UK shipping &amp; applicable taxes are calculated at checkout via configured WooCommerce shipping zones.
+      Complimentary UK tracked dispatch on orders over £50.00 (£4.50 standard).
     </p>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
       <a href="/basket" class="btn-editorial btn-editorial--outline" style="justify-content:center;">View Basket</a>
-      <a href="/checkout" class="btn-editorial" style="justify-content:center;">Checkout →</a>
+      <a href="/checkout" data-drawer-checkout-btn aria-disabled="true" class="btn-editorial" style="justify-content:center;">Checkout →</a>
     </div>
   </div>
 </aside>
@@ -387,38 +674,25 @@ function renderHeader(activePath, bodyClass = '') {
 <main id="main-content" role="main">`;
 }
 
-function renderNonLinearCompass() {
+function renderContextualExploreSection(nodes, heading = 'Connected Origins, Makers & Essays', kicker = 'CONTINUE EXPLORING') {
+  if (!nodes || !nodes.length) return '';
   return `
-<section class="provenance-compass" aria-label="Non-Linear Provenance Exploration">
+<section class="provenance-compass" aria-label="Related Provenance and Reading">
   <div class="penbrae-container">
     <div class="provenance-compass__header">
       <div>
-        <span class="kicker-index">NON-LINEAR PROVENANCE GRAPH · CONTINUE EXPLORING</span>
-        <h2 style="font-size:2rem;margin:0.35rem 0 0 0;">Follow the Thread Across Ingredient, Maker, Region &amp; Essay</h2>
+        <span class="kicker-index">${kicker}</span>
+        <h2 style="font-size:2rem;margin:0.35rem 0 0 0;">${heading}</h2>
       </div>
-      <a href="/makers" class="link-editorial">Open Northeast India Interactive Atlas →</a>
+      <a href="/makers" class="link-editorial">Explore Producer Map →</a>
     </div>
     <div class="provenance-compass__nodes">
-      <a href="/product/upper-assam-tippy-orthodox" class="provenance-node">
-        <span class="provenance-node__type">01 · THE INGREDIENT (PRODUCT)</span>
-        <h3 class="provenance-node__title">Upper Assam Tippy Orthodox Reserve (Lot 26-A)</h3>
-        <p class="provenance-node__meta">Tasting profile, preparation notes &amp; acquire in GBP (£) →</p>
-      </a>
-      <a href="/maker/upper-assam-orthodox-collective" class="provenance-node">
-        <span class="provenance-node__type">02 · THE PRODUCER (MAKER PROFILE)</span>
-        <h3 class="provenance-node__title">Brahmaputra Smallholder Tea Collective</h3>
-        <p class="provenance-node__meta">Producer biography, field audio &amp; harvest discipline →</p>
-      </a>
-      <a href="/story/mist-over-the-brahmaputra-autumn-pluck" class="provenance-node">
-        <span class="provenance-node__type">03 · PROVENANCE MONOGRAPH (STORY)</span>
-        <h3 class="provenance-node__title">Mist Over the Brahmaputra: The Autumn Tippy Pluck</h3>
-        <p class="provenance-node__meta">Read the long-form documentary story of this harvest →</p>
-      </a>
-      <a href="/journal/smoke-mist-and-limestone-terroir" class="provenance-node">
-        <span class="provenance-node__type">04 · THE JOURNAL &amp; REGION</span>
-        <h3 class="provenance-node__title">Smoke, Mist &amp; Limestone: Reading the Terroir of Northeast India</h3>
-        <p class="provenance-node__meta">Regional cultural essays &amp; culinary pairing dispatches →</p>
-      </a>
+      ${nodes.map(n => `
+      <a href="${n.url}" class="provenance-node">
+        <span class="provenance-node__type">${n.type}</span>
+        <h3 class="provenance-node__title">${n.title}</h3>
+        <p class="provenance-node__meta">${n.meta} →</p>
+      </a>`).join('')}
     </div>
   </div>
 </section>`;
@@ -426,20 +700,20 @@ function renderNonLinearCompass() {
 
 function renderInstagramFieldNotes() {
   const notes = [
-    { id: 'FIELD-01', location: 'Dibrugarh, Upper Assam', date: 'Autumn Dispatch', img: '/assets/images/hero-assam-mist.jpg', caption: 'Morning river mist lifting off smallholder Assamica plots before the late-November pluck.' },
-    { id: 'FIELD-02', location: 'West Jaintia Hills, Meghalaya', date: 'Winter Harvest', img: '/assets/images/stall-spice-lakadong.jpg', caption: 'Freshly washed Lakadong turmeric rhizomes split for sun-curing on woven bamboo mats.' },
-    { id: 'FIELD-03', location: 'Mon District, Nagaland', date: 'Hearth Archive', img: '/assets/images/stall-chilli-smoked.jpg', caption: 'Alder-wood smoke rising through the slatted loft where whole Raja Mircha pods cure.' },
-    { id: 'FIELD-04', location: 'Cardiff Cupping Room', date: 'Cardiff Desk', img: '/assets/images/tea-infusion-cup.jpg', caption: 'Stoneware vessels and brass scales prepared in Cardiff for arrival inspection of Lot 26-A.' }
+    { id: 'STUDY 01', location: 'Dibrugarh, Upper Assam', date: 'Autumn Harvest', img: '/assets/images/hero-assam-mist.jpg', caption: 'Morning river mist lifting off smallholder Assamica plots before the late-November pluck.' },
+    { id: 'STUDY 02', location: 'West Jaintia Hills, Meghalaya', date: 'Winter Harvest', img: '/assets/images/stall-spice-lakadong.jpg', caption: 'Freshly washed Lakadong turmeric rhizomes split for sun-curing on woven bamboo mats.' },
+    { id: 'STUDY 03', location: 'Mon District, Nagaland', date: 'Hearth Curing', img: '/assets/images/stall-chilli-smoked.jpg', caption: 'Alder-wood smoke rising through the slatted loft where whole Raja Mircha pods cure.' },
+    { id: 'STUDY 04', location: 'Cardiff Tasting Room', date: 'Arrival Cupping', img: '/assets/images/tea-infusion-cup.jpg', caption: 'Stoneware vessels and brass scales prepared in Cardiff for arrival inspection of Lot 26-A.' }
   ];
   return `
-<section class="editorial-section" aria-label="Field Notes and Visual Dispatches">
+<section class="editorial-section" aria-label="Field Notes and Visual Studies">
   <div class="penbrae-container">
     <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:1rem;margin-bottom:var(--space-5);">
       <div>
-        <span class="kicker-index">FIELD NOTES ARCHIVE · VISUAL NOTEBOOK</span>
-        <h2 style="margin:0.35rem 0 0 0;">Dispatches from Cardiff &amp; Northeast India</h2>
+        <span class="kicker-index">VISUAL FIELD NOTEBOOK</span>
+        <h2 style="margin:0.35rem 0 0 0;">Studies from Northeast India &amp; Cardiff</h2>
       </div>
-      <span style="font-family:var(--font-mono);font-size:0.74rem;color:var(--color-ink-muted);">@penbraeandco · Server-Cached Visual Feed</span>
+      <span style="font-family:var(--font-mono);font-size:0.74rem;color:var(--color-ink-muted);">Editorial Photography Studies · Curated Portfolio Archive</span>
     </div>
     <div class="editorial-grid editorial-grid--ruled">
       ${notes.map(n => `
@@ -460,37 +734,41 @@ function renderInstagramFieldNotes() {
 </section>`;
 }
 
-function renderAudioModule(title = 'Field Recording: Morning Pluck & Bamboo Rolling Table (Dibrugarh)', location = '27°28′N 94°54′E · Upper Assam · 01:34') {
+function renderAudioModule(
+  title = 'Field Audio Study: Morning Pluck & Bamboo Rolling Table (Dibrugarh)',
+  location = '27°28′N 94°54′E · Upper Assam · 01:34',
+  transcript = 'Simulated field recording transcript (Dibrugarh, Upper Assam): Ambient sound of morning mist dripping from shade trees onto broad Camellia sinensis var. assamica leaves, followed by the rhythmic hand-rolling of withered leaf across woven bamboo tables.'
+) {
   return `
-<div class="audio-field-module" data-audio-module data-duration-sec="94" role="region" aria-label="${title}">
+<div class="audio-field-module" data-audio-module data-duration-sec="94" role="region" aria-label="${escapeAttr(title)}">
   <div class="audio-field-module__top">
-    <span class="kicker-index">DOCUMENTARY FIELD AUDIO</span>
+    <span class="audio-sim-badge" data-audio-sim-status>DEMO AUDIO PLAYER · SIMULATED TIMELINE &amp; VERBATIM TRANSCRIPT</span>
     <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--color-ink-muted);">${location}</span>
   </div>
-  <h3 style="font-size:1.3rem;margin-bottom:0.65rem;">${title}</h3>
+  <h3 style="font-size:1.3rem;margin:0.5rem 0 0.65rem 0;">${title}</h3>
   <div class="audio-field-module__controls">
-    <button type="button" class="audio-play-btn" data-audio-toggle aria-pressed="false">Listen ▶</button>
+    <button type="button" class="audio-play-btn" data-audio-toggle aria-pressed="false">Listen (Demo) ▶</button>
     <div class="audio-progress-track" aria-hidden="true">
       <div class="audio-progress-bar" data-audio-bar></div>
     </div>
     <span class="tabular-nums" data-audio-time style="font-family:var(--font-mono);font-size:0.75rem;color:var(--color-ink-muted);">00:00 / 01:34</span>
   </div>
   <details class="audio-transcript-details">
-    <summary>Read Verbatim Audio Transcript</summary>
+    <summary>Read Verbatim Field Transcript</summary>
     <div class="audio-transcript-body">
-      <p style="margin:0;">Ambient sound of morning mist dripping from shade trees onto broad Camellia sinensis var. assamica leaves, followed by the rhythmic hand-rolling of withered leaf across woven bamboo tables.</p>
+      <p style="margin:0;">${transcript}</p>
     </div>
   </details>
 </div>`;
 }
 
-function renderFooter(includeLeaflet = false) {
+function renderFooter() {
   return `</main>
 <footer class="site-colophon" role="contentinfo">
   <div class="penbrae-container">
     <div class="site-colophon__grid">
       <div>
-        <div class="kicker-index" style="color:var(--color-brass-light);margin-bottom:0.75rem;">COLOPHON · PENBRAE &amp; CO LTD</div>
+        <div class="kicker-index" style="color:var(--color-brass-light);margin-bottom:0.75rem;">PENBRAE &amp; CO LTD · CARDIFF</div>
         <h2 style="font-size:2.1rem;line-height:1.12;margin-bottom:1rem;">Rare single-harvest teas, heirloom rhizomes, and smoked chillies from Northeast India, curated in Cardiff.</h2>
         <p style="color:rgba(245,240,230,0.74);max-width:48ch;font-size:0.95rem;">Every seasonal lot is documented alongside the makers who cultivate it, the altitude and micro-climate of its origin, and the craft traditions that shape its character.</p>
         <div style="margin-top:1.5rem;font-family:var(--font-mono);font-size:0.74rem;color:var(--color-brass-light);letter-spacing:0.08em;">REGISTERED IN WALES · PENBRAE &amp; CO LTD · CARDIFF, UK</div>
@@ -506,32 +784,32 @@ function renderFooter(includeLeaflet = false) {
         </ul>
       </div>
       <div>
-        <h3 style="font-family:var(--font-mono);font-size:0.75rem;letter-spacing:0.11em;text-transform:uppercase;color:var(--color-brass-light);margin-bottom:1.1rem;">Editorial &amp; Origins</h3>
+        <h3 style="font-family:var(--font-mono);font-size:0.75rem;letter-spacing:0.11em;text-transform:uppercase;color:var(--color-brass-light);margin-bottom:1.1rem;">Origins &amp; Journal</h3>
         <ul class="site-colophon__list">
           <li><a href="/makers">Meet the Makers (Interactive Map)</a></li>
-          <li><a href="/maker/upper-assam-orthodox-collective">Maker Dossier: Upper Assam Collective</a></li>
-          <li><a href="/story/mist-over-the-brahmaputra-autumn-pluck">Product Story: Autumn Tippy Pluck</a></li>
+          <li><a href="/maker/upper-assam-orthodox-collective">Producer Profile: Upper Assam Collective</a></li>
+          <li><a href="/story/mist-over-the-brahmaputra-autumn-pluck">Harvest Story: Autumn Tippy Pluck</a></li>
           <li><a href="/journal">The Penbrae Journal</a></li>
           <li><a href="/about">About Penbrae &amp; Co</a></li>
-          <li><a href="/subscribe">Subscribe to Dispatch</a></li>
+          <li><a href="/subscribe">Seasonal Newsletter</a></li>
         </ul>
       </div>
       <div>
-        <h3 style="font-family:var(--font-mono);font-size:0.75rem;letter-spacing:0.11em;text-transform:uppercase;color:var(--color-brass-light);margin-bottom:1.1rem;">Commerce &amp; Governance</h3>
+        <h3 style="font-family:var(--font-mono);font-size:0.75rem;letter-spacing:0.11em;text-transform:uppercase;color:var(--color-brass-light);margin-bottom:1.1rem;">Customer Care &amp; Policies</h3>
         <ul class="site-colophon__list">
           <li><a href="/basket">Shopping Basket</a></li>
-          <li><a href="/checkout">Checkout (Stripe Test Mode Ready)</a></li>
+          <li><a href="/checkout">Checkout (Sandbox Mode)</a></li>
           <li><a href="/my-account">Customer Account</a></li>
-          <li><a href="/shipping-returns">Shipping &amp; Returns Information</a></li>
+          <li><a href="/shipping-returns">Shipping &amp; Returns</a></li>
           <li><a href="/privacy-policy">Privacy Policy &amp; UK GDPR</a></li>
           <li><a href="/terms-and-conditions">Terms &amp; Conditions</a></li>
-          <li><a href="/contact">Contact &amp; Cardiff Enquiries</a></li>
+          <li><a href="/contact">Contact &amp; Wholesale Enquiries</a></li>
         </ul>
       </div>
     </div>
     <div class="site-colophon__bottom">
       <span>&copy; 2026 Penbrae &amp; Co Ltd. All rights reserved. Prices displayed in GBP (£).</span>
-      <span>CARDIFF, WALES · SMALL-LOT IMPORTERS OF NORTHEAST INDIAN TEAS, SPICES &amp; CHILLIES</span>
+      <span>PORTFOLIO PROTOTYPE · DEMONSTRATION CATALOGUE, AUDIO TRANSCRIPTS &amp; SANDBOX CHECKOUT</span>
     </div>
   </div>
 </footer>
@@ -550,16 +828,16 @@ function renderProductSpecimenCard(p, orderIdx = 1, defaultVisible = true) {
     <span>${p.lot}</span>
     <span>${p.elevation} · ${p.region.split(',').pop().trim().toUpperCase()}</span>
   </div>
-  <a href="/product/${p.slug}" class="product-specimen__media" aria-label="${p.title}">
-    <img src="${p.img}" alt="${p.title}" class="product-specimen__img" loading="lazy">
+  <a href="/product/${p.slug}" class="product-specimen__media" aria-label="${escapeAttr(p.title)}">
+    <img src="${p.img}" alt="${escapeAttr(p.title)}" class="product-specimen__img" loading="lazy">
   </a>
   <div class="product-specimen__body">
     <div class="product-specimen__region">${p.region}</div>
     <h2 class="product-specimen__title"><a href="/product/${p.slug}">${p.title}</a></h2>
     <p class="product-specimen__notes">${p.tasting}</p>
     <div class="product-specimen__provenance-links">
-      <a href="/maker/${p.makerSlug}">Maker Dossier</a>
-      <a href="/story/${p.storySlug}">Provenance Story</a>
+      <a href="/maker/${p.makerSlug}">Meet the Maker</a>
+      <a href="/story/${p.storySlug}">Harvest Story</a>
     </div>
   </div>
   <div class="product-specimen__footer">
@@ -567,11 +845,11 @@ function renderProductSpecimenCard(p, orderIdx = 1, defaultVisible = true) {
     <button type="button" class="product-specimen__add-btn"
       data-add-to-basket
       data-product-id="${p.slug}"
-      data-product-title="${p.title}"
-      data-product-variant="${p.weight}"
+      data-product-title="${escapeAttr(p.title)}"
+      data-product-variant="${escapeAttr(p.weight)}"
       data-product-price="${p.price.toFixed(2)}"
       data-product-url="/product/${p.slug}"
-      data-product-region="${p.region}">
+      data-product-region="${escapeAttr(p.region)}">
       Add to Basket +
     </button>
   </div>
@@ -579,12 +857,27 @@ function renderProductSpecimenCard(p, orderIdx = 1, defaultVisible = true) {
 }
 
 function renderHomePage() {
-  return renderHeader('/') + `
+  const seo = {
+    title: 'Penbrae & Co Ltd — Rare Teas, Spices & Chillies from Northeast India | Cardiff',
+    description: 'Rare orthodox Assam teas, single-harvest Lakadong turmeric, wild hill peppers, and alder-smoked Naga chillies from Northeast India, curated in Cardiff, Wales.',
+    canonicalPath: '/',
+    ogType: 'website',
+    ogImage: '/assets/images/hero-assam-mist.jpg',
+    schema: {
+      '@type': 'WebSite',
+      '@id': SITE_URL + '/#website',
+      url: SITE_URL,
+      name: 'Penbrae & Co Ltd',
+      publisher: { '@id': SITE_URL + '/#organization' }
+    }
+  };
+
+  return renderHeader('/', '', seo) + `
 <section class="home-hero" aria-label="Editorial Monograph Cover">
   <div class="home-hero__grid">
     <div class="home-hero__editorial-column">
       <div class="home-hero__issue-meta">
-        <span>MONOGRAPH NO. 01 · AUTUMN / WINTER</span>
+        <span>ISSUE NO. 01 · AUTUMN / WINTER HARVEST</span>
         <span>CARDIFF ↔ NORTHEAST INDIA</span>
       </div>
       <div>
@@ -593,7 +886,7 @@ function renderHomePage() {
         <p class="lead-standfirst">Rare orthodox teas, heirloom rhizomes, and hearth-smoked chillies from smallholder gardens across Northeast India—curated in Cardiff.</p>
         <div style="display:flex;flex-wrap:wrap;gap:1rem;margin-top:var(--space-5);">
           <a href="/stalls" class="btn-editorial"><span>Enter The Three Stalls</span><span aria-hidden="true">→</span></a>
-          <a href="/makers" class="btn-editorial btn-editorial--outline"><span>Explore Maker Atlas</span></a>
+          <a href="/makers" class="btn-editorial btn-editorial--outline"><span>Explore Producer Map</span></a>
         </div>
       </div>
       <div class="home-hero__ledger-foot">
@@ -602,7 +895,7 @@ function renderHomePage() {
           <strong>Assam · Meghalaya · Nagaland · Arunachal · Manipur</strong>
         </div>
         <div>
-          <div style="font-family:var(--font-mono);font-size:0.7rem;text-transform:uppercase;color:var(--color-ink-muted);">HOME PORT</div>
+          <div style="font-family:var(--font-mono);font-size:0.7rem;text-transform:uppercase;color:var(--color-ink-muted);">DISPATCH ORIGIN</div>
           <strong>Cardiff, Wales · GBP (£)</strong>
         </div>
       </div>
@@ -619,8 +912,8 @@ function renderHomePage() {
         <h2 style="font-size:1.95rem;margin:0.35rem 0;color:var(--color-parchment);">Upper Assam Tippy Orthodox Reserve</h2>
         <p style="font-size:0.9rem;color:rgba(245,240,230,0.86);margin-bottom:0.85rem;">Late-November whole-leaf pluck rich in downy golden tips. Notes of toasted malt, heather honey, and orchard plum.</p>
         <div style="display:flex;justify-content:space-between;align-items:center;padding-top:0.75rem;border-top:var(--rule-light-on-dark);">
-          <a href="/product/upper-assam-tippy-orthodox" class="link-editorial" style="color:var(--color-parchment);border-color:var(--color-brass-light);">Inspect Lot (£28.00) →</a>
-          <a href="/story/mist-over-the-brahmaputra-autumn-pluck" style="font-family:var(--font-mono);font-size:0.72rem;color:var(--color-brass-light);text-decoration:underline;">Provenance Story</a>
+          <a href="/product/upper-assam-tippy-orthodox" class="link-editorial" style="color:var(--color-parchment);border-color:var(--color-brass-light);">View Lot (£28.00) →</a>
+          <a href="/story/mist-over-the-brahmaputra-autumn-pluck" style="font-family:var(--font-mono);font-size:0.72rem;color:var(--color-brass-light);text-decoration:underline;">Harvest Story</a>
         </div>
       </div>
     </div>
@@ -642,12 +935,12 @@ function renderHomePage() {
           </figcaption>
         </figure>
       </div>
-      <div class="col-span-7" style="padding-left:var(--space-4);">
-        <span class="kicker-index">01 · QUIET LUXURY &amp; PROVENANCE</span>
+      <div class="col-span-7 editorial-split-copy">
+        <span class="kicker-index">01 · SOURCING PHILOSOPHY</span>
         <h2 style="font-size:clamp(2.1rem, 3.1vw, 3.25rem);line-height:1.12;margin:0.5rem 0 var(--space-4) 0;">An ingredient is never anonymous. Behind every leaf, rhizome, and smoked pod stands a landscape and a human hand.</h2>
         <p style="color:var(--color-ink-secondary);max-width:56ch;">From our tasting room in Cardiff, Penbrae &amp; Co documents and imports small-lot harvests from Assam, Meghalaya, Nagaland, Arunachal Pradesh, and Manipur—preserving the exact garden, harvest week, and craft tradition of every lot.</p>
         <div style="margin-top:var(--space-4);">
-          <a href="/about" class="link-editorial">Read the Penbrae Manifesto →</a>
+          <a href="/about" class="link-editorial">Read Our Story →</a>
         </div>
       </div>
     </div>
@@ -658,16 +951,16 @@ function renderHomePage() {
   <div class="penbrae-container" style="margin-bottom:var(--space-5);">
     <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:1rem;">
       <div>
-        <span class="kicker-index">02 · THREE CURATED EDITORIAL ENVIRONMENTS</span>
-        <h2 style="margin:0.35rem 0 0 0;">Enter The Stalls</h2>
+        <span class="kicker-index">02 · THE COLLECTION</span>
+        <h2 style="margin:0.35rem 0 0 0;">Explore The Three Stalls</h2>
       </div>
-      <a href="/stalls" class="link-editorial">Compare All Three Stalls →</a>
+      <a href="/stalls" class="link-editorial">Compare All Three Stalls (9 Lots) →</a>
     </div>
   </div>
   <div class="stall-triptych">
     <article class="stall-portal stall-portal--teas">
       <div>
-        <div class="stall-portal__number"><span>STALL I · CAMELLIA SINENSIS</span><span>ASSAM &amp; ARUNACHAL</span></div>
+        <div class="stall-portal__number"><span>STALL I · 3 LOTS</span><span>ASSAM &amp; ARUNACHAL</span></div>
         <div class="stall-portal__photo">
           <img src="/assets/images/stall-tea-orthodox.jpg" alt="Whole-leaf orthodox Assam tea with golden tips" loading="lazy">
         </div>
@@ -677,12 +970,12 @@ function renderHomePage() {
       </div>
       <div style="display:flex;justify-content:space-between;align-items:center;padding-top:1rem;border-top:var(--rule-hairline);">
         <a href="/stall/teas" class="btn-editorial">Enter Tea Stall →</a>
-        <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--color-ink-muted);">From £24.00</span>
+        <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--color-ink-muted);">From £28.00</span>
       </div>
     </article>
     <article class="stall-portal stall-portal--spices">
       <div>
-        <div class="stall-portal__number"><span>STALL II · RHIZOMES &amp; BARKS</span><span>MEGHALAYA &amp; ZIRO</span></div>
+        <div class="stall-portal__number"><span>STALL II · 3 LOTS</span><span>MEGHALAYA &amp; ZIRO</span></div>
         <div class="stall-portal__photo">
           <img src="/assets/images/stall-spice-lakadong.jpg" alt="Freshly sliced Lakadong turmeric rhizomes and wild hill peppercorns" loading="lazy">
         </div>
@@ -697,7 +990,7 @@ function renderHomePage() {
     </article>
     <article class="stall-portal stall-portal--chillies">
       <div>
-        <div class="stall-portal__number"><span>STALL III · CAPSICUM CHINENSE</span><span>NAGALAND &amp; MANIPUR</span></div>
+        <div class="stall-portal__number"><span>STALL III · 3 LOTS</span><span>NAGALAND &amp; MANIPUR</span></div>
         <div class="stall-portal__photo">
           <img src="/assets/images/stall-chilli-smoked.jpg" alt="Whole alder-smoked crimson Naga King Chilli pods" loading="lazy">
         </div>
@@ -718,7 +1011,7 @@ function renderHomePage() {
     <div class="editorial-grid">
       <div class="col-span-6" style="background:var(--color-parchment-light);border:var(--rule-strong);padding:var(--space-5);">
         <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:0.75rem;border-bottom:var(--rule-hairline);margin-bottom:1rem;">
-          <span class="kicker-index">03 · FEATURED RARE LOT</span>
+          <span class="kicker-index">03 · SEASONAL HIGHLIGHT</span>
           <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--color-ink-muted);">LOT 26-C · NAGALAND</span>
         </div>
         <div class="journal-card__media" style="aspect-ratio:16/9;">
@@ -743,24 +1036,28 @@ function renderHomePage() {
             data-product-region="Mon District, Nagaland">Add to Basket +</button>
         </div>
         <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:0.75rem;">
-          <a href="/product/alder-smoked-naga-king-chilli" class="link-editorial">Tasting Dossier →</a>
-          <a href="/story/alder-smoke-and-monsoon-mist" class="link-editorial">Read Product Story →</a>
+          <a href="/product/alder-smoked-naga-king-chilli" class="link-editorial">View Product Details →</a>
+          <a href="/story/alder-smoke-and-monsoon-mist" class="link-editorial">Read Harvest Story →</a>
         </div>
       </div>
 
       <div class="col-span-6" style="background:var(--color-parchment-light);border:var(--rule-strong);padding:var(--space-5);">
         <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:0.75rem;border-bottom:var(--rule-hairline);margin-bottom:1rem;">
-          <span class="kicker-index">04 · FEATURED MAKER DOCUMENTARY</span>
-          <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--color-ink-muted);">DOSSIER M-01 · UPPER ASSAM</span>
+          <span class="kicker-index">04 · PRODUCER SPOTLIGHT</span>
+          <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--color-ink-muted);">PRODUCER M-01 · UPPER ASSAM</span>
         </div>
         <div class="journal-card__media" style="aspect-ratio:16/9;">
           <img src="/assets/images/maker-hands-crafting.jpg" alt="Artisan hands rolling withered tea leaves on woven bamboo tray" loading="lazy">
         </div>
         <h2 style="font-size:2rem;margin:0.5rem 0 0.25rem 0;"><a href="/maker/upper-assam-orthodox-collective" style="color:var(--color-charcoal);text-decoration:none;">Brahmaputra Smallholder Tea Collective</a></h2>
         <div class="latin-taxonomy" style="margin-bottom:0.85rem;">Dibrugarh &amp; Tinsukia, Upper Assam · 27°28′N 94°54′E</div>
-        ${renderAudioModule()}
+        ${renderAudioModule(
+          MAKERS_DATA['upper-assam-orthodox-collective'].audioTitle,
+          '27°28′N 94°54′E · Upper Assam · 01:34',
+          MAKERS_DATA['upper-assam-orthodox-collective'].audioTranscript
+        )}
         <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:0.75rem;margin-top:1rem;">
-          <a href="/maker/upper-assam-orthodox-collective" class="btn-editorial btn-editorial--outline">Read Maker Profile →</a>
+          <a href="/maker/upper-assam-orthodox-collective" class="btn-editorial btn-editorial--outline">Read Producer Profile →</a>
           <a href="/makers" class="link-editorial">Locate on Map →</a>
         </div>
       </div>
@@ -784,28 +1081,28 @@ function renderHomePage() {
         <div class="region-card__photo">
           <img src="/assets/images/hero-assam-mist.jpg" alt="Upper Assam tea gardens in morning fog" loading="lazy">
         </div>
-        <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--color-brass-light);">27°28′N 94°54′E · 140m ASL</div>
-        <h3 style="margin:0.35rem 0;">Upper Assam</h3>
-        <p style="font-size:0.9rem;color:rgba(245,240,230,0.8);">Alluvial clay and heavy river fog nurturing tippy orthodox Assamica and Singpho bamboo-smoked teas.</p>
-        <a href="/stall/teas" class="link-editorial" style="color:var(--color-brass-light);">Explore Assam Lots →</a>
+        <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--color-brass-light);">27°28′N 94°54′E · 140m – 1,520m ASL</div>
+        <h3 style="margin:0.35rem 0;">Assam &amp; Arunachal Canopy</h3>
+        <p style="font-size:0.9rem;color:rgba(245,240,230,0.8);">Alluvial river valleys and eastern Himalayan forest margins nurturing tippy orthodox Assamica, Singpho bamboo tea, and silver buds.</p>
+        <a href="/stall/teas" class="link-editorial" style="color:var(--color-brass-light);">Explore The Tea Stall →</a>
       </div>
       <div class="col-span-4">
         <div class="region-card__photo">
           <img src="/assets/images/landscape-meghalaya-hills.jpg" alt="Cloud-wrapped limestone hills of Meghalaya" loading="lazy">
         </div>
-        <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--color-brass-light);">25°26′N 92°17′E · 1,280m ASL</div>
-        <h3 style="margin:0.35rem 0;">Meghalaya Plateau</h3>
-        <p style="font-size:0.9rem;color:rgba(245,240,230,0.8);">Limestone uplands in West Jaintia and Sohra yielding high-curcumin Lakadong turmeric and heirloom hill ginger.</p>
-        <a href="/stall/spices" class="link-editorial" style="color:var(--color-brass-light);">Explore Meghalaya Lots →</a>
+        <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--color-brass-light);">25°26′N 92°17′E · 1,280m – 1,680m ASL</div>
+        <h3 style="margin:0.35rem 0;">Meghalaya &amp; Ziro Uplands</h3>
+        <p style="font-size:0.9rem;color:rgba(245,240,230,0.8);">Limestone plateaus in West Jaintia and Sohra alongside Ziro Valley forests yielding Lakadong turmeric, hill ginger, and citrus pepper.</p>
+        <a href="/stall/spices" class="link-editorial" style="color:var(--color-brass-light);">Explore The Spice Stall →</a>
       </div>
       <div class="col-span-4">
         <div class="region-card__photo">
           <img src="/assets/images/journal-preservation-loft.jpg" alt="Traditional bamboo drying loft in Nagaland" loading="lazy">
         </div>
-        <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--color-brass-light);">26°43′N 95°01′E · 1,460m ASL</div>
-        <h3 style="margin:0.35rem 0;">Nagaland &amp; Manipur Uplands</h3>
-        <p style="font-size:0.9rem;color:rgba(245,240,230,0.8);">Terraced ridges cultivating alder-smoked Raja Mircha and Sirarakhong Hathei crimson chillies.</p>
-        <a href="/stall/chillies" class="link-editorial" style="color:var(--color-brass-light);">Explore Nagaland &amp; Manipur →</a>
+        <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--color-brass-light);">26°43′N 95°01′E · 1,180m – 1,750m ASL</div>
+        <h3 style="margin:0.35rem 0;">Nagaland &amp; Manipur Ridges</h3>
+        <p style="font-size:0.9rem;color:rgba(245,240,230,0.8);">Terraced mountain plots cultivating alder-smoked Raja Mircha, Sirarakhong Hathei crimson chillies, and upland bird’s-eye pods.</p>
+        <a href="/stall/chillies" class="link-editorial" style="color:var(--color-brass-light);">Explore The Chilli Stall →</a>
       </div>
     </div>
   </div>
@@ -835,9 +1132,9 @@ function renderHomePage() {
           <div class="journal-card__media" style="aspect-ratio:21/9;">
             <img src="/assets/images/stall-tea-orthodox.jpg" alt="Orthodox Assam tea leaves" loading="lazy">
           </div>
-          <span class="kicker-index">TEA CEREMONY &amp; VESSEL</span>
+          <span class="kicker-index">TEA TRADITIONS</span>
           <h3 style="font-size:1.45rem;margin:0.35rem 0;"><a href="/journal/orthodox-vs-ctc-assam-leaf" style="color:var(--color-charcoal);text-decoration:none;">Beyond the Breakfast Blend: Reading Whole-Leaf Orthodox Assam</a></h3>
-          <a href="/journal/orthodox-vs-ctc-assam-leaf" class="link-editorial">Read Article →</a>
+          <a href="/journal/orthodox-vs-ctc-assam-leaf" class="link-editorial">Read Essay →</a>
         </article>
         <article class="journal-card" style="border:var(--rule-hairline);background:var(--color-parchment-light);padding:var(--space-4);">
           <div class="journal-card__media" style="aspect-ratio:21/9;">
@@ -845,7 +1142,7 @@ function renderHomePage() {
           </div>
           <span class="kicker-index">CULINARY NOTES</span>
           <h3 style="font-size:1.45rem;margin:0.35rem 0;"><a href="/journal/tempering-lakadong-and-smoked-chilli" style="color:var(--color-charcoal);text-decoration:none;">Tempering in Warm Fat: Lakadong &amp; Alder-Smoked Chilli</a></h3>
-          <a href="/journal/tempering-lakadong-and-smoked-chilli" class="link-editorial">Read Article →</a>
+          <a href="/journal/tempering-lakadong-and-smoked-chilli" class="link-editorial">Read Essay →</a>
         </article>
       </div>
     </div>
@@ -854,65 +1151,77 @@ function renderHomePage() {
 
 ${renderInstagramFieldNotes()}
 
-<section class="editorial-section editorial-section--deep" aria-label="Subscribe to the Penbrae Dispatch">
+<section class="editorial-section editorial-section--deep" aria-label="Subscribe to the Penbrae Newsletter">
   <div class="penbrae-container">
     <div class="editorial-grid">
       <div class="col-span-6">
-        <span class="kicker-index">07 · THE PENBRAE DISPATCH</span>
-        <h2 style="margin-top:0.4rem;">Seasonal Harvest Letters &amp; First-Lot Allocations</h2>
-        <p style="color:var(--color-ink-secondary);">Subscribers receive field dispatches from Northeast India, maker interviews, and 48-hour advance notice when limited seasonal lots arrive in Cardiff.</p>
+        <span class="kicker-index">07 · SEASONAL DISPATCH</span>
+        <h2 style="margin-top:0.4rem;">Harvest Letters &amp; First-Lot Notices</h2>
+        <p style="color:var(--color-ink-secondary);">Subscribers receive field dispatches from Northeast India, producer interviews, and 48-hour advance notice when limited seasonal lots arrive in Cardiff.</p>
       </div>
       <div class="col-span-6">
         <form method="post" data-penbrae-newsletter-form data-ajax-preview="true" style="background:var(--color-parchment-light);padding:var(--space-5);border:var(--rule-strong);">
           <div class="editorial-form-field">
-            <label for="home-subscriber-email">Electronic Mail Address</label>
+            <label for="home-subscriber-email">Email Address</label>
             <input type="email" id="home-subscriber-email" name="subscriber_email" required placeholder="reader@domain.co.uk">
           </div>
           <div class="consent-checkbox-box">
             <input type="checkbox" id="home-gdpr-consent" name="gdpr_consent" value="1" required>
-            <label for="home-gdpr-consent">I explicitly consent to receive editorial dispatches and seasonal harvest notices from Penbrae &amp; Co Ltd (UK GDPR).</label>
+            <label for="home-gdpr-consent">I consent to receive editorial dispatches and seasonal harvest notices from Penbrae &amp; Co Ltd (UK GDPR).</label>
           </div>
-          <button type="submit" class="btn-editorial" style="width:100%;justify-content:center;">Register for the Seasonal Dispatch →</button>
+          <button type="submit" class="btn-editorial" style="width:100%;justify-content:center;">Subscribe to the Dispatch →</button>
           <p data-newsletter-status aria-live="polite" style="margin-top:0.75rem;font-family:var(--font-mono);font-size:0.76rem;"></p>
         </form>
       </div>
     </div>
   </div>
 </section>
-` + renderFooter(false);
+` + renderFooter();
 }
 
 function renderStallsOverviewPage() {
-  return renderHeader('/stalls', 'stall-theme-teas') + `
+  const teaProducts = Object.values(PRODUCTS).filter(p => p.stall === 'teas');
+  const spiceProducts = Object.values(PRODUCTS).filter(p => p.stall === 'spices');
+  const chilliProducts = Object.values(PRODUCTS).filter(p => p.stall === 'chillies');
+
+  const seo = {
+    title: 'The Three Stalls — Teas, Spices & Chillies | Penbrae & Co Ltd',
+    description: 'Explore all nine single-harvest lots across The Tea Stall, The Spice Stall, and The Chilli Stall—imported from Northeast India to Cardiff.',
+    canonicalPath: '/stalls',
+    ogType: 'website',
+    ogImage: '/assets/images/stall-tea-orthodox.jpg'
+  };
+
+  return renderHeader('/stalls', 'stall-theme-teas', seo) + `
 <section class="editorial-section" style="background:var(--color-parchment-deep);padding-bottom:var(--space-5);">
   <div class="penbrae-container">
     <div class="editorial-grid">
       <div class="col-span-5">
-        <span class="kicker-index">ARCHITECTURAL CATALOGUE · PAGE 02</span>
+        <span class="kicker-index">COMPLETE COLLECTION · 9 SEASONAL LOTS</span>
         <h1 style="margin-top:0.4rem;">The Three Stalls</h1>
       </div>
       <div class="col-span-7">
-        <p class="lead-standfirst">Three dedicated editorial environments—each shaped by the sensory discipline, harvest calendar, and preservation craft of its ingredients.</p>
+        <p class="lead-standfirst">Three dedicated rooms—each shaped by the sensory discipline, harvest calendar, and preservation craft of its ingredients.</p>
       </div>
     </div>
   </div>
 </section>
 
-<div class="stalls-environment-bar" data-stalls-env-bar data-active-env="teas" role="navigation" aria-label="Switch or scroll between Stall environments">
+<div class="stalls-environment-bar" data-stalls-env-bar data-active-env="teas" role="navigation" aria-label="Jump between Stall sections">
   <div class="stalls-environment-bar__inner">
-    <span class="kicker-index" style="margin:0;">STALL ATMOSPHERE INDEX · SCROLL OR SELECT</span>
+    <span class="kicker-index" style="margin:0;">SELECT A STALL · 9 CURATED LOTS</span>
     <div class="stalls-environment-bar__tabs">
       <a href="#stall-env-teas" class="stalls-env-tab is-active" data-env-target="teas">
         <span class="stalls-env-tab__dot" style="background:var(--color-forest);"></span>
-        <span>I. The Tea Stall</span>
+        <span>I. The Tea Stall (3)</span>
       </a>
       <a href="#stall-env-spices" class="stalls-env-tab" data-env-target="spices">
         <span class="stalls-env-tab__dot" style="background:var(--color-terracotta);"></span>
-        <span>II. The Spice Stall</span>
+        <span>II. The Spice Stall (3)</span>
       </a>
       <a href="#stall-env-chillies" class="stalls-env-tab" data-env-target="chillies">
         <span class="stalls-env-tab__dot" style="background:var(--color-oxblood);"></span>
-        <span>III. The Chilli Stall</span>
+        <span>III. The Chilli Stall (3)</span>
       </a>
     </div>
   </div>
@@ -920,77 +1229,133 @@ function renderStallsOverviewPage() {
 
 <section id="stall-env-teas" data-stall-section="teas" class="editorial-section stall-theme-teas" style="background:#EFECE1;" aria-labelledby="stall-heading-teas">
   <div class="penbrae-container">
-    <div class="editorial-grid">
-      <div class="col-span-5">
-        <span class="kicker-index">STALL I · CALM &amp; CEREMONIAL</span>
-        <h2 id="stall-heading-teas" style="font-size:clamp(2.4rem,3.5vw,3.6rem);margin:0.4rem 0;">The Tea Stall</h2>
-        <p class="latin-taxonomy" style="font-size:1.25rem;margin-bottom:1.1rem;">Camellia sinensis var. assamica · Upper Assam &amp; Arunachal</p>
-        <p style="color:var(--color-ink-secondary);">Delicate, contemplative, and unhurried. Smallholder gardens that pluck whole terminal buds and hand-roll orthodox leaf on woven bamboo mats.</p>
-        <a href="/stall/teas" class="btn-editorial" style="margin-top:1rem;">Enter The Tea Stall →</a>
-      </div>
+    <div class="editorial-grid" style="margin-bottom:var(--space-5);align-items:flex-end;">
       <div class="col-span-7">
-        <div class="editorial-grid">
-          <div class="col-span-6">${renderProductSpecimenCard(PRODUCTS['upper-assam-tippy-orthodox'], 1)}</div>
-          <div class="col-span-6">${renderProductSpecimenCard(PRODUCTS['singpho-bamboo-smoked-tea'], 2)}</div>
-        </div>
+        <span class="kicker-index">STALL I · 3 SEASONAL LOTS · ASSAM &amp; ARUNACHAL PRADESH</span>
+        <h2 id="stall-heading-teas" style="font-size:clamp(2.2rem,3.2vw,3.4rem);margin:0.35rem 0;">The Tea Stall</h2>
+        <p style="color:var(--color-ink-secondary);max-width:60ch;margin:0;">Delicate, contemplative, and unhurried. Smallholder gardens that pluck whole terminal buds, sun-wither silver canopy shoots, and cure pan-fired leaf in hollow bamboo.</p>
       </div>
+      <div class="col-span-5" style="display:flex;justify-content:flex-end;">
+        <a href="/stall/teas" class="btn-editorial">Enter The Tea Stall →</a>
+      </div>
+    </div>
+    <div class="editorial-grid">
+      ${teaProducts.map((p, i) => `<div class="col-span-4">${renderProductSpecimenCard(p, i + 1)}</div>`).join('')}
     </div>
   </div>
 </section>
 
 <section id="stall-env-spices" data-stall-section="spices" class="editorial-section stall-theme-spices" style="background:#F3E8DA;" aria-labelledby="stall-heading-spices">
   <div class="penbrae-container">
-    <div class="editorial-grid">
+    <div class="editorial-grid" style="margin-bottom:var(--space-5);align-items:flex-end;">
       <div class="col-span-7">
-        <div class="editorial-grid">
-          <div class="col-span-6">${renderProductSpecimenCard(PRODUCTS['lakadong-turmeric-reserve'], 1)}</div>
-          <div class="col-span-6">${renderProductSpecimenCard(PRODUCTS['arunachal-wild-hill-pepper'], 2)}</div>
-        </div>
+        <span class="kicker-index">STALL II · 3 SEASONAL LOTS · MEGHALAYA &amp; ZIRO VALLEY</span>
+        <h2 id="stall-heading-spices" style="font-size:clamp(2.2rem,3.2vw,3.4rem);margin:0.35rem 0;">The Spice Stall</h2>
+        <p style="color:var(--color-ink-secondary);max-width:60ch;margin:0;">Expressive, resinous, and deeply aromatic. Limestone uplands in the West Jaintia Hills and subtropical valleys in Arunachal yield extraordinary essential oil concentration.</p>
       </div>
-      <div class="col-span-5">
-        <span class="kicker-index">STALL II · WARM, TEXTURED &amp; AROMATIC</span>
-        <h2 id="stall-heading-spices" style="font-size:clamp(2.4rem,3.5vw,3.6rem);margin:0.4rem 0;">The Spice Stall</h2>
-        <p class="latin-taxonomy" style="font-size:1.25rem;margin-bottom:1.1rem;">Curcuma longa &amp; Zanthoxylum · Meghalaya &amp; Ziro Valley</p>
-        <p style="color:var(--color-ink-secondary);">Expressive, resinous, and deeply aromatic. Limestone uplands in the West Jaintia Hills and subtropical valleys in Arunachal yield extraordinary essential oil concentration.</p>
-        <a href="/stall/spices" class="btn-editorial" style="margin-top:1rem;background:var(--color-terracotta);border-color:var(--color-terracotta);">Enter The Spice Stall →</a>
+      <div class="col-span-5" style="display:flex;justify-content:flex-end;">
+        <a href="/stall/spices" class="btn-editorial" style="background:var(--color-terracotta);border-color:var(--color-terracotta);">Enter The Spice Stall →</a>
       </div>
+    </div>
+    <div class="editorial-grid">
+      ${spiceProducts.map((p, i) => `<div class="col-span-4">${renderProductSpecimenCard(p, i + 1)}</div>`).join('')}
     </div>
   </div>
 </section>
 
 <section id="stall-env-chillies" data-stall-section="chillies" class="editorial-section stall-theme-chillies" style="background:#EFE3DE;" aria-labelledby="stall-heading-chillies">
   <div class="penbrae-container">
-    <div class="editorial-grid">
-      <div class="col-span-5">
-        <span class="kicker-index">STALL III · BOLD, ENERGETIC &amp; INTENSE</span>
-        <h2 id="stall-heading-chillies" style="font-size:clamp(2.4rem,3.5vw,3.6rem);margin:0.4rem 0;">The Chilli Stall</h2>
-        <p class="latin-taxonomy" style="font-size:1.25rem;margin-bottom:1.1rem;">Capsicum chinense &amp; Capsicum annuum · Nagaland &amp; Manipur</p>
-        <p style="color:var(--color-ink-secondary);">Intense yet remarkably complex. Revered across Nagaland and Manipur for fruit-forward aromatics, alder-smoke depth, and natural crimson staining.</p>
-        <a href="/stall/chillies" class="btn-editorial" style="margin-top:1rem;background:var(--color-oxblood);border-color:var(--color-oxblood);">Enter The Chilli Stall →</a>
-      </div>
+    <div class="editorial-grid" style="margin-bottom:var(--space-5);align-items:flex-end;">
       <div class="col-span-7">
-        <div class="editorial-grid">
-          <div class="col-span-6">${renderProductSpecimenCard(PRODUCTS['alder-smoked-naga-king-chilli'], 1)}</div>
-          <div class="col-span-6">${renderProductSpecimenCard(PRODUCTS['sirarakhong-hathei-chilli'], 2)}</div>
-        </div>
+        <span class="kicker-index">STALL III · 3 SEASONAL LOTS · NAGALAND, MANIPUR &amp; MEGHALAYA</span>
+        <h2 id="stall-heading-chillies" style="font-size:clamp(2.2rem,3.2vw,3.4rem);margin:0.35rem 0;">The Chilli Stall</h2>
+        <p style="color:var(--color-ink-secondary);max-width:60ch;margin:0;">Intense yet remarkably complex. Revered across Nagaland and Manipur for fruit-forward aromatics, alder-smoke depth, and natural crimson staining.</p>
       </div>
+      <div class="col-span-5" style="display:flex;justify-content:flex-end;">
+        <a href="/stall/chillies" class="btn-editorial" style="background:var(--color-oxblood);border-color:var(--color-oxblood);">Enter The Chilli Stall →</a>
+      </div>
+    </div>
+    <div class="editorial-grid">
+      ${chilliProducts.map((p, i) => `<div class="col-span-4">${renderProductSpecimenCard(p, i + 1)}</div>`).join('')}
     </div>
   </div>
 </section>
-` + renderNonLinearCompass() + renderFooter(false);
+` + renderFooter();
 }
 
 function renderIndividualStallPage(stallSlug) {
   const normalizedSlug = stallSlug === 'tea' ? 'teas' : stallSlug === 'spice' ? 'spices' : stallSlug === 'chilli' ? 'chillies' : stallSlug;
   const stall = STALLS[normalizedSlug] || STALLS.teas;
   const stallProducts = Object.values(PRODUCTS).filter(p => p.stall === stall.slug);
-  const sisterProducts = Object.values(PRODUCTS).filter(p => p.stall !== stall.slug);
-  const orderedCatalogue = [...stallProducts, ...sisterProducts];
 
-  return renderHeader('/stall/' + stall.slug, 'stall-theme-' + stall.slug) + `
+  const regionPillsHtml = (stall.regions || []).map(r => {
+    const count = stallProducts.filter(p => p.regionFilter.split(/\s+/).includes(r.key)).length;
+    return `<button type="button" class="filter-pill" data-filter-region="${r.key}" aria-pressed="false">${r.label} (${count})</button>`;
+  }).join('\n        ');
+
+  // Contextually relevant makers, story, and journal for this specific Stall
+  const firstProduct = stallProducts[0];
+  const secondProduct = stallProducts[1] || stallProducts[0];
+  const maker1 = MAKERS_DATA[firstProduct.makerSlug];
+  const maker2 = MAKERS_DATA[secondProduct.makerSlug];
+  const story = STORIES_DATA[firstProduct.storySlug];
+  const journal = JOURNALS_DATA[firstProduct.journalSlug];
+
+  const contextNodes = [
+    {
+      url: '/maker/' + firstProduct.makerSlug,
+      type: '01 · PRODUCER PROFILE',
+      title: maker1.name,
+      meta: maker1.region
+    },
+    {
+      url: '/story/' + firstProduct.storySlug,
+      type: '02 · HARVEST MONOGRAPH',
+      title: story.title,
+      meta: 'Read how origin & curing shape this Stall'
+    },
+    {
+      url: '/journal/' + firstProduct.journalSlug,
+      type: '03 · JOURNAL ESSAY',
+      title: journal.title,
+      meta: journal.badge
+    },
+    {
+      url: maker2 && maker2.code !== maker1.code ? '/maker/' + secondProduct.makerSlug : '/makers',
+      type: '04 · REGIONAL ATLAS',
+      title: maker2 && maker2.code !== maker1.code ? maker2.name : 'Northeast India Producer Atlas',
+      meta: 'Inspect coordinates and harvest districts'
+    }
+  ];
+
+  const seo = {
+    title: `${stall.title} — Single-Harvest ${stall.slug === 'teas' ? 'Assam & Arunachal Teas' : stall.slug === 'spices' ? 'Meghalaya & Ziro Spices' : 'Smoked & Sun-Cured Chillies'} | Penbrae & Co`,
+    description: stall.deck,
+    canonicalPath: '/stall/' + stall.slug,
+    ogType: 'website',
+    ogImage: stall.heroImg,
+    schema: [
+      {
+        '@type': 'CollectionPage',
+        name: stall.title,
+        description: stall.deck,
+        url: SITE_URL + '/stall/' + stall.slug
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+          { '@type': 'ListItem', position: 2, name: 'The Stalls', item: SITE_URL + '/stalls' },
+          { '@type': 'ListItem', position: 3, name: stall.title, item: SITE_URL + '/stall/' + stall.slug }
+        ]
+      }
+    ]
+  };
+
+  return renderHeader('/stall/' + stall.slug, 'stall-theme-' + stall.slug, seo) + `
 <div data-stall="${stall.slug}">
   <section class="stall-masthead" style="position:relative;overflow:hidden;">
-    <img src="${stall.heroImg}" alt="${stall.title}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.24;pointer-events:none;">
+    <img src="${stall.heroImg}" alt="${escapeAttr(stall.title)}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.24;pointer-events:none;">
     <div class="penbrae-container" style="position:relative;z-index:2;">
       <div class="editorial-grid">
         <div class="col-span-7">
@@ -1000,11 +1365,11 @@ function renderIndividualStallPage(stallSlug) {
         </div>
         <div class="col-span-5" style="display:flex;flex-direction:column;justify-content:flex-end;">
           <div style="padding:var(--space-4);border:var(--rule-light-on-dark);background:rgba(0,0,0,0.38);backdrop-filter:blur(4px);">
-            <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--color-brass-light);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.5rem;">SWITCH STALL ENVIRONMENT</div>
+            <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--color-brass-light);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.5rem;">SWITCH STALL</div>
             <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
-              <a href="/stall/teas" class="stall-env-pill ${stall.slug === 'teas' ? 'is-active' : ''}" ${stall.slug === 'teas' ? 'aria-current="page"' : ''}>I. Teas</a>
-              <a href="/stall/spices" class="stall-env-pill ${stall.slug === 'spices' ? 'is-active' : ''}" ${stall.slug === 'spices' ? 'aria-current="page"' : ''}>II. Spices</a>
-              <a href="/stall/chillies" class="stall-env-pill ${stall.slug === 'chillies' ? 'is-active' : ''}" ${stall.slug === 'chillies' ? 'aria-current="page"' : ''}>III. Chillies</a>
+              <a href="/stall/teas" class="stall-env-pill ${stall.slug === 'teas' ? 'is-active' : ''}" ${stall.slug === 'teas' ? 'aria-current="page"' : ''}>I. Teas (3)</a>
+              <a href="/stall/spices" class="stall-env-pill ${stall.slug === 'spices' ? 'is-active' : ''}" ${stall.slug === 'spices' ? 'aria-current="page"' : ''}>II. Spices (3)</a>
+              <a href="/stall/chillies" class="stall-env-pill ${stall.slug === 'chillies' ? 'is-active' : ''}" ${stall.slug === 'chillies' ? 'aria-current="page"' : ''}>III. Chillies (3)</a>
             </div>
           </div>
         </div>
@@ -1020,21 +1385,17 @@ function renderIndividualStallPage(stallSlug) {
 
   <div class="stall-filter-bar" role="region" aria-label="Filter and sort stall catalogue">
     <div class="penbrae-container stall-filter-bar__inner">
-      <div class="filter-pill-group" role="group" aria-label="Filter by Northeast India region">
-        <button type="button" class="filter-pill is-active" data-filter-region="all" aria-pressed="true">All Regions</button>
-        <button type="button" class="filter-pill" data-filter-region="assam" aria-pressed="false">Assam</button>
-        <button type="button" class="filter-pill" data-filter-region="meghalaya" aria-pressed="false">Meghalaya</button>
-        <button type="button" class="filter-pill" data-filter-region="nagaland" aria-pressed="false">Nagaland</button>
-        <button type="button" class="filter-pill" data-filter-region="arunachal" aria-pressed="false">Arunachal</button>
-        <button type="button" class="filter-pill" data-filter-region="manipur" aria-pressed="false">Manipur</button>
+      <div class="filter-pill-group" role="group" aria-label="Filter ${escapeAttr(stall.title)} by origin region">
+        <button type="button" class="filter-pill is-active" data-filter-region="all" aria-pressed="true">All Regions (${stallProducts.length})</button>
+        ${regionPillsHtml}
       </div>
-      <div style="display:flex;align-items:center;gap:1rem;">
-        <span data-stall-count-status aria-live="polite" style="font-family:var(--font-mono);font-size:0.74rem;color:var(--color-ink-muted);">Showing ${stallProducts.length} curated seasonal lots</span>
+      <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;">
+        <span data-stall-count-status aria-live="polite" style="font-family:var(--font-mono);font-size:0.74rem;color:var(--color-ink-muted);">Showing ${stallProducts.length} of ${stallProducts.length} seasonal lots</span>
         <label for="penbrae-stall-sort" class="sr-only">Sort lots by</label>
         <select id="penbrae-stall-sort" data-stall-sort style="padding:0.45rem 0.85rem;border:var(--rule-strong);background:var(--color-parchment);font-family:var(--font-mono);font-size:0.74rem;">
-          <option value="curated">Sort: Curated Archival Order</option>
-          <option value="price-asc">Sort: Price (GBP Low → High)</option>
-          <option value="price-desc">Sort: Price (GBP High → Low)</option>
+          <option value="curated">Sort: Curated Order</option>
+          <option value="price-asc">Sort: Price (Low → High)</option>
+          <option value="price-desc">Sort: Price (High → Low)</option>
           <option value="elevation-desc">Sort: Elevation (Highest First)</option>
         </select>
       </div>
@@ -1044,37 +1405,100 @@ function renderIndividualStallPage(stallSlug) {
   <section class="editorial-section">
     <div class="penbrae-container">
       <div class="stall-catalogue-grid" data-stall-catalogue data-current-stall="${stall.slug}" data-visible-count="${stallProducts.length}">
-        ${orderedCatalogue.map((p, idx) => renderProductSpecimenCard(p, idx + 1, p.stall === stall.slug)).join('')}
+        ${stallProducts.map((p, idx) => renderProductSpecimenCard(p, idx + 1, true)).join('')}
+      </div>
+      <div data-stall-empty-state style="display:none;padding:var(--space-5);background:var(--color-parchment-light);border:var(--rule-hairline);text-align:center;">
+        <p style="color:var(--color-ink-secondary);margin-bottom:1rem;">No lots in ${stall.title} match that region filter.</p>
+        <button type="button" class="btn-editorial btn-editorial--outline" data-reset-stall-filter>Show All ${stall.title} Lots</button>
       </div>
     </div>
   </section>
 </div>
-` + renderNonLinearCompass() + renderFooter(false);
+` + renderContextualExploreSection(contextNodes, `Producers & Stories Behind ${stall.title}`, `${stall.number} PROVENANCE`) + renderFooter();
 }
 
 function renderProductDetailPage(slug) {
   const p = PRODUCTS[slug] || PRODUCTS['upper-assam-tippy-orthodox'];
-  return renderHeader('/stall/' + p.stall, 'has-sticky-pdp-bar stall-theme-' + p.stall) + `
-<nav aria-label="Product Provenance Breadcrumb" style="padding:0.85rem var(--gutter);border-bottom:var(--rule-hairline);font-family:var(--font-mono);font-size:0.74rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:0.5rem;">
+  const stall = STALLS[p.stall];
+  const sisterStallLots = Object.values(PRODUCTS).filter(item => item.stall === p.stall && item.slug !== p.slug);
+  const journal = JOURNALS_DATA[p.journalSlug] || JOURNALS_DATA['smoke-mist-and-limestone-terroir'];
+  const unitWeightShort = p.weight.split(' ')[0];
+
+  const contextNodes = [
+    ...sisterStallLots.map((sLot, idx) => ({
+      url: '/product/' + sLot.slug,
+      type: `0${idx + 1} · COMPANION LOT (${stall.title.toUpperCase()})`,
+      title: `${sLot.title} (${sLot.lot})`,
+      meta: `${sLot.region} · £${sLot.price.toFixed(2)}`
+    })),
+    {
+      url: '/maker/' + p.makerSlug,
+      type: '03 · THE PRODUCER',
+      title: p.makerName,
+      meta: 'Read producer biography, craft process & field transcript'
+    },
+    {
+      url: '/journal/' + p.journalSlug,
+      type: '04 · RELATED JOURNAL ESSAY',
+      title: journal.title,
+      meta: journal.badge
+    }
+  ];
+
+  const seo = {
+    title: `${p.title} (${p.lot}) — ${stall.title} | Penbrae & Co Ltd`,
+    description: `${p.description} Tasting notes: ${p.tasting} (£${p.price.toFixed(2)} / ${p.weight}).`,
+    canonicalPath: '/product/' + p.slug,
+    ogType: 'product',
+    ogImage: p.img,
+    schema: [
+      {
+        '@type': 'Product',
+        name: p.title,
+        sku: p.lot,
+        image: [SITE_URL + p.img, SITE_URL + p.imgVessel, SITE_URL + p.imgOrigin],
+        description: p.description,
+        brand: { '@type': 'Brand', name: 'Penbrae & Co Ltd' },
+        offers: {
+          '@type': 'Offer',
+          url: SITE_URL + '/product/' + p.slug,
+          priceCurrency: 'GBP',
+          price: p.price.toFixed(2),
+          availability: 'https://schema.org/InStock'
+        }
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+          { '@type': 'ListItem', position: 2, name: stall.title, item: SITE_URL + '/stall/' + p.stall },
+          { '@type': 'ListItem', position: 3, name: p.title, item: SITE_URL + '/product/' + p.slug }
+        ]
+      }
+    ]
+  };
+
+  return renderHeader('/stall/' + p.stall, 'has-sticky-pdp-bar stall-theme-' + p.stall, seo) + `
+<nav aria-label="Breadcrumb" style="padding:0.85rem var(--gutter);border-bottom:var(--rule-hairline);font-family:var(--font-mono);font-size:0.74rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:0.5rem;">
   <div>
     <a href="/stalls" style="color:var(--color-ink-muted);text-decoration:none;">The Stalls</a>
     <span aria-hidden="true"> / </span>
-    <a href="/stall/${p.stall}" style="color:var(--color-ink-muted);text-decoration:none;">${STALLS[p.stall].title}</a>
+    <a href="/stall/${p.stall}" style="color:var(--color-ink-muted);text-decoration:none;">${stall.title}</a>
     <span aria-hidden="true"> / </span>
     <span style="color:var(--color-charcoal);">${p.title}</span>
   </div>
   <span style="color:var(--color-brass);">${p.lot} · ${p.elevation}</span>
 </nav>
 
-<section class="pdp-dossier" aria-label="Product Gallery and Acquisition Dossier">
+<section class="pdp-dossier" aria-label="Product Details">
   <div class="pdp-gallery-column">
     <figure class="specimen-figure">
       <div class="specimen-figure__canvas" style="--aspect:4/4.1;">
-        <img class="specimen-figure__img" data-gallery-stage-img src="${p.img}" alt="${p.title}">
+        <img class="specimen-figure__img" data-gallery-stage-img src="${p.img}" alt="${escapeAttr(p.title)}">
         <span class="specimen-figure__badge" data-gallery-stage-badge>PLATE I — DRY SPECIMEN</span>
       </div>
       <figcaption class="specimen-figure__caption">
-        <span data-gallery-stage-caption>Close study of unbroken whole specimen (${p.region}).</span>
+        <span data-gallery-stage-caption>Close study of whole harvest specimen (${p.region}).</span>
         <span class="specimen-figure__caption-id">${p.lot}</span>
       </figcaption>
     </figure>
@@ -1084,33 +1508,33 @@ function renderProductDetailPage(slug) {
         data-gallery-thumb
         data-img-src="${p.img}"
         data-plate-id="PLATE I — DRY SPECIMEN"
-        data-caption="Close study of unbroken whole specimen (${p.region}).">
-        <img src="${p.img}" alt="" style="width:100%;aspect-ratio:16/10;object-fit:cover;margin-bottom:0.4rem;">
+        data-caption="Close study of whole harvest specimen (${escapeAttr(p.region)}).">
+        <img src="${p.img}" alt="${escapeAttr(p.title)} — dry specimen view" style="width:100%;aspect-ratio:16/10;object-fit:cover;margin-bottom:0.4rem;">
         <strong>01 · Dry Specimen</strong>
       </button>
       <button type="button" class="pdp-gallery-thumb" role="tab" aria-selected="false"
         data-gallery-thumb
         data-img-src="${p.imgVessel}"
         data-plate-id="PLATE II — IN PREPARATION"
-        data-caption="Aromatic extraction and colour clarity in the vessel.">
-        <img src="${p.imgVessel}" alt="" style="width:100%;aspect-ratio:16/10;object-fit:cover;margin-bottom:0.4rem;">
+        data-caption="Aromatic extraction and colour clarity in preparation.">
+        <img src="${p.imgVessel}" alt="${escapeAttr(p.title)} — in preparation view" style="width:100%;aspect-ratio:16/10;object-fit:cover;margin-bottom:0.4rem;">
         <strong>02 · In Preparation</strong>
       </button>
       <button type="button" class="pdp-gallery-thumb" role="tab" aria-selected="false"
         data-gallery-thumb
         data-img-src="${p.imgOrigin}"
         data-plate-id="PLATE III — FIELD ORIGIN"
-        data-caption="Smallholder cultivation landscape in ${p.region}.">
-        <img src="${p.imgOrigin}" alt="" style="width:100%;aspect-ratio:16/10;object-fit:cover;margin-bottom:0.4rem;">
+        data-caption="Smallholder cultivation landscape in ${escapeAttr(p.region)}.">
+        <img src="${p.imgOrigin}" alt="${escapeAttr(p.title)} — field origin landscape" style="width:100%;aspect-ratio:16/10;object-fit:cover;margin-bottom:0.4rem;">
         <strong>03 · Field Origin</strong>
       </button>
     </div>
 
     <div style="margin-top:var(--space-5);padding:var(--space-5);background:var(--color-parchment-deep);border:var(--rule-strong);">
-      <span class="kicker-index">DEDICATED INGREDIENT MONOGRAPH</span>
+      <span class="kicker-index">HARVEST MONOGRAPH</span>
       <h2 style="font-size:1.85rem;margin:0.4rem 0 0.65rem 0;">${p.storyTitle}</h2>
-      <p style="font-size:0.94rem;color:var(--color-ink-secondary);margin-bottom:1.1rem;">Explore how micro-climate, soil mineralogy, and traditional curing shape the flavour of this lot.</p>
-      <a href="/story/${p.storySlug}" class="btn-editorial btn-editorial--outline">Read Dedicated Product Story →</a>
+      <p style="font-size:0.94rem;color:var(--color-ink-secondary);margin-bottom:1.1rem;">Explore how micro-climate, soil mineralogy, and traditional curing shape the character of this lot.</p>
+      <a href="/story/${p.storySlug}" class="btn-editorial btn-editorial--outline">Read Harvest Story →</a>
     </div>
   </div>
 
@@ -1122,7 +1546,7 @@ function renderProductDetailPage(slug) {
     <div class="pdp-price-row">
       <div>
         <span class="pdp-price-gbp" data-pdp-price>£${p.price.toFixed(2)}</span>
-        <span style="font-family:var(--font-mono);font-size:0.74rem;color:var(--color-ink-muted);display:block;margin-top:0.25rem;">Currency: GBP (£) · Small-batch seasonal import</span>
+        <span style="font-family:var(--font-mono);font-size:0.74rem;color:var(--color-ink-muted);display:block;margin-top:0.25rem;">${p.weight} · Free UK delivery over £50</span>
       </div>
       <span class="pdp-stock-badge">In Stock · Cardiff Dispatch</span>
     </div>
@@ -1131,27 +1555,27 @@ function renderProductDetailPage(slug) {
 
     ${p.scoville ? `
     <div class="scoville-meter" role="region" aria-label="Scoville Heat Index">
-      <div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:0.74rem;text-transform:uppercase;">
-        <span>Scoville Heat Register</span>
+      <div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:0.74rem;text-transform:uppercase;flex-wrap:wrap;gap:0.4rem;">
+        <span>Heat Level</span>
         <strong>${p.scoville}</strong>
       </div>
-      <div class="scoville-meter__track"><div class="scoville-meter__fill" style="width:82%;"></div></div>
+      <div class="scoville-meter__track"><div class="scoville-meter__fill" style="width:${p.scovillePct || 75}%;"></div></div>
     </div>` : ''}
 
-    <div class="pdp-variant-group" role="radiogroup" aria-label="Select weight or vessel format">
-      <span style="font-family:var(--font-mono);font-size:0.74rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-ink-muted);">Select Format / Weight Variant:</span>
+    <div class="pdp-variant-group" role="radiogroup" aria-label="Select weight format">
+      <span style="font-family:var(--font-mono);font-size:0.74rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-ink-muted);">Select Format:</span>
       <div class="pdp-variant-options">
         <button type="button" class="pdp-variant-btn" role="radio" aria-checked="true"
-          data-variant-option data-variant-label="${p.weight}" data-variant-price="${p.price.toFixed(2)}">
-          <strong>${p.weight.split(' ')[0]} Vessel</strong><br><span>£${p.price.toFixed(2)}</span>
+          data-variant-option data-variant-label="${escapeAttr(p.weight)}" data-variant-price="${p.price.toFixed(2)}">
+          <strong>${unitWeightShort} Standard</strong><br><span>£${p.price.toFixed(2)}</span>
         </button>
         <button type="button" class="pdp-variant-btn" role="radio" aria-checked="false"
-          data-variant-option data-variant-label="Double Reserve Pouch" data-variant-price="${(p.price * 1.8).toFixed(2)}">
-          <strong>Double Pouch</strong><br><span>£${(p.price * 1.8).toFixed(2)}</span>
+          data-variant-option data-variant-label="Double Reserve (2 × ${unitWeightShort})" data-variant-price="${(p.price * 1.8).toFixed(2)}">
+          <strong>2 × ${unitWeightShort} Reserve</strong><br><span>£${(p.price * 1.8).toFixed(2)}</span>
         </button>
         <button type="button" class="pdp-variant-btn" role="radio" aria-checked="false"
           data-variant-option data-variant-label="25g Tasting Sample" data-variant-price="${(p.price * 0.45).toFixed(2)}">
-          <strong>Tasting Lot</strong><br><span>£${(p.price * 0.45).toFixed(2)}</span>
+          <strong>25g Sample</strong><br><span>£${(p.price * 0.45).toFixed(2)}</span>
         </button>
       </div>
     </div>
@@ -1159,30 +1583,30 @@ function renderProductDetailPage(slug) {
     <div class="pdp-purchase-actions">
       <div>
         <label for="pdp-quantity-select" class="sr-only">Quantity</label>
-        <input type="number" id="pdp-quantity-select" class="pdp-qty-input" value="1" min="1" max="20" data-pdp-qty>
+        <input type="number" id="pdp-quantity-select" class="pdp-qty-input" value="1" min="1" max="99" data-pdp-qty>
       </div>
       <button type="button" class="btn-editorial" style="justify-content:center;font-size:0.82rem;"
         data-add-to-basket
         data-pdp-add-btn
         data-product-id="${p.slug}"
-        data-product-title="${p.title}"
-        data-product-variant="${p.weight}"
+        data-product-title="${escapeAttr(p.title)}"
+        data-product-variant="${escapeAttr(p.weight)}"
         data-product-price="${p.price.toFixed(2)}"
         data-product-qty="1"
         data-product-url="/product/${p.slug}"
-        data-product-region="${p.region}">
-        Add to Basket — GBP (£)
+        data-product-region="${escapeAttr(p.region)}">
+        Add to Basket +
       </button>
     </div>
 
-    <table class="pdp-ledger-table" aria-label="Tasting notes, origin, maker, and preparation details">
+    <table class="pdp-ledger-table" aria-label="Product specifications">
       <tbody>
-        <tr><th>Tasting Profile</th><td>${p.tasting}</td></tr>
-        <tr><th>Origin &amp; Region</th><td>${p.region} (${p.elevation})</td></tr>
+        <tr><th>Tasting Notes</th><td>${p.tasting}</td></tr>
+        <tr><th>Origin &amp; Altitude</th><td>${p.region} (${p.elevation})</td></tr>
         <tr><th>Harvest Window</th><td>${p.harvest}</td></tr>
-        <tr><th>Artisan / Maker</th><td><a href="/maker/${p.makerSlug}" style="color:var(--color-charcoal);font-weight:500;text-decoration:underline;">${p.makerName} →</a></td></tr>
-        <tr><th>Preparation / Usage</th><td>${p.prep}</td></tr>
-        <tr><th>Shipping &amp; Dispatch</th><td>Dispatched from Cardiff, Wales in airtight UV-protected vessels. <a href="/shipping-returns" style="color:var(--color-charcoal);">Shipping Policy</a></td></tr>
+        <tr><th>Producer</th><td><a href="/maker/${p.makerSlug}" style="color:var(--color-charcoal);font-weight:500;text-decoration:underline;">${p.makerName} →</a></td></tr>
+        <tr><th>Preparation</th><td>${p.prep}</td></tr>
+        <tr><th>Dispatch</th><td>Packed in Cardiff, Wales in UV-protected vessels. <a href="/shipping-returns" style="color:var(--color-charcoal);">Shipping Info</a></td></tr>
       </tbody>
     </table>
   </div>
@@ -1197,25 +1621,33 @@ function renderProductDetailPage(slug) {
     data-add-to-basket
     data-pdp-add-btn
     data-product-id="${p.slug}"
-    data-product-title="${p.title}"
-    data-product-variant="${p.weight}"
+    data-product-title="${escapeAttr(p.title)}"
+    data-product-variant="${escapeAttr(p.weight)}"
     data-product-price="${p.price.toFixed(2)}"
     data-product-qty="1"
     data-product-url="/product/${p.slug}"
-    data-product-region="${p.region}">
+    data-product-region="${escapeAttr(p.region)}">
     Add to Basket +
   </button>
 </div>
-` + renderNonLinearCompass() + renderFooter(false);
+` + renderContextualExploreSection(contextNodes, `More from ${stall.title} & Connected Origins`, `${p.lot} PROVENANCE`) + renderFooter();
 }
 
 function renderMakersAtlasPage() {
-  return renderHeader('/makers') + `
+  const seo = {
+    title: 'Meet the Makers — Interactive Northeast India Producer Map | Penbrae & Co',
+    description: 'Explore our interactive atlas of smallholder tea collectives, Lakadong turmeric growers, forest foragers, and alder-smoke chilli stewards across Northeast India.',
+    canonicalPath: '/makers',
+    ogType: 'website',
+    ogImage: '/assets/images/maker-hands-crafting.jpg'
+  };
+
+  return renderHeader('/makers', '', seo) + `
 <section class="editorial-section" style="background:var(--color-parchment-deep);padding-bottom:var(--space-5);">
   <div class="penbrae-container">
     <div class="editorial-grid">
       <div class="col-span-6">
-        <span class="kicker-index">CARTOGRAPHIC ARCHIVE · PAGE 05</span>
+        <span class="kicker-index">PRODUCER ATLAS · NORTHEAST INDIA</span>
         <h1 style="margin-top:0.4rem;">Meet the Makers of Northeast India</h1>
       </div>
       <div class="col-span-6">
@@ -1228,7 +1660,7 @@ function renderMakersAtlasPage() {
 <section aria-label="Interactive Map of Northeast India Producers">
   <div class="makers-atlas-layout">
     <div class="makers-map-stage">
-      <div id="penbrae-makers-map" role="application" aria-label="Interactive Leaflet map of Northeast India makers. Use the accessible directory below for full keyboard and screen-reader navigation."></div>
+      <div id="penbrae-makers-map" role="application" aria-label="Interactive map of Northeast India makers. Use the producer directory below for full keyboard and screen-reader navigation."></div>
     </div>
     <div id="penbrae-maker-preview-card" class="makers-preview-panel" aria-live="polite"></div>
   </div>
@@ -1238,8 +1670,8 @@ function renderMakersAtlasPage() {
   <div class="penbrae-container">
     <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:1rem;margin-bottom:var(--space-5);">
       <div>
-        <span class="kicker-index">ACCESSIBLE PRODUCER INDEX · KEYBOARD &amp; SCREEN-READER DIRECTORY</span>
-        <h2 id="directory-heading" style="margin:0.35rem 0 0 0;">Complete Directory of Documented Makers &amp; Regions</h2>
+        <span class="kicker-index">COMPLETE PRODUCER DIRECTORY · 5 PARTNER COLLECTIVES</span>
+        <h2 id="directory-heading" style="margin:0.35rem 0 0 0;">Documented Producers &amp; Harvest Lots</h2>
       </div>
     </div>
     <div style="overflow-x:auto;">
@@ -1247,10 +1679,10 @@ function renderMakersAtlasPage() {
         <thead>
           <tr>
             <th scope="col">Code</th>
-            <th scope="col">Maker / Collective</th>
+            <th scope="col">Producer / Collective</th>
             <th scope="col">Region &amp; Coordinates</th>
             <th scope="col">Stall &amp; Craft Specialty</th>
-            <th scope="col">Associated Products</th>
+            <th scope="col">Harvest Lots</th>
             <th scope="col">Actions</th>
           </tr>
         </thead>
@@ -1260,11 +1692,14 @@ function renderMakersAtlasPage() {
             <td><strong>Brahmaputra Smallholder Tea Collective</strong></td>
             <td style="font-family:var(--font-mono);font-size:0.78rem;">Dibrugarh, Upper Assam<br>27°28′N 94°54′E · 140m ASL</td>
             <td>Tea Stall · Hand-rolled orthodox tippy Assam &amp; bamboo-smoked reserve</td>
-            <td><a href="/product/upper-assam-tippy-orthodox">Tippy Orthodox Reserve (£28.00)</a></td>
+            <td>
+              <a href="/product/upper-assam-tippy-orthodox">Tippy Orthodox Reserve (£28.00)</a><br>
+              <a href="/product/singpho-bamboo-smoked-tea">Singpho Bamboo Tea (£34.00)</a>
+            </td>
             <td>
               <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
-                <button type="button" class="filter-pill is-active" data-maker-select="maker-dibrugarh-tea" aria-pressed="true">Preview on Map</button>
-                <a href="/maker/upper-assam-orthodox-collective" class="link-editorial">Full Story →</a>
+                <button type="button" class="filter-pill is-active" data-maker-select="maker-dibrugarh-tea" aria-pressed="true">Show on Map</button>
+                <a href="/maker/upper-assam-orthodox-collective" class="link-editorial">Profile →</a>
               </div>
             </td>
           </tr>
@@ -1273,11 +1708,14 @@ function renderMakersAtlasPage() {
             <td><strong>West Jaintia Hills Lakadong Growers</strong></td>
             <td style="font-family:var(--font-mono);font-size:0.78rem;">West Jaintia Hills, Meghalaya<br>25°26′N 92°17′E · 1,280m ASL</td>
             <td>Spice Stall · Single-origin Lakadong turmeric &amp; sun-cured hill ginger</td>
-            <td><a href="/product/lakadong-turmeric-reserve">Lakadong Rhizome Reserve (£18.50)</a></td>
+            <td>
+              <a href="/product/lakadong-turmeric-reserve">Lakadong Rhizome Reserve (£18.50)</a><br>
+              <a href="/product/sohra-hill-ginger">Sohra Hill Ginger (£16.00)</a>
+            </td>
             <td>
               <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
-                <button type="button" class="filter-pill" data-maker-select="maker-jaintia-turmeric" aria-pressed="false">Preview on Map</button>
-                <a href="/maker/jaintia-hills-lakadong-growers" class="link-editorial">Full Story →</a>
+                <button type="button" class="filter-pill" data-maker-select="maker-jaintia-turmeric" aria-pressed="false">Show on Map</button>
+                <a href="/maker/jaintia-hills-lakadong-growers" class="link-editorial">Profile →</a>
               </div>
             </td>
           </tr>
@@ -1289,21 +1727,24 @@ function renderMakersAtlasPage() {
             <td><a href="/product/alder-smoked-naga-king-chilli">Alder-Smoked King Chilli (£22.00)</a></td>
             <td>
               <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
-                <button type="button" class="filter-pill" data-maker-select="maker-mon-king-chilli" aria-pressed="false">Preview on Map</button>
-                <a href="/maker/nagaland-alder-smoke-stewards" class="link-editorial">Full Story →</a>
+                <button type="button" class="filter-pill" data-maker-select="maker-mon-king-chilli" aria-pressed="false">Show on Map</button>
+                <a href="/maker/nagaland-alder-smoke-stewards" class="link-editorial">Profile →</a>
               </div>
             </td>
           </tr>
           <tr>
             <td style="font-family:var(--font-mono);">M-04</td>
             <td><strong>Lower Subansiri Forest Foragers</strong></td>
-            <td style="font-family:var(--font-mono);font-size:0.78rem;">Ziro Valley, Arunachal Pradesh<br>27°32′N 93°49′E · 1,680m ASL</td>
-            <td>Spice Stall · Canopy-harvested wild Sichuan-type hill pepper</td>
-            <td><a href="/product/arunachal-wild-hill-pepper">Wild Hill Pepper (£21.00)</a></td>
+            <td style="font-family:var(--font-mono);font-size:0.78rem;">Ziro Valley &amp; Patkai, Arunachal<br>27°32′N 93°49′E · 1,680m ASL</td>
+            <td>Spice &amp; Tea Stalls · Canopy wild hill pepper &amp; silver white tea buds</td>
+            <td>
+              <a href="/product/arunachal-wild-hill-pepper">Wild Hill Pepper (£21.00)</a><br>
+              <a href="/product/namdapha-wild-forest-white-tea">Namdapha White Tea (£36.00)</a>
+            </td>
             <td>
               <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
-                <button type="button" class="filter-pill" data-maker-select="maker-ziro-wild-pepper" aria-pressed="false">Preview on Map</button>
-                <a href="/maker/ziro-valley-forest-foragers" class="link-editorial">Full Story →</a>
+                <button type="button" class="filter-pill" data-maker-select="maker-ziro-wild-pepper" aria-pressed="false">Show on Map</button>
+                <a href="/maker/ziro-valley-forest-foragers" class="link-editorial">Profile →</a>
               </div>
             </td>
           </tr>
@@ -1311,12 +1752,15 @@ function renderMakersAtlasPage() {
             <td style="font-family:var(--font-mono);">M-05</td>
             <td><strong>Ukhrul Ridge Hathei Cultivator Guild</strong></td>
             <td style="font-family:var(--font-mono);font-size:0.78rem;">Sirarakhong, Ukhrul, Manipur<br>25°05′N 94°21′E · 1,750m ASL</td>
-            <td>Chilli Stall · Sun-ripened crimson Hathei chilli</td>
-            <td><a href="/product/sirarakhong-hathei-chilli">Sirarakhong Hathei Chilli (£20.00)</a></td>
+            <td>Chilli Stall · Sun-ripened crimson Hathei &amp; upland bird’s-eye chillies</td>
+            <td>
+              <a href="/product/sirarakhong-hathei-chilli">Sirarakhong Hathei Chilli (£20.00)</a><br>
+              <a href="/product/barak-valley-smoked-birdseye">Upland Bird’s-Eye Chilli (£19.50)</a>
+            </td>
             <td>
               <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
-                <button type="button" class="filter-pill" data-maker-select="maker-ukhrul-hathei" aria-pressed="false">Preview on Map</button>
-                <a href="/maker/ukhrul-hathei-cultivators" class="link-editorial">Full Story →</a>
+                <button type="button" class="filter-pill" data-maker-select="maker-ukhrul-hathei" aria-pressed="false">Show on Map</button>
+                <a href="/maker/ukhrul-hathei-cultivators" class="link-editorial">Profile →</a>
               </div>
             </td>
           </tr>
@@ -1325,97 +1769,70 @@ function renderMakersAtlasPage() {
     </div>
   </div>
 </section>
-` + renderNonLinearCompass() + renderFooter(true);
+` + renderFooter();
 }
-
-const MAKERS_DATA = {
-  'upper-assam-orthodox-collective': {
-    code: 'M-01',
-    stall: 'TEA STALL',
-    name: 'Brahmaputra Smallholder Tea Collective',
-    deck: 'Hand-rolled orthodox tippy Assam & Singpho hearth-smoked bamboo reserve lots cultivated along the southern bank of the Brahmaputra.',
-    region: 'Dibrugarh & Tinsukia, Upper Assam',
-    coords: '27°28′N 94°54′E · 140m ASL',
-    badge: 'DIBRUGARH · 140m ASL',
-    img: '/assets/images/maker-hands-crafting.jpg',
-    caption: 'Hand-rolling withered leaf on woven bamboo tables.',
-    process: 'Ambient bamboo-tray withering, hand-rolling, and controlled oxidation',
-    products: ['upper-assam-tippy-orthodox', 'singpho-bamboo-smoked-tea']
-  },
-  'jaintia-hills-lakadong-growers': {
-    code: 'M-02',
-    stall: 'SPICE STALL',
-    name: 'West Jaintia Hills Lakadong Growers',
-    deck: 'High-curcumin single-origin Lakadong turmeric & sun-cured heirloom hill ginger from the limestone plateaus of Meghalaya.',
-    region: 'Laskein Block, West Jaintia Hills, Meghalaya',
-    coords: '25°26′N 92°17′E · 1,280m ASL',
-    badge: 'WEST JAINTIA HILLS · 1,280m ASL',
-    img: '/assets/images/stall-spice-lakadong.jpg',
-    caption: 'Hand-sliced Lakadong turmeric rhizomes cured on woven bamboo mats.',
-    process: 'Limestone upland cultivation, spring-water washing, and winter sun-curing',
-    products: ['lakadong-turmeric-reserve', 'sohra-hill-ginger']
-  },
-  'nagaland-alder-smoke-stewards': {
-    code: 'M-03',
-    stall: 'CHILLI STALL',
-    name: 'Mon District Alder-Smoke Chilli Stewards',
-    deck: 'Jhum-cultivated Raja Mircha slow-cured for fourteen days on bamboo racks above smouldering alder-wood hearths.',
-    region: 'Mon & Kohima Uplands, Nagaland',
-    coords: '26°43′N 95°01′E · 1,460m ASL',
-    badge: 'MON DISTRICT · 1,460m ASL',
-    img: '/assets/images/stall-chilli-smoked.jpg',
-    caption: 'Whole Naga King Chilli pods cured over domestic alder-wood hearths.',
-    process: 'Rotational alder agroforestry and 14-day hearth-loft smoke preservation',
-    products: ['alder-smoked-naga-king-chilli', 'sirarakhong-hathei-chilli']
-  },
-  'ziro-valley-forest-foragers': {
-    code: 'M-04',
-    stall: 'SPICE STALL',
-    name: 'Lower Subansiri Forest Foragers',
-    deck: 'Canopy-harvested wild Sichuan-type hill pepper from subtropical pine and bamboo valley margins in Arunachal Pradesh.',
-    region: 'Ziro Valley, Lower Subansiri, Arunachal Pradesh',
-    coords: '27°32′N 93°49′E · 1,680m ASL',
-    badge: 'ZIRO VALLEY · 1,680m ASL',
-    img: '/assets/images/spice-wild-pepper.jpg',
-    caption: 'Sun-dried aromatic Zanthoxylum pericarp husks after seed separation.',
-    process: 'Autumn canopy foraging and gentle sun-drying on elevated mats',
-    products: ['arunachal-wild-hill-pepper', 'lakadong-turmeric-reserve']
-  },
-  'ukhrul-hathei-cultivators': {
-    code: 'M-05',
-    stall: 'CHILLI STALL',
-    name: 'Ukhrul Ridge Hathei Cultivator Guild',
-    deck: 'Sun-ripened crimson Hathei chilli prized for deep natural carotene staining and rounded fruit sweetness.',
-    region: 'Sirarakhong Village, Ukhrul District, Manipur',
-    coords: '25°05′N 94°21′E · 1,750m ASL',
-    badge: 'SIRARAKHONG · 1,750m ASL',
-    img: '/assets/images/chilli-hathei-crimson.jpg',
-    caption: 'Sun-curing crimson Hathei pods on woven bamboo winnowing trays.',
-    process: 'High-ridge mineral shale cultivation and bright autumn ridge sun-drying',
-    products: ['sirarakhong-hathei-chilli', 'alder-smoked-naga-king-chilli']
-  }
-};
 
 function renderMakerStoryPage(slug = 'upper-assam-orthodox-collective') {
   const m = MAKERS_DATA[slug] || MAKERS_DATA['upper-assam-orthodox-collective'];
-  return renderHeader('/makers') + `
+  const makerProducts = (m.products || []).map(pSlug => PRODUCTS[pSlug]).filter(Boolean);
+  const story = STORIES_DATA[m.storySlug] || STORIES_DATA['mist-over-the-brahmaputra-autumn-pluck'];
+  const journal = JOURNALS_DATA[m.journalSlug] || JOURNALS_DATA['smoke-mist-and-limestone-terroir'];
+  const otherMakers = Object.entries(MAKERS_DATA).filter(([k]) => k !== slug).slice(0, 2);
+
+  const contextNodes = [
+    {
+      url: '/story/' + m.storySlug,
+      type: '01 · HARVEST MONOGRAPH',
+      title: story.title,
+      meta: 'Read the harvest story connected to this region'
+    },
+    {
+      url: '/journal/' + m.journalSlug,
+      type: '02 · JOURNAL ESSAY',
+      title: journal.title,
+      meta: journal.badge
+    },
+    ...otherMakers.map(([k, om], idx) => ({
+      url: '/maker/' + k,
+      type: `0${idx + 3} · FELLOW PRODUCER (${om.code})`,
+      title: om.name,
+      meta: om.region
+    }))
+  ];
+
+  const seo = {
+    title: `${m.name} (${m.region}) — Producer Profile | Penbrae & Co Ltd`,
+    description: m.deck,
+    canonicalPath: '/maker/' + slug,
+    ogType: 'article',
+    ogImage: m.img,
+    schema: {
+      '@type': 'Article',
+      headline: m.name,
+      description: m.deck,
+      image: SITE_URL + m.img,
+      author: { '@type': 'Organization', name: 'Penbrae & Co Ltd' }
+    }
+  };
+
+  return renderHeader('/makers', '', seo) + `
 <section class="editorial-section editorial-section--forest">
   <div class="penbrae-container">
     <div class="editorial-grid" style="align-items:center;">
       <div class="col-span-7">
-        <span class="kicker-index">MAKER DOCUMENTARY DOSSIER ${m.code} · ${m.stall}</span>
+        <span class="kicker-index">PRODUCER PROFILE ${m.code} · ${m.stall}</span>
         <h1 style="margin:0.4rem 0 1rem 0;">${m.name}</h1>
         <p class="lead-standfirst">${m.deck}</p>
         <div style="margin-top:var(--space-5);padding-top:var(--space-4);border-top:var(--rule-light-on-dark);display:flex;flex-wrap:wrap;gap:2.5rem;font-family:var(--font-mono);font-size:0.76rem;">
           <div><span style="color:var(--color-brass-light);">REGION:</span> ${m.region}</div>
           <div><span style="color:var(--color-brass-light);">COORDINATES:</span> ${m.coords}</div>
-          <div><a href="/makers" style="color:var(--color-brass-light);text-decoration:underline;">← Return to Northeast India Atlas</a></div>
+          <div><a href="/makers" style="color:var(--color-brass-light);text-decoration:underline;">← Return to Producer Map</a></div>
         </div>
       </div>
       <div class="col-span-5">
         <figure class="specimen-figure" style="border-color:rgba(245,240,230,0.28);">
           <div class="specimen-figure__canvas" style="--aspect:4/4.5;">
-            <img class="specimen-figure__img" src="${m.img}" alt="${m.name}">
+            <img class="specimen-figure__img" src="${m.img}" alt="${escapeAttr(m.name)}">
             <span class="specimen-figure__badge">${m.badge}</span>
           </div>
           <figcaption class="specimen-figure__caption">
@@ -1433,10 +1850,12 @@ function renderMakerStoryPage(slug = 'upper-assam-orthodox-collective') {
     <div class="editorial-grid">
       <aside class="col-editorial-marginalia">
         <div style="padding:var(--space-4);background:var(--color-parchment-light);border:var(--rule-strong);">
-          <span class="kicker-index">PRODUCER LEDGER</span>
+          <span class="kicker-index">PRODUCER DETAILS</span>
           <dl style="font-size:0.88rem;margin:1rem 0 0 0;">
             <dt style="font-family:var(--font-mono);font-size:0.7rem;text-transform:uppercase;color:var(--color-ink-muted);">Location</dt>
             <dd style="margin:0.2rem 0 1rem 0;">${m.region}</dd>
+            <dt style="font-family:var(--font-mono);font-size:0.7rem;text-transform:uppercase;color:var(--color-ink-muted);">Coordinates</dt>
+            <dd style="margin:0.2rem 0 1rem 0;font-family:var(--font-mono);font-size:0.8rem;">${m.coords}</dd>
             <dt style="font-family:var(--font-mono);font-size:0.7rem;text-transform:uppercase;color:var(--color-ink-muted);">Craft Process</dt>
             <dd style="margin:0.2rem 0 0 0;">${m.process}</dd>
           </dl>
@@ -1444,16 +1863,16 @@ function renderMakerStoryPage(slug = 'upper-assam-orthodox-collective') {
       </aside>
       <div class="col-editorial-essay prose-measure">
         <p class="editorial-dropcap">Across ${m.region}, smallholder stewards maintain cultivation and post-harvest curing traditions calibrated to micro-altitude and seasonal rainfall. Rather than blending harvests into anonymous regional bulk, each lot is kept distinct by harvest week and curing loft.</p>
-        <p>When temperatures shift after the monsoon, slow maturation concentrates essential oils, natural sugars, and mineral character—yielding ingredients with unmistakable sense of place.</p>
+        <p>When temperatures shift after the monsoon, slow maturation concentrates essential oils, natural sugars, and mineral character—yielding ingredients with an unmistakable sense of place.</p>
         <div class="editorial-pullquote">
           <blockquote>“When the harvest is cured slowly on woven bamboo, the cell wall yields gently. You taste the mist, the soil, and the woodsmoke—never a factory floor.”</blockquote>
           <cite>FIELD NOTES ARCHIVE · ${m.code}</cite>
         </div>
-        ${renderAudioModule('Field Recording: Inside the Curing & Sorting Loft (' + m.region + ')', m.coords + ' · 01:34')}
+        ${renderAudioModule(m.audioTitle, m.coords + ' · 01:34', m.audioTranscript)}
         <figure class="specimen-figure" style="margin-top:var(--space-5);">
           <div class="specimen-figure__canvas specimen-figure__canvas--landscape">
             <img class="specimen-figure__img" src="/assets/images/journal-preservation-loft.jpg" alt="Traditional bamboo drying loft in Northeast India" loading="lazy">
-            <span class="specimen-figure__badge">DOCUMENTARY STUDY · CURING LOFT</span>
+            <span class="specimen-figure__badge">CURING &amp; SORTING LOFT</span>
           </div>
           <figcaption class="specimen-figure__caption">
             <span>Tiered bamboo racks used for ambient withering and hearth-smoke curing.</span>
@@ -1465,71 +1884,84 @@ function renderMakerStoryPage(slug = 'upper-assam-orthodox-collective') {
   </div>
 </section>
 
-<section class="editorial-section editorial-section--deep" aria-label="Associated Products from This Maker">
+<section class="editorial-section editorial-section--deep" aria-label="Harvest Lots Crafted by This Producer">
   <div class="penbrae-container">
     <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:1rem;margin-bottom:var(--space-5);">
       <div>
-        <span class="kicker-index">DIRECT PROVENANCE ACQUISITION</span>
-        <h2 style="margin:0.35rem 0 0 0;">Seasonal Lots Crafted by This Producer</h2>
+        <span class="kicker-index">HARVEST LOTS BY ${m.code}</span>
+        <h2 style="margin:0.35rem 0 0 0;">Seasonal Lots Crafted by ${m.name}</h2>
       </div>
       <a href="/stalls" class="link-editorial">Browse All Stalls →</a>
     </div>
     <div class="editorial-grid">
-      <div class="col-span-6">${renderProductSpecimenCard(PRODUCTS[m.products[0]], 1)}</div>
-      <div class="col-span-6">${renderProductSpecimenCard(PRODUCTS[m.products[1]], 2)}</div>
+      ${makerProducts.map((prod, idx) => `<div class="col-span-6">${renderProductSpecimenCard(prod, idx + 1)}</div>`).join('')}
     </div>
   </div>
 </section>
-` + renderNonLinearCompass() + renderFooter(false);
+` + renderContextualExploreSection(contextNodes, 'Connected Stories & Fellow Producers', `${m.code} NETWORK`) + renderFooter();
 }
-
-const STORIES_DATA = {
-  'mist-over-the-brahmaputra-autumn-pluck': {
-    title: 'Mist Over the Brahmaputra: The Autumn Tippy Pluck',
-    deck: 'How cool November nights slow leaf growth in Upper Assam, concentrating malted honey and muscatel aromatics in the golden terminal bud.',
-    badge: 'DIBRUGARH · 27°28′N 94°54′E',
-    heroImg: '/assets/images/hero-assam-mist.jpg',
-    detailImg: '/assets/images/stall-tea-orthodox.jpg',
-    productSlug: 'upper-assam-tippy-orthodox'
-  },
-  'limestone-and-curcumin-jaintia-hills': {
-    title: 'Limestone & Curcumin: Winter Harvest in the West Jaintia Hills',
-    deck: 'Inside Laskein Block, where mineral-rich limestone uplands and dry January sunshine yield the world’s highest-curcumin heirloom turmeric.',
-    badge: 'WEST JAINTIA HILLS · 1,280m ASL',
-    heroImg: '/assets/images/landscape-meghalaya-hills.jpg',
-    detailImg: '/assets/images/stall-spice-lakadong.jpg',
-    productSlug: 'lakadong-turmeric-reserve'
-  },
-  'alder-smoke-and-monsoon-mist': {
-    title: 'Alder Smoke & Monsoon Mist: Curing Raja Mircha in Mon District',
-    deck: 'Why fourteen days on slatted bamboo racks above smouldering Himalayan alder hearths turns fierce heat into layered culinary depth.',
-    badge: 'MON DISTRICT · 1,460m ASL',
-    heroImg: '/assets/images/journal-preservation-loft.jpg',
-    detailImg: '/assets/images/stall-chilli-smoked.jpg',
-    productSlug: 'alder-smoked-naga-king-chilli'
-  }
-};
 
 function renderProductStoryPage(slug = 'mist-over-the-brahmaputra-autumn-pluck') {
   const s = STORIES_DATA[slug] || STORIES_DATA['mist-over-the-brahmaputra-autumn-pluck'];
   const p = PRODUCTS[s.productSlug] || PRODUCTS['upper-assam-tippy-orthodox'];
-  return renderHeader('/story/' + slug) + `
-<div class="story-acquisition-ribbon" role="region" aria-label="Connected Product Acquisition Bar">
+  const relatedLots = (s.relatedProducts || [p.slug]).map(k => PRODUCTS[k]).filter(Boolean);
+  const journal = JOURNALS_DATA[p.journalSlug] || JOURNALS_DATA['smoke-mist-and-limestone-terroir'];
+  const otherStories = Object.values(STORIES_DATA).filter(st => st.slug !== s.slug);
+
+  const contextNodes = [
+    {
+      url: '/maker/' + p.makerSlug,
+      type: '01 · THE PRODUCER',
+      title: p.makerName,
+      meta: p.region
+    },
+    {
+      url: '/journal/' + p.journalSlug,
+      type: '02 · RELATED JOURNAL ESSAY',
+      title: journal.title,
+      meta: journal.badge
+    },
+    ...otherStories.map((ost, idx) => ({
+      url: '/story/' + ost.slug,
+      type: `0${idx + 3} · HARVEST MONOGRAPH`,
+      title: ost.title,
+      meta: ost.badge
+    }))
+  ];
+
+  const seo = {
+    title: `${s.title} — Harvest Story | Penbrae & Co Ltd`,
+    description: s.deck,
+    canonicalPath: '/story/' + s.slug,
+    ogType: 'article',
+    ogImage: s.heroImg,
+    schema: {
+      '@type': 'Article',
+      headline: s.title,
+      description: s.deck,
+      image: SITE_URL + s.heroImg,
+      author: { '@type': 'Organization', name: 'Penbrae & Co Ltd' }
+    }
+  };
+
+  return renderHeader('/story/' + s.slug, '', seo) + `
+<div class="story-acquisition-ribbon" role="region" aria-label="Featured Lot in This Story">
   <div>
-    <span style="color:var(--color-terracotta);margin-right:0.5rem;">INGREDIENT MONOGRAPH FOR:</span>
+    <span style="color:var(--color-terracotta);margin-right:0.5rem;">FEATURED LOT:</span>
     <a href="/product/${p.slug}" style="color:var(--color-charcoal);font-weight:600;text-decoration:underline;">${p.title} (${p.lot})</a>
     <span style="color:var(--color-ink-muted);margin-left:0.5rem;">· £${p.price.toFixed(2)} (${p.weight})</span>
   </div>
   <div style="display:flex;align-items:center;gap:0.85rem;">
-    <a href="/product/${p.slug}" class="link-editorial">Return to Product Dossier →</a>
+    <a href="/product/${p.slug}" class="link-editorial">View Product Details →</a>
     <button type="button" class="btn-editorial" style="min-height:38px;padding:0.4rem 1rem;"
       data-add-to-basket
       data-product-id="${p.slug}"
-      data-product-title="${p.title}"
+      data-product-title="${escapeAttr(p.title)}"
+      data-product-variant="${escapeAttr(p.weight)}"
       data-product-price="${p.price.toFixed(2)}"
       data-product-url="/product/${p.slug}"
-      data-product-region="${p.region}">
-      Acquire Lot (£${p.price.toFixed(2)}) +
+      data-product-region="${escapeAttr(p.region)}">
+      Add to Basket (£${p.price.toFixed(2)}) +
     </button>
   </div>
 </div>
@@ -1539,14 +1971,14 @@ function renderProductStoryPage(slug = 'mist-over-the-brahmaputra-autumn-pluck')
     <div class="penbrae-container">
       <div class="editorial-grid" style="align-items:center;">
         <div class="col-span-7">
-          <span class="kicker-index">PRODUCT PROVENANCE MONOGRAPH · PAGE 07</span>
+          <span class="kicker-index">HARVEST MONOGRAPH · ${s.badge}</span>
           <h1 style="margin:0.4rem 0 1rem 0;">${s.title}</h1>
           <p class="lead-standfirst">${s.deck}</p>
         </div>
         <div class="col-span-5">
           <figure class="specimen-figure">
             <div class="specimen-figure__canvas specimen-figure__canvas--landscape">
-              <img class="specimen-figure__img" src="${s.heroImg}" alt="${s.title}">
+              <img class="specimen-figure__img" src="${s.heroImg}" alt="${escapeAttr(s.title)}">
               <span class="specimen-figure__badge">${s.badge}</span>
             </div>
           </figure>
@@ -1573,45 +2005,54 @@ function renderProductStoryPage(slug = 'mist-over-the-brahmaputra-autumn-pluck')
           <p class="editorial-dropcap">${p.description} Across ${p.region}, the transition from monsoon humidity to crisp post-monsoon nights slows plant metabolism—concentrating aromatics before the harvest window opens.</p>
           <figure class="specimen-figure" style="margin:var(--space-5) 0;">
             <div class="specimen-figure__canvas specimen-figure__canvas--landscape">
-              <img class="specimen-figure__img" src="${s.detailImg}" alt="${p.title}" loading="lazy">
+              <img class="specimen-figure__img" src="${s.detailImg}" alt="${escapeAttr(p.title)}" loading="lazy">
             </div>
             <figcaption class="specimen-figure__caption">
               <span>${p.title} (${p.region}).</span>
               <span class="specimen-figure__caption-id">${p.lot}</span>
             </figcaption>
           </figure>
-          <p>Tasting profile in the cup or pan: ${p.tasting} Recommended preparation: ${p.prep}</p>
+          <p>Tasting profile in the cup or kitchen: ${p.tasting} Recommended preparation: ${p.prep}</p>
           <div class="editorial-pullquote">
             <blockquote>“When the autumn fog settles over the valley, growth slows to a whisper—concentrating essential oils and mineral character inside every harvest.”</blockquote>
             <cite>PENBRAE FIELD ARCHIVE · ${p.lot}</cite>
           </div>
-          ${renderAudioModule()}
-          <div style="margin-top:var(--space-6);padding:var(--space-5);background:var(--color-parchment-deep);border:var(--rule-strong);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1.5rem;">
-            <div>
-              <span class="kicker-index">TASTE THIS HARVEST</span>
-              <h2 style="font-size:1.85rem;margin:0.35rem 0;">${p.title} (${p.lot})</h2>
-              <p style="font-size:0.9rem;color:var(--color-ink-secondary);margin:0;">${p.weight} · £${p.price.toFixed(2)} · Dispatched from Cardiff, Wales.</p>
-            </div>
-            <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
-              <a href="/product/${p.slug}" class="btn-editorial">View Product Dossier &amp; Buy →</a>
-              <a href="/maker/${p.makerSlug}" class="btn-editorial btn-editorial--outline">Meet the Maker →</a>
-            </div>
-          </div>
+          ${renderAudioModule(s.audioTitle, s.audioLocation, s.audioTranscript)}
         </div>
       </div>
     </div>
   </section>
+
+  <section class="editorial-section editorial-section--deep" aria-label="Lots Featured in This Story">
+    <div class="penbrae-container">
+      <div style="margin-bottom:var(--space-5);">
+        <span class="kicker-index">HARVEST LOTS FROM THIS CORRIDOR</span>
+        <h2 style="margin:0.35rem 0 0 0;">Explore Lots Connected to This Story</h2>
+      </div>
+      <div class="editorial-grid">
+        ${relatedLots.map((lot, idx) => `<div class="col-span-4">${renderProductSpecimenCard(lot, idx + 1)}</div>`).join('')}
+      </div>
+    </div>
+  </section>
 </article>
-` + renderNonLinearCompass() + renderFooter(false);
+` + renderContextualExploreSection(contextNodes, 'Related Producers, Essays & Harvest Stories', 'CONTINUE READING') + renderFooter();
 }
 
 function renderAboutPage() {
-  return renderHeader('/about') + `
+  const seo = {
+    title: 'About Penbrae & Co Ltd — Cardiff & Northeast India Sourcing Philosophy',
+    description: 'Learn how Penbrae & Co Ltd connects Cardiff, Wales with smallholder tea, turmeric, wild pepper, and smoked chilli producers across Northeast India.',
+    canonicalPath: '/about',
+    ogType: 'website',
+    ogImage: '/assets/images/landscape-meghalaya-hills.jpg'
+  };
+
+  return renderHeader('/about', '', seo) + `
 <section class="editorial-section editorial-section--forest">
   <div class="penbrae-container">
     <div class="editorial-grid" style="align-items:center;">
       <div class="col-span-6">
-        <span class="kicker-index">COMPANY MONOGRAPH · PAGE 08</span>
+        <span class="kicker-index">OUR STORY · CARDIFF &amp; NORTHEAST INDIA</span>
         <h1 style="margin-top:0.4rem;">From Cardiff to the Hills &amp; Valleys of Northeast India.</h1>
         <p class="lead-standfirst">Penbrae &amp; Co Ltd is a Cardiff-based company importing rare, handcrafted teas, spices, and chillies from Northeast India—preserving the identity of every region and producer.</p>
       </div>
@@ -1647,28 +2088,40 @@ function renderAboutPage() {
         <hr style="border:none;border-top:var(--rule-hairline);margin:var(--space-6) 0;">
         <h2>II. Philosophy of Sourcing &amp; Respect for Craftsmanship</h2>
         <p>True luxury in agriculture lies in patience and specificity. Whether it is smallholder orthodox tea withered on woven bamboo trays in Dibrugarh, high-curcumin Lakadong turmeric cultivated on misty limestone slopes in the West Jaintia Hills, or Raja Mircha chillies cured above smouldering alder hearths in Nagaland, traditional methods cannot be rushed.</p>
+        <div style="margin:var(--space-5) 0;padding:var(--space-4);background:var(--color-parchment-deep);border:var(--rule-brass);">
+          <div style="font-family:var(--font-mono);font-size:0.72rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-forest);margin-bottom:0.35rem;">PORTFOLIO PROTOTYPE &amp; DEMONSTRATION NOTICE</div>
+          <p style="font-size:0.9rem;color:var(--color-ink-secondary);margin:0;">This digital flagship prototype demonstrates the bespoke WordPress &amp; WooCommerce architecture designed for Penbrae &amp; Co Ltd. Producer collectives, seasonal lot numbers (Lot 26-A through Lot 26-I), studio photography, simulated audio timelines, and sandbox checkout flows are structured as representative demonstration data awaiting final merchant catalogue onboarding.</p>
+        </div>
         <div style="margin-top:var(--space-5);display:flex;gap:1rem;flex-wrap:wrap;">
-          <a href="/makers" class="btn-editorial">Explore the Maker Atlas →</a>
+          <a href="/makers" class="btn-editorial">Explore the Producer Map →</a>
           <a href="/stalls" class="btn-editorial btn-editorial--outline">Visit The Three Stalls →</a>
         </div>
       </div>
     </div>
   </div>
 </section>
-` + renderNonLinearCompass() + renderFooter(false);
+` + renderFooter();
 }
 
 function renderJournalArchivePage() {
-  return renderHeader('/journal') + `
+  const seo = {
+    title: 'The Penbrae Journal — Essays on Northeast Indian Terroir & Craft',
+    description: 'Long-form essays, field dispatches, producer interviews, and culinary studies from Northeast India and the Penbrae & Co tasting room in Cardiff.',
+    canonicalPath: '/journal',
+    ogType: 'website',
+    ogImage: '/assets/images/journal-preservation-loft.jpg'
+  };
+
+  return renderHeader('/journal', '', seo) + `
 <section class="editorial-section" style="background:var(--color-parchment-deep);">
   <div class="penbrae-container">
     <div class="editorial-grid">
       <div class="col-span-5">
-        <span class="kicker-index">EDITORIAL PUBLICATION · PAGE 09</span>
+        <span class="kicker-index">THE PENBRAE JOURNAL · ISSUE 01</span>
         <h1 style="margin-top:0.4rem;">The Penbrae Journal</h1>
       </div>
       <div class="col-span-7">
-        <p class="lead-standfirst">Long-form essays, field dispatches, artisan interviews, and culinary studies from Northeast India and our Cardiff tasting room.</p>
+        <p class="lead-standfirst">Long-form essays, field dispatches, producer interviews, and culinary studies from Northeast India and our Cardiff tasting room.</p>
       </div>
     </div>
   </div>
@@ -1712,70 +2165,73 @@ function renderJournalArchivePage() {
           <h3 style="font-size:1.65rem;margin:0.4rem 0 0.65rem 0;"><a href="/journal/orthodox-vs-ctc-assam-leaf" style="color:var(--color-charcoal);text-decoration:none;">Beyond the Breakfast Blend: Reading Whole-Leaf Orthodox Assam</a></h3>
           <p style="font-size:0.92rem;color:var(--color-ink-secondary);">How smallholder hand-rolling preserves golden pubescent tips and honeyed muscatel notes.</p>
         </div>
-        <a href="/journal/orthodox-vs-ctc-assam-leaf" class="link-editorial">Read Dispatch →</a>
+        <a href="/journal/orthodox-vs-ctc-assam-leaf" class="link-editorial">Read Essay (6 Min Read) →</a>
       </article>
       <article class="col-span-4 journal-card" style="background:var(--color-parchment-light);display:flex;flex-direction:column;justify-content:space-between;gap:1.25rem;">
         <div>
           <div class="journal-card__media">
             <img src="/assets/images/stall-spice-lakadong.jpg" alt="Lakadong turmeric rhizomes and spices" loading="lazy">
           </div>
-          <span class="kicker-index">CULINARY &amp; RECIPES</span>
+          <span class="kicker-index">CULINARY NOTES</span>
           <h3 style="font-size:1.65rem;margin:0.4rem 0 0.65rem 0;"><a href="/journal/tempering-lakadong-and-smoked-chilli" style="color:var(--color-charcoal);text-decoration:none;">Tempering in Warm Fat: Lakadong &amp; Alder-Smoked Chilli</a></h3>
           <p style="font-size:0.92rem;color:var(--color-ink-secondary);">Kitchen guidance on bloom temperatures, lipid solubility of curcumin, and infusing whole smoked pods.</p>
         </div>
-        <a href="/journal/tempering-lakadong-and-smoked-chilli" class="link-editorial">Read Dispatch →</a>
+        <a href="/journal/tempering-lakadong-and-smoked-chilli" class="link-editorial">Read Essay (5 Min Read) →</a>
       </article>
       <article class="col-span-4 journal-card" style="background:var(--color-parchment-light);display:flex;flex-direction:column;justify-content:space-between;gap:1.25rem;">
         <div>
           <div class="journal-card__media">
             <img src="/assets/images/stall-chilli-smoked.jpg" alt="Alder-smoked Naga King Chillies" loading="lazy">
           </div>
-          <span class="kicker-index">ARTISAN INTERVIEWS</span>
+          <span class="kicker-index">PRODUCER INTERVIEWS</span>
           <h3 style="font-size:1.65rem;margin:0.4rem 0 0.65rem 0;"><a href="/journal/alder-trees-and-jhum-agroforestry" style="color:var(--color-charcoal);text-decoration:none;">Nitrogen-Fixing Alder Trees &amp; Rotational Hill Plots in Nagaland</a></h3>
           <p style="font-size:0.92rem;color:var(--color-ink-secondary);">Why Himalayan alder is both the ecological partner of upland soil fertility and the fuel of the drying hearth.</p>
         </div>
-        <a href="/journal/alder-trees-and-jhum-agroforestry" class="link-editorial">Read Dispatch →</a>
+        <a href="/journal/alder-trees-and-jhum-agroforestry" class="link-editorial">Read Essay (7 Min Read) →</a>
       </article>
     </div>
   </div>
 </section>
-` + renderInstagramFieldNotes() + renderNonLinearCompass() + renderFooter(false);
+` + renderInstagramFieldNotes() + renderFooter();
 }
-
-const JOURNALS_DATA = {
-  'smoke-mist-and-limestone-terroir': {
-    kicker: 'THE PENBRAE JOURNAL · TERROIR & TRADITION',
-    title: 'Smoke, Mist & Limestone: Why Preservation Is the Second Harvest of Northeast India',
-    deck: 'From bamboo smoke-lofts in Mon District to sun-warmed slate courtyards in Meghalaya, how traditional preservation shapes the flavour of Northeast India.',
-    img: '/assets/images/journal-preservation-loft.jpg',
-    badge: 'ISSUE 01 · 8 MIN READ'
-  },
-  'orthodox-vs-ctc-assam-leaf': {
-    kicker: 'THE PENBRAE JOURNAL · TEA TRADITIONS',
-    title: 'Beyond the Breakfast Blend: Reading Whole-Leaf Orthodox Assam',
-    deck: 'How smallholder hand-rolling on woven bamboo mats preserves golden pubescent tips, toasted malt, and honeyed muscatel notes.',
-    img: '/assets/images/stall-tea-orthodox.jpg',
-    badge: 'ISSUE 01 · 6 MIN READ'
-  },
-  'tempering-lakadong-and-smoked-chilli': {
-    kicker: 'THE PENBRAE JOURNAL · CULINARY NOTES',
-    title: 'Tempering in Warm Fat: Lakadong & Alder-Smoked Chilli',
-    deck: 'Kitchen guidance on bloom temperatures, lipid solubility of curcumin, and infusing whole smoked pods without scorching volatile aromatics.',
-    img: '/assets/images/stall-spice-lakadong.jpg',
-    badge: 'ISSUE 01 · 5 MIN READ'
-  },
-  'alder-trees-and-jhum-agroforestry': {
-    kicker: 'THE PENBRAE JOURNAL · ARTISAN INTERVIEWS',
-    title: 'Nitrogen-Fixing Alder Trees & Rotational Hill Plots in Nagaland',
-    deck: 'Why Himalayan alder is both the ecological partner of upland soil fertility and the aromatic fuel of the Naga drying hearth.',
-    img: '/assets/images/stall-chilli-smoked.jpg',
-    badge: 'ISSUE 01 · 7 MIN READ'
-  }
-};
 
 function renderJournalArticlePage(slug = 'smoke-mist-and-limestone-terroir') {
   const j = JOURNALS_DATA[slug] || JOURNALS_DATA['smoke-mist-and-limestone-terroir'];
-  return renderHeader('/journal/' + slug) + `
+  const featuredProducts = (j.products || []).map(k => PRODUCTS[k]).filter(Boolean);
+  const maker = MAKERS_DATA[j.makerSlug] || MAKERS_DATA['upper-assam-orthodox-collective'];
+  const otherEssays = Object.values(JOURNALS_DATA).filter(item => item.slug !== j.slug);
+
+  const contextNodes = [
+    {
+      url: '/maker/' + j.makerSlug,
+      type: '01 · FEATURED PRODUCER',
+      title: maker.name,
+      meta: maker.region
+    },
+    ...otherEssays.map((oe, idx) => ({
+      url: '/journal/' + oe.slug,
+      type: `0${idx + 2} · JOURNAL ESSAY`,
+      title: oe.title,
+      meta: oe.badge
+    }))
+  ];
+
+  const seo = {
+    title: `${j.title} — The Penbrae Journal`,
+    description: j.deck,
+    canonicalPath: '/journal/' + j.slug,
+    ogType: 'article',
+    ogImage: j.img,
+    schema: {
+      '@type': 'Article',
+      headline: j.title,
+      description: j.deck,
+      image: SITE_URL + j.img,
+      author: { '@type': 'Organization', name: 'Penbrae & Co Ltd' }
+    }
+  };
+
+  return renderHeader('/journal/' + j.slug, '', seo) + `
 <article>
   <header class="editorial-section" style="background:var(--color-parchment-deep);">
     <div class="penbrae-container">
@@ -1788,7 +2244,7 @@ function renderJournalArticlePage(slug = 'smoke-mist-and-limestone-terroir') {
         <div class="col-span-5">
           <figure class="specimen-figure">
             <div class="specimen-figure__canvas specimen-figure__canvas--landscape">
-              <img class="specimen-figure__img" src="${j.img}" alt="${j.title}">
+              <img class="specimen-figure__img" src="${j.img}" alt="${escapeAttr(j.title)}">
               <span class="specimen-figure__badge">${j.badge}</span>
             </div>
           </figure>
@@ -1802,44 +2258,48 @@ function renderJournalArticlePage(slug = 'smoke-mist-and-limestone-terroir') {
       <div class="editorial-grid">
         <aside class="col-editorial-marginalia">
           <div style="padding:var(--space-4);background:var(--color-parchment-light);border:var(--rule-strong);">
-            <span class="kicker-index">INGREDIENTS IN THIS ESSAY</span>
+            <span class="kicker-index">LOTS IN THIS ESSAY</span>
+            ${featuredProducts.map(fp => `
             <div style="margin-top:1rem;padding-top:1rem;border-top:var(--rule-hairline);">
-              <img src="/assets/images/stall-chilli-smoked.jpg" alt="Alder-Smoked Naga King Chilli Pods" style="width:100%;aspect-ratio:16/10;object-fit:cover;margin-bottom:0.5rem;">
-              <h3 style="font-size:1.2rem;margin-bottom:0.2rem;"><a href="/product/alder-smoked-naga-king-chilli" style="color:var(--color-charcoal);text-decoration:none;">Alder-Smoked Naga King Chilli Pods</a></h3>
-              <p style="font-size:0.82rem;color:var(--color-ink-secondary);margin-bottom:0.5rem;">Mon District, Nagaland · £22.00</p>
-              <a href="/product/alder-smoked-naga-king-chilli" class="link-editorial">Inspect Ingredient →</a>
-            </div>
-            <div style="margin-top:1rem;padding-top:1rem;border-top:var(--rule-hairline);">
-              <img src="/assets/images/stall-spice-lakadong.jpg" alt="Single-Harvest Lakadong Rhizome Reserve" style="width:100%;aspect-ratio:16/10;object-fit:cover;margin-bottom:0.5rem;">
-              <h3 style="font-size:1.2rem;margin-bottom:0.2rem;"><a href="/product/lakadong-turmeric-reserve" style="color:var(--color-charcoal);text-decoration:none;">Single-Harvest Lakadong Rhizome Reserve</a></h3>
-              <p style="font-size:0.82rem;color:var(--color-ink-secondary);margin-bottom:0.5rem;">West Jaintia Hills · £18.50</p>
-              <a href="/product/lakadong-turmeric-reserve" class="link-editorial">Inspect Ingredient →</a>
-            </div>
+              <img src="${fp.img}" alt="${escapeAttr(fp.title)}" style="width:100%;aspect-ratio:16/10;object-fit:cover;margin-bottom:0.5rem;">
+              <h3 style="font-size:1.2rem;margin-bottom:0.2rem;"><a href="/product/${fp.slug}" style="color:var(--color-charcoal);text-decoration:none;">${fp.title}</a></h3>
+              <p style="font-size:0.82rem;color:var(--color-ink-secondary);margin-bottom:0.5rem;">${fp.region} · £${fp.price.toFixed(2)}</p>
+              <a href="/product/${fp.slug}" class="link-editorial">View Lot →</a>
+            </div>`).join('')}
           </div>
         </aside>
         <div class="col-editorial-essay prose-measure">
-          <p class="editorial-dropcap">Across the hills of Meghalaya, Nagaland, and Upper Assam, moisture is an ever-present force. When annual rainfall is measured in metres rather than millimetres, a freshly harvested chilli pod or tea shoot cannot simply be left in an open shed. Without skilled intervention, humidity quickly erases weeks of careful cultivation.</p>
-          <p>Out of this climatic necessity arose a remarkable vocabulary of preservation: slatted bamboo drying lofts suspended above domestic hearths in Mon District; green bamboo cylinders packed with roasted Assamica tea leaves among the Singpho; and thinly sliced Lakadong rhizomes turned by hand across elevated mats during the crisp, dry mornings of January.</p>
+          <p class="editorial-dropcap">${j.paragraphs[0]}</p>
+          <p>${j.paragraphs[1]}</p>
           <div class="editorial-pullquote">
-            <blockquote>“In the monsoon belt of Northeast India, preservation is not an afterthought—it is where raw harvest becomes culinary architecture.”</blockquote>
+            <blockquote>“${j.pullquote}”</blockquote>
             <cite>ISSUE 01 · PENBRAE EDITORIAL ARCHIVE</cite>
           </div>
-          ${renderAudioModule('Field Recording: Alder Hearth Loft in Mon District', '26°43′N 95°01′E · Nagaland · 01:34')}
+          <p>${j.paragraphs[2]}</p>
+          ${renderAudioModule(j.audioTitle, j.audioLocation, j.audioTranscript)}
         </div>
       </div>
     </div>
   </section>
 </article>
-` + renderNonLinearCompass() + renderFooter(false);
+` + renderContextualExploreSection(contextNodes, 'More from The Penbrae Journal', 'FURTHER READING') + renderFooter();
 }
 
 function renderSubscribePage() {
-  return renderHeader('/subscribe') + `
+  const seo = {
+    title: 'Subscribe to the Seasonal Dispatch | Penbrae & Co Ltd',
+    description: 'Receive harvest letters, documentary field notes from Northeast India, and 48-hour advance notice when limited seasonal lots arrive in Cardiff.',
+    canonicalPath: '/subscribe',
+    ogType: 'website',
+    ogImage: '/assets/images/tea-infusion-cup.jpg'
+  };
+
+  return renderHeader('/subscribe', '', seo) + `
 <section class="editorial-section" style="background:var(--color-parchment-deep);">
   <div class="penbrae-container">
     <div class="editorial-grid">
       <div class="col-span-5">
-        <span class="kicker-index">READER REGISTRATION · PAGE 11</span>
+        <span class="kicker-index">SEASONAL NEWSLETTER · CARDIFF</span>
         <h1 style="margin-top:0.4rem;">Subscribe to the Penbrae Dispatch</h1>
       </div>
       <div class="col-span-7">
@@ -1864,21 +2324,21 @@ function renderSubscribePage() {
       </div>
       <div class="col-span-7">
         <form method="post" data-penbrae-newsletter-form data-ajax-preview="true" style="background:var(--color-parchment-light);padding:var(--space-6);border:var(--rule-strong);">
-          <span class="kicker-index">DISPATCH LEDGER REGISTRATION</span>
+          <span class="kicker-index">NEWSLETTER REGISTRATION</span>
           <h2 style="font-size:1.95rem;margin:0.4rem 0 1.5rem 0;">Join the Reading List</h2>
           <div class="editorial-form-field">
             <label for="sub-full-name">Your Name (Optional)</label>
             <input type="text" id="sub-full-name" name="subscriber_name" placeholder="Eleanor Vance">
           </div>
           <div class="editorial-form-field">
-            <label for="sub-email">Electronic Mail Address (Required)</label>
+            <label for="sub-email">Email Address (Required)</label>
             <input type="email" id="sub-email" name="subscriber_email" required placeholder="reader@domain.co.uk">
           </div>
           <div class="consent-checkbox-box">
             <input type="checkbox" id="sub-gdpr-consent" name="gdpr_consent" value="1" required>
             <label for="sub-gdpr-consent">Explicit Marketing Consent (UK GDPR): I consent to Penbrae &amp; Co Ltd storing my email address to send editorial dispatches and seasonal harvest announcements.</label>
           </div>
-          <button type="submit" class="btn-editorial" style="width:100%;justify-content:center;">Confirm Dispatch Subscription →</button>
+          <button type="submit" class="btn-editorial" style="width:100%;justify-content:center;">Subscribe to the Dispatch →</button>
           <p data-newsletter-status aria-live="polite" style="margin-top:0.75rem;font-family:var(--font-mono);font-size:0.78rem;"></p>
         </form>
       </div>
@@ -1890,33 +2350,43 @@ function renderSubscribePage() {
   <div class="penbrae-container">
     <div class="editorial-grid">
       <div class="col-span-6">
-        <span class="kicker-index">FUTURE-READY ARCHITECTURE · FORTHCOMING ARCHIVE</span>
-        <h2 id="club-preview-heading" style="margin-top:0.4rem;">The Penbrae Seasonal Tasting Society (Tea &amp; Spice Club)</h2>
+        <span class="kicker-index">FORTHCOMING PROGRAMME</span>
+        <h2 id="club-preview-heading" style="margin-top:0.4rem;">The Penbrae Seasonal Tasting Society</h2>
         <p class="lead-standfirst">A quarterly curation of micro-lot teas, single-harvest rhizomes, and smoked chillies accompanied by printed monograph notes.</p>
       </div>
       <div class="col-span-6">
         <div style="padding:var(--space-5);border:var(--rule-light-on-dark);background:rgba(0,0,0,0.2);">
-          <span style="font-family:var(--font-mono);font-size:0.72rem;text-transform:uppercase;letter-spacing:0.09em;color:var(--color-brass-light);display:block;margin-bottom:0.5rem;">COMMERCE GOVERNANCE NOTICE</span>
-          <p style="font-size:0.94rem;color:rgba(245,240,230,0.86);margin-bottom:1rem;">Recurring subscription billing and automated checkout are intentionally disabled until final club allocations, quarterly billing terms, and UK fulfilment schedules are ratified by Penbrae &amp; Co Ltd.</p>
-          <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--color-brass-light);">STATUS: PROSPECTUS REGISTRATION ONLY · NO RECURRING CHARGE COLLECTED</span>
+          <span style="font-family:var(--font-mono);font-size:0.72rem;text-transform:uppercase;letter-spacing:0.09em;color:var(--color-brass-light);display:block;margin-bottom:0.5rem;">PROGRAMME STATUS</span>
+          <p style="font-size:0.94rem;color:rgba(245,240,230,0.86);margin-bottom:1rem;">Recurring subscription billing and automated club checkout are intentionally disabled until quarterly allocations, billing terms, and UK fulfilment schedules are finalized by Penbrae &amp; Co Ltd.</p>
+          <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--color-brass-light);">STATUS: PROSPECTUS ONLY · NO RECURRING CHARGE COLLECTED</span>
         </div>
       </div>
     </div>
   </div>
 </section>
-` + renderFooter(false);
+` + renderFooter();
 }
 
 function renderBasketPage() {
-  return renderHeader('/basket') + `
+  const seo = {
+    title: 'Shopping Basket | Penbrae & Co Ltd',
+    description: 'Review your selected Northeast Indian teas, spices, and chillies before proceeding to sandbox checkout.',
+    canonicalPath: '/basket',
+    noindex: true
+  };
+
+  return renderHeader('/basket', '', seo) + `
 <section class="editorial-section">
   <div class="penbrae-container">
     <div style="margin-bottom:var(--space-5);padding-bottom:var(--space-4);border-bottom:var(--rule-strong);display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:1rem;">
       <div>
-        <span class="kicker-index">COMMERCE LEDGER · CARDIFF DISPATCH</span>
+        <span class="kicker-index">SHOPPING BASKET · GBP (£)</span>
         <h1 style="margin:0.35rem 0 0 0;">Your Shopping Basket</h1>
       </div>
-      <a href="/stalls" class="link-editorial">← Continue Browsing The Stalls</a>
+      <div style="display:flex;align-items:center;gap:1.25rem;flex-wrap:wrap;">
+        <button type="button" class="basket-remove-btn" data-clear-basket-btn style="display:none;">Clear Entire Basket</button>
+        <a href="/stalls" class="link-editorial">← Continue Browsing The Stalls</a>
+      </div>
     </div>
     <div class="editorial-grid">
       <div class="col-span-8">
@@ -1926,94 +2396,206 @@ function renderBasketPage() {
               <tr>
                 <th scope="col">Harvest Lot &amp; Region</th>
                 <th scope="col">Format</th>
-                <th scope="col">Unit Price (GBP)</th>
+                <th scope="col">Unit Price</th>
                 <th scope="col">Quantity</th>
                 <th scope="col">Line Total</th>
+                <th scope="col" style="text-align:right;">Action</th>
               </tr>
             </thead>
-            <tbody id="penbrae-basket-page-rows"></tbody>
+            <tbody id="penbrae-basket-page-rows">
+              <tr>
+                <td colspan="6" style="padding:3rem 1.5rem;text-align:center;color:var(--color-ink-secondary);">
+                  <p style="margin-bottom:1rem;font-size:1.05rem;">Your shopping basket is currently empty.</p>
+                  <a href="/stalls" class="btn-editorial">Explore The Three Stalls →</a>
+                </td>
+              </tr>
+            </tbody>
           </table>
         </div>
       </div>
       <aside class="col-span-4">
         <div style="background:var(--color-parchment-light);border:var(--rule-strong);padding:var(--space-5);">
           <span class="kicker-index">BASKET SUMMARY (GBP)</span>
-          <div style="display:flex;justify-content:space-between;align-items:baseline;padding:1.25rem 0;margin:1rem 0;border-top:var(--rule-hairline);border-bottom:var(--rule-hairline);">
-            <span style="font-family:var(--font-mono);font-size:0.78rem;text-transform:uppercase;">Subtotal</span>
-            <span id="penbrae-basket-page-subtotal" class="tabular-nums" style="font-family:var(--font-editorial);font-size:2rem;">£28.00</span>
+          <div style="padding:1rem 0;margin:1rem 0;border-top:var(--rule-hairline);border-bottom:var(--rule-hairline);font-family:var(--font-mono);font-size:0.84rem;">
+            <div style="display:flex;justify-content:space-between;padding:0.4rem 0;">
+              <span>Subtotal</span>
+              <span id="penbrae-basket-page-subtotal" class="tabular-nums">£0.00</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;padding:0.4rem 0;color:var(--color-ink-secondary);">
+              <span>UK Tracked Dispatch</span>
+              <span id="penbrae-basket-page-shipping" class="tabular-nums">£0.00</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:baseline;padding-top:0.75rem;margin-top:0.5rem;border-top:var(--rule-hairline);">
+              <span style="text-transform:uppercase;font-weight:600;">Estimated Total</span>
+              <span id="penbrae-basket-page-total" class="tabular-nums" style="font-family:var(--font-editorial);font-size:2rem;font-weight:500;">£0.00</span>
+            </div>
           </div>
-          <p style="font-size:0.86rem;color:var(--color-ink-secondary);margin-bottom:1.5rem;">Shipping &amp; applicable UK tax settings are calculated dynamically at checkout via WooCommerce shipping zones and tax classes.</p>
-          <a href="/checkout" class="btn-editorial" style="width:100%;justify-content:center;">Proceed to Checkout →</a>
+          <p style="font-size:0.84rem;color:var(--color-ink-secondary);margin-bottom:1.5rem;">Complimentary UK Tracked 48 dispatch on orders of £50.00 or more (£4.50 standard).</p>
+          <a href="/checkout" data-basket-checkout-btn aria-disabled="true" class="btn-editorial" style="width:100%;justify-content:center;">Proceed to Checkout →</a>
         </div>
       </aside>
     </div>
   </div>
 </section>
-` + renderFooter(false);
+` + renderFooter();
 }
 
 function renderCheckoutPage() {
-  return renderHeader('/checkout') + `
+  const seo = {
+    title: 'Checkout (Sandbox Mode) | Penbrae & Co Ltd',
+    description: 'Complete your sandbox demonstration order for Penbrae & Co Ltd.',
+    canonicalPath: '/checkout',
+    noindex: true
+  };
+
+  return renderHeader('/checkout', '', seo) + `
 <section class="editorial-section">
   <div class="penbrae-container">
-    <div style="margin-bottom:var(--space-5);padding-bottom:var(--space-4);border-bottom:var(--rule-strong);">
-      <span class="kicker-index">CARDIFF DISPATCH &amp; PAYMENT LEDGER · CURRENCY: GBP (£)</span>
-      <h1 style="margin:0.35rem 0 0 0;">Checkout &amp; Fulfilment Details</h1>
+    <div style="margin-bottom:var(--space-5);padding-bottom:var(--space-4);border-bottom:var(--rule-strong);display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:1rem;">
+      <div>
+        <span class="kicker-index">CHECKOUT &amp; DISPATCH · CURRENCY: GBP (£)</span>
+        <h1 style="margin:0.35rem 0 0 0;">Checkout &amp; Fulfilment Details</h1>
+      </div>
+      <a href="/basket" class="link-editorial">← Return to Shopping Basket</a>
     </div>
     <form method="post" action="/order-confirmation" data-penbrae-checkout-form data-test-preview="true">
       <div class="editorial-grid">
         <div class="col-span-7" style="background:var(--color-parchment-light);border:var(--rule-hairline);padding:var(--space-5);">
-          <span class="kicker-index">01 · RECIPIENT &amp; DELIVERY ADDRESS</span>
+          <span class="kicker-index">01 · RECIPIENT &amp; UK DELIVERY ADDRESS</span>
           <h2 style="font-size:1.85rem;margin:0.4rem 0 1.25rem 0;">Dispatch Destination</h2>
           <div class="editorial-grid" style="gap:1rem;">
             <div class="col-span-6 editorial-form-field">
               <label for="billing_first_name">First Name *</label>
-              <input type="text" id="billing_first_name" name="billing_first_name" required>
+              <input type="text" id="billing_first_name" name="billing_first_name" required autocomplete="given-name">
             </div>
             <div class="col-span-6 editorial-form-field">
               <label for="billing_last_name">Surname *</label>
-              <input type="text" id="billing_last_name" name="billing_last_name" required>
+              <input type="text" id="billing_last_name" name="billing_last_name" required autocomplete="family-name">
             </div>
           </div>
           <div class="editorial-form-field">
             <label for="billing_email">Email Address for Order Confirmation *</label>
-            <input type="email" id="billing_email" name="billing_email" required>
+            <input type="email" id="billing_email" name="billing_email" required autocomplete="email">
           </div>
           <div class="editorial-form-field">
             <label for="billing_address_1">Street Address *</label>
-            <input type="text" id="billing_address_1" name="billing_address_1" required>
+            <input type="text" id="billing_address_1" name="billing_address_1" required autocomplete="address-line1">
           </div>
           <div class="editorial-grid" style="gap:1rem;">
             <div class="col-span-6 editorial-form-field">
               <label for="billing_city">Town / City *</label>
-              <input type="text" id="billing_city" name="billing_city" required>
+              <input type="text" id="billing_city" name="billing_city" required autocomplete="address-level2">
             </div>
             <div class="col-span-6 editorial-form-field">
               <label for="billing_postcode">Postcode *</label>
-              <input type="text" id="billing_postcode" name="billing_postcode" required>
+              <input type="text" id="billing_postcode" name="billing_postcode" required autocomplete="postal-code">
             </div>
+          </div>
+          <div class="editorial-form-field" style="margin-bottom:0;">
+            <label for="order_comments">Delivery Notes (Optional)</label>
+            <textarea id="order_comments" name="order_comments" placeholder="Safe place instructions or gift note..."></textarea>
           </div>
         </div>
         <div class="col-span-5">
           <div style="background:var(--color-parchment-light);border:var(--rule-strong);padding:var(--space-5);">
-            <span class="kicker-index">02 · ORDER LEDGER &amp; PAYMENT PROVIDER</span>
-            <h2 style="font-size:1.85rem;margin:0.4rem 0 1.25rem 0;">Review &amp; Sandbox Payment</h2>
-            <div style="padding:1rem;background:var(--color-parchment-deep);border:var(--rule-brass);margin-bottom:1.25rem;">
-              <div style="font-family:var(--font-mono);font-size:0.72rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-oxblood);margin-bottom:0.35rem;">PAYMENT GATEWAY STATUS: TEST MODE (SANDBOX)</div>
-              <p style="font-size:0.86rem;color:var(--color-ink-secondary);margin:0;">Live payment processing is disabled until Penbrae &amp; Co Ltd merchant credentials are configured in WooCommerce → Settings → Payments.</p>
+            <span class="kicker-index">02 · ORDER SUMMARY &amp; SANDBOX PAYMENT</span>
+            <h2 style="font-size:1.85rem;margin:0.4rem 0 1rem 0;">Your Order</h2>
+            <div id="penbrae-checkout-items" style="margin-bottom:1rem;"></div>
+            <div style="font-family:var(--font-mono);font-size:0.82rem;padding:0.75rem 0;border-top:var(--rule-hairline);border-bottom:var(--rule-hairline);margin-bottom:1.25rem;">
+              <div style="display:flex;justify-content:space-between;padding:0.35rem 0;">
+                <span>Subtotal</span>
+                <span id="penbrae-checkout-subtotal" class="tabular-nums">£0.00</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;padding:0.35rem 0;color:var(--color-ink-secondary);">
+                <span>UK Dispatch</span>
+                <span id="penbrae-checkout-shipping" class="tabular-nums">£0.00</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:baseline;padding-top:0.65rem;margin-top:0.35rem;border-top:var(--rule-hairline);font-weight:600;">
+                <span>Total (GBP)</span>
+                <span id="penbrae-checkout-total" class="tabular-nums" style="font-family:var(--font-editorial);font-size:1.85rem;">£0.00</span>
+              </div>
             </div>
-            <button type="submit" class="btn-editorial" style="width:100%;justify-content:center;">Place Test Mode Order (No Live Charge) →</button>
+            <div style="padding:1rem;background:var(--color-parchment-deep);border:var(--rule-brass);margin-bottom:1.25rem;">
+              <div style="font-family:var(--font-mono);font-size:0.72rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-oxblood);margin-bottom:0.35rem;">PAYMENT GATEWAY STATUS: SANDBOX DEMO MODE</div>
+              <p style="font-size:0.85rem;color:var(--color-ink-secondary);margin:0;">This portfolio preview processes orders in local sandbox mode. No credit card details are requested and no live charge is captured.</p>
+            </div>
+            <button type="submit" data-checkout-submit-btn class="btn-editorial" style="width:100%;justify-content:center;">Place Sandbox Order (No Live Charge) →</button>
           </div>
         </div>
       </div>
     </form>
   </div>
 </section>
-` + renderFooter(false);
+` + renderFooter();
 }
 
-function renderUtilityPage(title, kicker, contentHtml) {
-  return renderHeader('') + `
+function renderOrderConfirmationPage() {
+  const seo = {
+    title: 'Sandbox Order Confirmation | Penbrae & Co Ltd',
+    description: 'Sandbox order confirmation receipt for Penbrae & Co Ltd.',
+    canonicalPath: '/order-confirmation',
+    noindex: true
+  };
+
+  return renderHeader('/order-confirmation', '', seo) + `
+<section class="editorial-section">
+  <div class="penbrae-container">
+    <div style="margin-bottom:var(--space-5);">
+      <span class="kicker-index">CARDIFF DISPATCH LEDGER · SANDBOX ENVIRONMENT</span>
+      <h1 style="margin:0.35rem 0 0 0;">Order Confirmation</h1>
+    </div>
+    <div id="penbrae-order-confirmation-view"></div>
+  </div>
+</section>
+` + renderFooter();
+}
+
+function renderMyAccountPage() {
+  const seo = {
+    title: 'Customer Account (Preview Mode) | Penbrae & Co Ltd',
+    description: 'Inspect local sandbox orders or preview the WooCommerce customer account portal for Penbrae & Co Ltd.',
+    canonicalPath: '/my-account',
+    noindex: true
+  };
+
+  return renderHeader('/my-account', '', seo) + `
+<section class="editorial-section">
+  <div class="penbrae-container">
+    <div style="margin-bottom:var(--space-5);padding-bottom:var(--space-4);border-bottom:var(--rule-strong);">
+      <span class="kicker-index">CUSTOMER ACCOUNT · PORTFOLIO PREVIEW</span>
+      <h1 style="margin:0.35rem 0 0 0;">My Penbrae Account</h1>
+    </div>
+    <div class="editorial-grid">
+      <div class="col-span-7">
+        <div style="background:var(--color-parchment-light);border:var(--rule-strong);padding:var(--space-5);margin-bottom:var(--space-5);">
+          <span class="kicker-index">SESSION SANDBOX ORDERS</span>
+          <h2 style="font-size:1.75rem;margin:0.4rem 0 1rem 0;">Recent Test Orders in This Browser</h2>
+          <div id="penbrae-account-orders-view"></div>
+        </div>
+      </div>
+      <div class="col-span-5">
+        <div style="background:var(--color-parchment-deep);border:var(--rule-brass);padding:var(--space-5);">
+          <span class="kicker-index">AUTHENTICATION STATUS</span>
+          <h2 style="font-size:1.65rem;margin:0.4rem 0 0.75rem 0;">WordPress / WooCommerce Account Portal</h2>
+          <p style="font-size:0.92rem;color:var(--color-ink-secondary);margin-bottom:1rem;">Persistent customer login, password recovery, and saved UK delivery addresses are powered by WooCommerce session authentication when deployed on WordPress (` + '`woocommerce/myaccount/my-account.php`' + `).</p>
+          <p style="font-size:0.88rem;color:var(--color-ink-secondary);margin:0;">In this static Vercel preview, authentication is intentionally disabled; any test orders you place at <a href="/checkout" style="color:var(--color-charcoal);font-weight:500;">/checkout</a> are stored locally in your browser session and displayed on this page.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+` + renderFooter();
+}
+
+function renderUtilityPage(pathname, title, kicker, description, contentHtml) {
+  const seo = {
+    title: `${title} | Penbrae & Co Ltd`,
+    description,
+    canonicalPath: pathname || '/404',
+    noindex: pathname === '/404'
+  };
+
+  return renderHeader(pathname, '', seo) + `
 <section class="editorial-section">
   <div class="penbrae-container">
     <div class="editorial-grid">
@@ -2027,7 +2609,41 @@ function renderUtilityPage(title, kicker, contentHtml) {
     </div>
   </div>
 </section>
-` + renderNonLinearCompass() + renderFooter(false);
+` + renderFooter();
+}
+
+function generateSitemapXml() {
+  const indexableRoutes = [
+    '/',
+    '/stalls',
+    '/stall/teas',
+    '/stall/spices',
+    '/stall/chillies',
+    '/makers',
+    '/about',
+    '/journal',
+    '/subscribe',
+    '/contact',
+    '/shipping-returns',
+    '/privacy-policy',
+    '/terms-and-conditions',
+    ...Object.keys(PRODUCTS).map(s => '/product/' + s),
+    ...Object.keys(MAKERS_DATA).map(s => '/maker/' + s),
+    ...Object.keys(STORIES_DATA).map(s => '/story/' + s),
+    ...Object.keys(JOURNALS_DATA).map(s => '/journal/' + s)
+  ];
+
+  const urlsXml = indexableRoutes.map(r => {
+    const loc = SITE_URL + (r === '/' ? '' : r);
+    const priority = r === '/' ? '1.0' : r.startsWith('/stall') || r.startsWith('/product') ? '0.9' : '0.8';
+    return `  <url>\n    <loc>${loc}</loc>\n    <changefreq>weekly</changefreq>\n    <priority>${priority}</priority>\n  </url>`;
+  }).join('\n');
+
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urlsXml}\n</urlset>\n`;
+}
+
+function generateRobotsTxt() {
+  return `User-agent: *\nAllow: /\nDisallow: /basket\nDisallow: /checkout\nDisallow: /order-confirmation\nDisallow: /my-account\n\nSitemap: ${SITE_URL}/sitemap.xml\n`;
 }
 
 function getRouteHtml(rawPathname) {
@@ -2061,70 +2677,125 @@ function getRouteHtml(rawPathname) {
   if (pathname === '/subscribe') return { status: 200, html: renderSubscribePage() };
   if (pathname === '/basket') return { status: 200, html: renderBasketPage() };
   if (pathname === '/checkout') return { status: 200, html: renderCheckoutPage() };
-  if (pathname === '/order-confirmation') {
-    return {
-      status: 200,
-      html: renderUtilityPage(
-        'Thank You. Your Order Has Been Logged in the Cardiff Ledger.',
-        'DISPATCH DOSSIER RECORDED · TEST ENVIRONMENT',
-        '<p class="lead-standfirst">Reference: PB-TEST-2026-084 · Status: Test Mode Verification Order (No Live Payment Captured).</p><p>While your seasonal lots are prepared, we invite you to explore the provenance stories and maker profiles connected to your harvest.</p>'
-      )
-    };
-  }
-  if (pathname === '/my-account') {
-    return {
-      status: 200,
-      html: renderUtilityPage(
-        'My Penbrae Account',
-        'PATRON ARCHIVE & DISPATCH HISTORY',
-        '<p>Sign in to inspect past seasonal allocations, manage UK delivery addresses, or update your Penbrae Dispatch preferences.</p>'
-      )
-    };
-  }
+  if (pathname === '/order-confirmation') return { status: 200, html: renderOrderConfirmationPage() };
+  if (pathname === '/my-account') return { status: 200, html: renderMyAccountPage() };
+
   if (pathname === '/contact') {
     return {
       status: 200,
       html: renderUtilityPage(
+        '/contact',
         'Contact Penbrae & Co Ltd',
         'CORRESPONDENCE · CARDIFF, WALES',
-        '<p>For enquiries regarding seasonal lot availability, culinary &amp; restaurant allocations, or provenance documentation, write to our Cardiff desk (Penbrae &amp; Co Ltd, Cardiff, Wales, UK).</p>'
+        'Contact Penbrae & Co Ltd in Cardiff, Wales regarding seasonal lot availability, culinary trade allocations, or provenance documentation.',
+        `<p class="lead-standfirst">For enquiries regarding seasonal lot availability, restaurant and trade allocations, or provenance documentation, write to our Cardiff desk.</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.5rem;padding:var(--space-4);background:var(--color-parchment-light);border:var(--rule-hairline);margin:var(--space-5) 0;">
+          <div>
+            <div style="font-family:var(--font-mono);font-size:0.72rem;text-transform:uppercase;color:var(--color-ink-muted);">Registered Office &amp; Tasting Room</div>
+            <p style="margin:0.35rem 0 0 0;font-size:0.94rem;">Penbrae &amp; Co Ltd<br>Cardiff, Wales<br>United Kingdom</p>
+          </div>
+          <div>
+            <div style="font-family:var(--font-mono);font-size:0.72rem;text-transform:uppercase;color:var(--color-ink-muted);">Dispatch &amp; Trade Desk</div>
+            <p style="margin:0.35rem 0 0 0;font-size:0.94rem;">Monday – Friday, 09:30 – 17:30 GMT<br>Currency: Pounds Sterling (GBP £)</p>
+          </div>
+        </div>
+        <form method="post" data-penbrae-contact-form style="background:var(--color-parchment-light);padding:var(--space-5);border:var(--rule-strong);">
+          <span class="kicker-index">SEND A MESSAGE (PREVIEW MODE)</span>
+          <h2 style="font-size:1.75rem;margin:0.4rem 0 1.25rem 0;">Direct Enquiry</h2>
+          <div class="editorial-form-field">
+            <label for="contact-name">Your Name *</label>
+            <input type="text" id="contact-name" name="name" required>
+          </div>
+          <div class="editorial-form-field">
+            <label for="contact-email">Email Address *</label>
+            <input type="email" id="contact-email" name="email" required>
+          </div>
+          <div class="editorial-form-field">
+            <label for="contact-message">Enquiry *</label>
+            <textarea id="contact-message" name="message" required placeholder="How can we assist you?"></textarea>
+          </div>
+          <button type="submit" class="btn-editorial">Send Enquiry →</button>
+          <p data-contact-status aria-live="polite" style="margin-top:0.75rem;font-family:var(--font-mono);font-size:0.78rem;"></p>
+        </form>`
       )
     };
   }
+
   if (pathname === '/shipping-returns') {
     return {
       status: 200,
       html: renderUtilityPage(
+        '/shipping-returns',
         'Shipping & Returns Information',
-        'FULFILMENT GOVERNANCE',
-        '<p>All Penbrae &amp; Co Ltd orders are inspected, packed, and dispatched from Cardiff, Wales. Exact postage in GBP (£) is calculated dynamically at checkout based on active WooCommerce Shipping Zones.</p>'
+        'FULFILMENT POLICY · UK DISPATCH',
+        'UK dispatch schedules, packaging standards, and returns policy for Penbrae & Co Ltd orders shipped from Cardiff, Wales.',
+        `<p class="lead-standfirst">All Penbrae &amp; Co Ltd orders are inspected, packed in UV-opaque archival vessels, and dispatched from Cardiff, Wales.</p>
+        <h2>I. UK Dispatch &amp; Postage Tariffs</h2>
+        <p>Orders placed before 14:00 GMT Monday to Friday are prepared for dispatch within 24 hours via Royal Mail Tracked services:</p>
+        <ul>
+          <li><strong>UK Tracked 48 Service:</strong> £4.50 flat rate (2–3 working days).</li>
+          <li><strong>Complimentary UK Dispatch:</strong> Automatically applied on all orders of £50.00 or more.</li>
+        </ul>
+        <h2>II. Packaging &amp; Freshness Preservation</h2>
+        <p>Single-harvest orthodox teas, high-curcumin rhizomes, and smoked chillies are sensitive to ultraviolet light and ambient humidity. Every lot is sealed in airtight tinplate caddies or UV-protected glass jars before leaving our Cardiff room.</p>
+        <h2>III. Returns &amp; Perishable Food Regulations</h2>
+        <p>Under UK Consumer Contracts Regulations, sealed food and beverage items may be returned within 14 days of receipt provided the tamper-evident vessel seal remains unbroken. If any vessel arrives damaged in transit, please contact our Cardiff desk within 7 days for an immediate replacement or full GBP refund.</p>`
       )
     };
   }
+
   if (pathname === '/privacy-policy') {
     return {
       status: 200,
       html: renderUtilityPage(
+        '/privacy-policy',
         'Privacy Policy & UK GDPR',
         'DATA PROTECTION',
-        '<p>Penbrae &amp; Co Ltd collects only the personal data necessary to fulfil orders placed through WooCommerce or to deliver the Penbrae Dispatch when explicit opt-in consent has been granted.</p>'
+        'Privacy Policy and UK GDPR data governance for Penbrae & Co Ltd.',
+        `<p class="lead-standfirst">Penbrae &amp; Co Ltd respects the privacy of every reader and patron and complies with the UK General Data Protection Regulation (UK GDPR) and the Data Protection Act 2018.</p>
+        <h2>I. Data We Collect</h2>
+        <p>We collect only the personal information required to fulfil orders (name, UK delivery address, and contact email) or to send the Penbrae Dispatch when you have granted explicit opt-in consent.</p>
+        <h2>II. Local Storage in This Portfolio Preview</h2>
+        <p>In this interactive preview environment, your shopping basket (<code>penbrae_basket_v2</code>) and any sandbox test orders (<code>penbrae_sandbox_orders_v1</code>) are stored solely within your browser’s local storage and are never transmitted to third-party trackers.</p>
+        <h2>III. Your Rights Under UK GDPR</h2>
+        <p>You have the right to request access to, rectification of, or erasure of your personal data at any time, and you may withdraw newsletter consent with a single click.</p>`
       )
     };
   }
+
   if (pathname === '/terms-and-conditions') {
     return {
       status: 200,
       html: renderUtilityPage(
+        '/terms-and-conditions',
         'Terms & Conditions',
         'COMMERCIAL TERMS',
-        '<p>All prices across the Tea, Spice, and Chilli Stalls are stated in Pounds Sterling (GBP £). Applicable UK taxation and shipping fees are governed by WooCommerce Settings.</p>'
+        'Commercial terms and conditions of sale for Penbrae & Co Ltd (Cardiff, Wales).',
+        `<p class="lead-standfirst">These Terms &amp; Conditions govern the use of the Penbrae &amp; Co Ltd website and the purchase of seasonal lots dispatched from Cardiff, Wales.</p>
+        <h2>I. Pricing &amp; Currency</h2>
+        <p>All prices across The Tea Stall, The Spice Stall, and The Chilli Stall are stated in Pounds Sterling (GBP £). Applicable UK shipping rates are itemized clearly in the Shopping Basket and Checkout prior to order submission.</p>
+        <h2>II. Seasonal Small-Lot Availability</h2>
+        <p>Because our ingredients are harvested from smallholder gardens and forest margins across Northeast India, each lot is finite. Once a seasonal harvest lot is exhausted, it cannot be restocked until the next harvest window.</p>
+        <h2>III. Governing Law</h2>
+        <p>Any contract formed through Penbrae &amp; Co Ltd is governed by the laws of England and Wales.</p>`
       )
     };
   }
 
   return {
     status: 404,
-    html: renderUtilityPage('Entry Not Found (404)', 'ARCHIVAL FOLIO 404', '<p>The page or seasonal lot you requested has moved. Use the Provenance Compass below to continue exploring.</p>')
+    html: renderUtilityPage(
+      '/404',
+      'Entry Not Found (404)',
+      'ARCHIVAL FOLIO 404',
+      'The requested page or seasonal harvest lot could not be found.',
+      `<p class="lead-standfirst">The page or seasonal harvest lot you requested could not be found.</p>
+      <p>Use the links below to return to The Three Stalls, inspect the Northeast India Producer Map, or read The Penbrae Journal.</p>
+      <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:var(--space-4);">
+        <a href="/stalls" class="btn-editorial">Explore The Three Stalls →</a>
+        <a href="/makers" class="btn-editorial btn-editorial--outline">Open Producer Map</a>
+      </div>`
+    )
   };
 }
 
@@ -2163,6 +2834,18 @@ function handleRequest(req, res) {
   const parsed = url.parse(req.url || '/', true);
   const pathname = parsed.pathname.replace(/\/+$/, '') || '/';
 
+  if (pathname === '/sitemap.xml') {
+    res.writeHead(200, { 'Content-Type': 'application/xml; charset=utf-8' });
+    res.end(generateSitemapXml());
+    return;
+  }
+
+  if (pathname === '/robots.txt') {
+    res.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8' });
+    res.end(generateRobotsTxt());
+    return;
+  }
+
   if (pathname.startsWith('/assets/')) {
     const filePath = path.join(THEME_DIR, pathname);
     if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
@@ -2198,4 +2881,11 @@ if (require.main === module) {
   });
 }
 
-module.exports = { handleRequest, getRouteHtml, getAllStaticRoutes, THEME_DIR };
+module.exports = {
+  handleRequest,
+  getRouteHtml,
+  getAllStaticRoutes,
+  generateSitemapXml,
+  generateRobotsTxt,
+  THEME_DIR
+};

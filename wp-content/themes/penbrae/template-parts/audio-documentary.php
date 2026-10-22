@@ -14,11 +14,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 $title      = isset( $args['title'] ) ? $args['title'] : 'Field Recording: Morning Pluck & Bamboo Rolling Table (Dibrugarh)';
 $location   = isset( $args['location'] ) ? $args['location'] : '27°28′N 94°54′E · Upper Assam · 01:34';
 $audio_url  = isset( $args['audio_url'] ) ? $args['audio_url'] : '';
-$transcript = isset( $args['transcript'] ) ? $args['transcript'] : '[Sample Field Audio Transcript — Replace with verified producer recording transcript] Ambient sound of morning mist dripping from shade trees onto broad Camellia sinensis var. assamica leaves, followed by the rhythmic hand-rolling of withered leaf across woven bamboo tables. The head tea maker explains how autumn coolness preserves the golden down on the terminal bud.';
+$transcript = isset( $args['transcript'] ) ? $args['transcript'] : 'Ambient sound of morning mist dripping from shade trees onto broad Camellia sinensis var. assamica leaves, followed by the rhythmic hand-rolling of withered leaf across woven bamboo tables. The head tea maker explains how autumn coolness preserves the golden down on the terminal bud.';
 ?>
 <div class="audio-field-module" data-audio-module data-duration-sec="94" role="region" aria-label="<?php echo esc_attr( $title ); ?>">
 	<div class="audio-field-module__top">
-		<span class="kicker-index"><?php esc_html_e( 'DOCUMENTARY FIELD AUDIO ARCHIVE', 'penbrae' ); ?></span>
+		<div style="display:flex;align-items:center;gap:0.65rem;flex-wrap:wrap;">
+			<span class="kicker-index"><?php esc_html_e( 'DOCUMENTARY FIELD AUDIO ARCHIVE', 'penbrae' ); ?></span>
+			<?php if ( empty( $audio_url ) ) : ?>
+				<span class="audio-sim-badge"><?php esc_html_e( 'Simulated Audio Preview · Full Transcript Below', 'penbrae' ); ?></span>
+			<?php endif; ?>
+		</div>
 		<span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--color-ink-muted);"><?php echo esc_html( $location ); ?></span>
 	</div>
 	<h3 style="font-size:1.35rem;margin-bottom:0.75rem;"><?php echo esc_html( $title ); ?></h3>

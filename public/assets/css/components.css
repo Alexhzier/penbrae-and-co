@@ -7,9 +7,9 @@
   background-color: var(--color-forest);
   color: var(--color-parchment);
   border-bottom: var(--rule-light-on-dark);
-  padding: 0.55rem var(--gutter);
+  padding: 0.5rem var(--gutter);
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   display: flex;
@@ -21,6 +21,18 @@
 
 .editorial-dispatch-bar__coords {
   color: var(--color-brass-light);
+}
+
+@media (max-width: 768px) {
+  .editorial-dispatch-bar {
+    justify-content: center;
+    text-align: center;
+    font-size: 0.65rem;
+    padding: 0.45rem 1rem;
+  }
+  .editorial-dispatch-bar__coords {
+    display: none;
+  }
 }
 
 /* 2. MINIMAL EDITORIAL MASTHEAD & NAVIGATION */
@@ -37,17 +49,17 @@
 .site-masthead__inner {
   max-width: var(--container-max);
   margin: 0 auto;
-  padding: 1.1rem var(--gutter);
+  padding: 1rem var(--gutter);
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  gap: var(--space-4);
+  gap: var(--space-3);
 }
 
 .site-nav-primary {
   display: flex;
   align-items: center;
-  gap: 1.75rem;
+  gap: clamp(0.95rem, 1.45vw, 1.7rem);
   list-style: none;
   margin: 0;
   padding: 0;
@@ -57,9 +69,9 @@
 .site-nav-utility a,
 .site-nav-utility button {
   font-family: var(--font-sans);
-  font-size: 0.84rem;
+  font-size: clamp(0.76rem, 0.8vw, 0.84rem);
   font-weight: 500;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.055em;
   text-transform: uppercase;
   color: var(--color-charcoal);
   text-decoration: none;
@@ -72,9 +84,11 @@
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
+  white-space: nowrap;
 }
 
-.site-nav-primary a::after {
+.site-nav-primary a::after,
+.site-nav-utility a::after {
   content: "";
   position: absolute;
   left: 0;
@@ -88,7 +102,9 @@
 }
 
 .site-nav-primary a:hover::after,
-.site-nav-primary a[aria-current="page"]::after {
+.site-nav-primary a[aria-current="page"]::after,
+.site-nav-utility a:hover::after,
+.site-nav-utility a[aria-current="page"]::after {
   transform: scaleX(1);
   transform-origin: left;
 }
@@ -100,31 +116,34 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 0 0.5rem;
 }
 
 .site-brand__wordmark {
   font-family: var(--font-editorial);
-  font-size: clamp(1.45rem, 2vw, 1.95rem);
+  font-size: clamp(1.35rem, 1.9vw, 1.9rem);
   font-weight: 500;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.13em;
   text-transform: uppercase;
   line-height: 1;
+  white-space: nowrap;
 }
 
 .site-brand__sub {
   font-family: var(--font-mono);
-  font-size: 0.65rem;
-  letter-spacing: 0.16em;
+  font-size: 0.63rem;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--color-ink-muted);
-  margin-top: 0.3rem;
+  margin-top: 0.28rem;
+  white-space: nowrap;
 }
 
 .site-nav-utility {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: 1.5rem;
+  gap: clamp(0.95rem, 1.35vw, 1.5rem);
 }
 
 .basket-count-pill {
@@ -191,7 +210,7 @@
   text-decoration: none;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1080px) {
   .site-nav-primary {
     display: none;
   }
@@ -714,6 +733,90 @@
   border-left: 2px solid var(--color-brass);
   font-size: 0.92rem;
   color: var(--color-ink-secondary);
+}
+
+.audio-sim-badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.55rem;
+  border: var(--rule-brass);
+  background-color: var(--color-parchment);
+  color: var(--color-ink-secondary);
+}
+
+/* Quantity Stepper & Basket Item Controls */
+.qty-stepper {
+  display: inline-flex;
+  align-items: center;
+  border: var(--rule-strong);
+  background-color: var(--color-parchment);
+}
+
+.qty-stepper__btn {
+  width: 34px;
+  height: 36px;
+  background: transparent;
+  border: none;
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  color: var(--color-charcoal);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color var(--duration-fast);
+}
+
+.qty-stepper__btn:hover {
+  background-color: var(--color-parchment-deep);
+}
+
+.qty-stepper__input {
+  width: 44px;
+  height: 36px;
+  border: none;
+  border-left: var(--rule-hairline);
+  border-right: var(--rule-hairline);
+  background: transparent;
+  font-family: var(--font-mono);
+  font-size: 0.84rem;
+  text-align: center;
+  color: var(--color-charcoal);
+  -moz-appearance: textfield;
+}
+
+.qty-stepper__input::-webkit-outer-spin-button,
+.qty-stepper__input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.basket-remove-btn {
+  background: none;
+  border: none;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--color-terracotta);
+  cursor: pointer;
+  padding: 0.25rem 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.basket-remove-btn:hover {
+  color: var(--color-oxblood);
+}
+
+.btn-editorial[aria-disabled="true"],
+.btn-editorial:disabled {
+  opacity: 0.45;
+  pointer-events: none;
+  cursor: not-allowed;
 }
 
 /* 8. SLIDE-OVER MINI BASKET DRAWER */

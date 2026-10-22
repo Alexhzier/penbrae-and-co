@@ -73,7 +73,7 @@ get_header();
 					<div style="display:flex;justify-content:space-between;align-items:baseline;padding:1.25rem 0;margin:1rem 0;border-top:var(--rule-hairline);border-bottom:var(--rule-hairline);">
 						<span style="font-family:var(--font-mono);font-size:0.78rem;text-transform:uppercase;"><?php esc_html_e( 'Subtotal', 'penbrae' ); ?></span>
 						<span id="penbrae-basket-page-subtotal" class="tabular-nums" style="font-family:var(--font-editorial);font-size:2rem;">
-							<?php echo ( function_exists( 'WC' ) && WC()->cart ) ? wp_kses_post( WC()->cart->get_cart_subtotal() ) : '£28.00'; ?>
+							<?php echo ( function_exists( 'WC' ) && WC()->cart ) ? wp_kses_post( WC()->cart->get_cart_subtotal() ) : '£0.00'; ?>
 						</span>
 					</div>
 					<p style="font-size:0.86rem;color:var(--color-ink-secondary);margin-bottom:1.5rem;">

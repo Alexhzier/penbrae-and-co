@@ -1,7 +1,7 @@
 /**
- * PENBRAE & CO LTD — NORTHEAST INDIA INTERACTIVE MAKER ATLAS (PAGE 5)
- * Uses Leaflet + OpenStreetMap with verified regional coordinates across Northeast India.
- * Includes full keyboard & screen-reader synchronization with the Accessible Maker Directory.
+ * PENBRAE & CO LTD — NORTHEAST INDIA INTERACTIVE MAKER ATLAS
+ * Uses Leaflet + OpenStreetMap with regional coordinates across Northeast India.
+ * Includes full keyboard & screen-reader synchronization with the Producer Directory.
  */
 (function () {
   'use strict';
@@ -21,8 +21,8 @@
       intro: 'Smallholder gardens along the southern bank of the Brahmaputra cultivating broad-leafed Assamica under a dappled canopy of shade trees.',
       storyUrl: '/maker/upper-assam-orthodox-collective',
       products: [
-        { title: 'Upper Assam Tippy Orthodox Reserve', url: '/product/upper-assam-tippy-orthodox', price: '£28.00' },
-        { title: 'Singpho Hearth-Smoked Bamboo Tea', url: '/product/singpho-bamboo-smoked-tea', price: '£34.00' }
+        { title: 'Upper Assam Tippy Orthodox Reserve (Lot 26-A)', url: '/product/upper-assam-tippy-orthodox', price: '£28.00' },
+        { title: 'Singpho Hearth-Smoked Bamboo Tea (Lot 26-B)', url: '/product/singpho-bamboo-smoked-tea', price: '£34.00' }
       ]
     },
     {
@@ -39,8 +39,8 @@
       intro: 'Cultivating heirloom Lakadong rhizomes in misty limestone uplands, hand-sliced onto woven bamboo mats for winter sun-curing.',
       storyUrl: '/maker/jaintia-hills-lakadong-growers',
       products: [
-        { title: 'Single-Harvest Lakadong Rhizome Reserve', url: '/product/lakadong-turmeric-reserve', price: '£18.50' },
-        { title: 'Sohra Sun-Cured Hill Ginger', url: '/product/sohra-hill-ginger', price: '£16.00' }
+        { title: 'Single-Harvest Lakadong Rhizome Reserve (Lot 26-D)', url: '/product/lakadong-turmeric-reserve', price: '£18.50' },
+        { title: 'Sohra Sun-Cured Hill Ginger (Lot 26-G)', url: '/product/sohra-hill-ginger', price: '£16.00' }
       ]
     },
     {
@@ -57,24 +57,25 @@
       intro: 'Rotational alder-tree agroforestry and fourteen-day smoke-loft preservation in the eastern hills of Nagaland.',
       storyUrl: '/maker/nagaland-alder-smoke-stewards',
       products: [
-        { title: 'Whole Alder-Smoked Naga King Chilli Pods', url: '/product/alder-smoked-naga-king-chilli', price: '£22.00' }
+        { title: 'Whole Alder-Smoked Naga King Chilli Pods (Lot 26-C)', url: '/product/alder-smoked-naga-king-chilli', price: '£22.00' }
       ]
     },
     {
       id: 'maker-ziro-wild-pepper',
       code: 'M-04',
       name: 'Lower Subansiri Forest Foragers',
-      region: 'Ziro Valley, Arunachal Pradesh',
+      region: 'Ziro Valley & Patkai Foothills, Arunachal Pradesh',
       state: 'Arunachal Pradesh',
       coords: [27.5449, 93.8197],
       coordsLabel: '27°32′N 93°49′E · 1,680m ASL',
-      stall: 'Spice Stall',
+      stall: 'Spice & Tea Stalls',
       photo: '/assets/images/spice-wild-pepper.jpg',
       craft: 'Canopy-harvested wild Sichuan-type hill pepper & high-elevation white tea',
-      intro: 'Harvesting citrus-scented wild Zanthoxylum peppercorns from subtropical pine and bamboo valley margins.',
+      intro: 'Harvesting citrus-scented wild Zanthoxylum peppercorns and unopened silver tea buds from subtropical pine and bamboo valley margins.',
       storyUrl: '/maker/ziro-valley-forest-foragers',
       products: [
-        { title: 'Arunachal Citrus-Husk Wild Hill Pepper', url: '/product/arunachal-wild-hill-pepper', price: '£21.00' }
+        { title: 'Arunachal Citrus-Husk Wild Hill Pepper (Lot 26-E)', url: '/product/arunachal-wild-hill-pepper', price: '£21.00' },
+        { title: 'Namdapha High-Canopy Silver Bud White Tea (Lot 26-H)', url: '/product/namdapha-wild-forest-white-tea', price: '£36.00' }
       ]
     },
     {
@@ -87,11 +88,12 @@
       coordsLabel: '25°05′N 94°21′E · 1,750m ASL',
       stall: 'Chilli Stall',
       photo: '/assets/images/chilli-hathei-crimson.jpg',
-      craft: 'Sun-ripened crimson Hathei chilli prized for deep paprika-like sweetness',
-      intro: 'High-ridge shale cultivation in Ukhrul District yielding Manipur’s celebrated crimson Hathei harvest.',
+      craft: 'Sun-ripened crimson Hathei & upland bird’s-eye forest chillies',
+      intro: 'High-ridge shale cultivation in Ukhrul District yielding Manipur’s celebrated crimson Hathei and citrus-bright upland chillies.',
       storyUrl: '/maker/ukhrul-hathei-cultivators',
       products: [
-        { title: 'Sirarakhong Sun-Cured Hathei Crimson Chilli', url: '/product/sirarakhong-hathei-chilli', price: '£20.00' }
+        { title: 'Sirarakhong Sun-Cured Hathei Crimson Chilli (Lot 26-F)', url: '/product/sirarakhong-hathei-chilli', price: '£20.00' },
+        { title: 'Upland Sun-Cured Bird’s-Eye Forest Chilli (Lot 26-I)', url: '/product/barak-valley-smoked-birdseye', price: '£19.50' }
       ]
     }
   ];
@@ -114,7 +116,6 @@
       var maker = makers.find(function (m) { return m.id === makerId; }) || makers[0];
       if (!maker) return;
 
-      // Update active state on map pins and accessible directory rows
       document.querySelectorAll('.penbrae-map-pin').forEach(function (pin) {
         pin.classList.toggle('is-active', pin.getAttribute('data-pin-id') === maker.id);
       });
@@ -132,14 +133,12 @@
       renderMakerPreview(maker, previewEl);
     }
 
-    // Bind accessible list buttons & region filter buttons
     listButtons.forEach(function (btn) {
       btn.addEventListener('click', function () {
         selectMaker(btn.getAttribute('data-maker-select'), true);
       });
     });
 
-    // Initialize Leaflet if loaded, otherwise render interactive SVG topographic atlas fallback
     if (typeof window.L !== 'undefined') {
       try {
         leafletMap = window.L.map(mapEl, {
@@ -167,6 +166,10 @@
           });
           markersById[maker.id] = marker;
         });
+
+        setTimeout(function () {
+          if (leafletMap) leafletMap.invalidateSize();
+        }, 320);
       } catch (err) {
         renderSvgAtlasFallback(mapEl, makers, selectMaker);
       }
@@ -174,7 +177,6 @@
       renderSvgAtlasFallback(mapEl, makers, selectMaker);
     }
 
-    // Select first maker on load
     selectMaker(makers[0].id, false);
   }
 
@@ -200,23 +202,23 @@
     container.innerHTML =
       '<div>' +
       '<div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:0.75rem;border-bottom:var(--rule-hairline);">' +
-      '<span class="kicker-index">ARCHIVE INDEX ' + maker.code + ' · ' + maker.stall + '</span>' +
+      '<span class="kicker-index">PRODUCER ' + maker.code + ' · ' + maker.stall + '</span>' +
       '<span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--color-ink-muted);">' + maker.coordsLabel + '</span>' +
       '</div>' +
       '<div style="position:relative;aspect-ratio:16/9;margin:1rem 0;border:var(--rule-hairline);overflow:hidden;background:var(--color-parchment-deep);">' +
-      '<img src="' + (maker.photo || '/assets/images/maker-hands-crafting.png') + '" alt="' + maker.region + '" style="width:100%;height:100%;object-fit:cover;display:block;">' +
+      '<img src="' + (maker.photo || '/assets/images/maker-hands-crafting.jpg') + '" alt="' + maker.region + '" style="width:100%;height:100%;object-fit:cover;display:block;">' +
       '<span class="specimen-figure__badge" style="position:absolute;top:0.75rem;left:0.75rem;">' + maker.region + '</span>' +
       '</div>' +
       '<h2 style="font-size:1.85rem;margin-bottom:0.35rem;">' + maker.name + '</h2>' +
       '<p style="font-family:var(--font-editorial);font-style:italic;font-size:1.15rem;color:var(--color-forest);margin-bottom:0.75rem;">' + maker.craft + '</p>' +
       '<p style="color:var(--color-ink-secondary);font-size:0.94rem;">' + maker.intro + '</p>' +
       '<div style="margin-top:1.25rem;">' +
-      '<div style="font-family:var(--font-mono);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.09em;color:var(--color-ink-muted);margin-bottom:0.35rem;">Associated Harvest Lots</div>' +
+      '<div style="font-family:var(--font-mono);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.09em;color:var(--color-ink-muted);margin-bottom:0.35rem;">Harvest Lots by This Producer</div>' +
       '<ul style="list-style:none;padding:0;margin:0;border-top:var(--rule-hairline);">' + productsHtml + '</ul>' +
       '</div>' +
       '</div>' +
       '<div style="margin-top:1.5rem;padding-top:1rem;border-top:var(--rule-hairline);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;">' +
-      '<a href="' + maker.storyUrl + '" class="btn-editorial">Explore Maker Story →</a>' +
+      '<a href="' + maker.storyUrl + '" class="btn-editorial">Read Producer Profile →</a>' +
       '<span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--color-ink-muted);">State: ' + maker.state + '</span>' +
       '</div>';
 
@@ -231,7 +233,7 @@
       '<div style="position:relative;width:100%;height:100%;min-height:520px;background:#E2DAC7;padding:1.5rem;display:flex;flex-direction:column;justify-content:space-between;">' +
       '<div style="font-family:var(--font-mono);font-size:0.74rem;text-transform:uppercase;letter-spacing:0.09em;color:var(--color-ink-secondary);display:flex;justify-content:space-between;">' +
       '<span>NORTHEAST INDIA TOPOGRAPHIC SURVEY (24°N–29°N, 88°E–97°E)</span>' +
-      '<span>CLICK A REGION PIN BELOW</span>' +
+      '<span>SELECT A PRODUCER REGION BELOW</span>' +
       '</div>' +
       '<svg viewBox="0 0 800 460" style="width:100%;height:auto;max-height:380px;border:var(--rule-hairline);background:#EBE4D4;" role="img" aria-label="Interactive topographic map of Northeast India showing maker locations">' +
       '<path d="M80,240 Q220,160 390,140 T690,95 L730,190 Q610,250 540,360 L410,380 Q320,280 180,295 Z" fill="#D8CEB8" stroke="#8F6F32" stroke-width="1.5"/>' +
@@ -250,7 +252,9 @@
       makers.forEach(function (m) {
         var btn = document.createElement('button');
         btn.type = 'button';
-        btn.className = 'filter-pill';
+        btn.className = 'filter-pill penbrae-map-pin';
+        btn.style.width = 'auto';
+        btn.style.height = 'auto';
         btn.setAttribute('data-pin-id', m.id);
         btn.textContent = m.code + ' · ' + m.state + ' (' + m.region.split(',')[0] + ')';
         btn.addEventListener('click', function () {

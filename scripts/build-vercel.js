@@ -1,12 +1,18 @@
 /**
  * PENBRAE & CO LTD — VERCEL STATIC + HYBRID BUILD SCRIPT
- * Pre-renders all 40+ editorial & e-commerce routes into `public/`
+ * Pre-renders all editorial & e-commerce routes, sitemap.xml, and robots.txt into `public/`
  * and copies CSS, JS, and photography assets from `wp-content/themes/penbrae/assets/`.
  */
 
 const fs = require('fs');
 const path = require('path');
-const { getRouteHtml, getAllStaticRoutes, THEME_DIR } = require('../preview-server/server');
+const {
+  getRouteHtml,
+  getAllStaticRoutes,
+  generateSitemapXml,
+  generateRobotsTxt,
+  THEME_DIR
+} = require('../preview-server/server');
 
 const PUBLIC_DIR = path.join(__dirname, '..', 'public');
 
@@ -53,7 +59,11 @@ function build() {
     }
   }
 
-  console.log(`Built ${routes.length} static routes and copied theme assets into ${PUBLIC_DIR}`);
+  // 3. Write sitemap.xml and robots.txt
+  fs.writeFileSync(path.join(PUBLIC_DIR, 'sitemap.xml'), generateSitemapXml(), 'utf8');
+  fs.writeFileSync(path.join(PUBLIC_DIR, 'robots.txt'), generateRobotsTxt(), 'utf8');
+
+  console.log(`Built ${routes.length} static routes, sitemap.xml, robots.txt, and copied theme assets into ${PUBLIC_DIR}`);
 }
 
 build();

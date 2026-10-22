@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /basket
+Disallow: /checkout
+Disallow: /order-confirmation
+Disallow: /my-account
+
+Sitemap: https://penbrae-and-co.vercel.app/sitemap.xml

@@ -218,9 +218,9 @@
 .stall-filter-bar {
   background-color: var(--color-parchment-light);
   border-bottom: var(--rule-strong);
-  padding: 1rem 0;
+  padding: 0.9rem 0;
   position: sticky;
-  top: 72px;
+  top: 70px;
   z-index: 800;
 }
 
@@ -249,6 +249,7 @@
   text-transform: uppercase;
   color: var(--color-charcoal);
   cursor: pointer;
+  transition: background-color var(--duration-fast), color var(--duration-fast), border-color var(--duration-fast);
 }
 
 .filter-pill[aria-pressed="true"],
@@ -266,11 +267,11 @@
 }
 
 .stall-catalogue-grid[data-visible-count="2"] {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 520px));
 }
 
 .stall-catalogue-grid[data-visible-count="1"] {
-  grid-template-columns: minmax(0, 640px);
+  grid-template-columns: minmax(0, 540px);
 }
 
 @media (max-width: 1024px) {
@@ -282,9 +283,22 @@
   }
 }
 
+@media (max-width: 768px) {
+  .stall-filter-bar {
+    position: relative;
+    top: auto;
+  }
+}
+
 @media (max-width: 640px) {
-  .stall-catalogue-grid {
+  .stall-catalogue-grid,
+  .stall-catalogue-grid[data-visible-count="2"],
+  .stall-catalogue-grid[data-visible-count="1"] {
     grid-template-columns: 1fr;
+  }
+  .stall-masthead__ledger {
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
   }
   .stall-editorial-interlude {
     grid-column: span 1;
@@ -368,6 +382,22 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 0.6rem;
   margin-top: 0.5rem;
+}
+
+@media (max-width: 560px) {
+  .pdp-variant-options {
+    grid-template-columns: 1fr;
+  }
+  .pdp-variant-btn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    text-align: left;
+  }
+  .pdp-variant-btn br {
+    display: none;
+  }
 }
 
 .pdp-variant-btn {
@@ -561,7 +591,7 @@
    -------------------------------------------------------------------------- */
 .story-acquisition-ribbon {
   position: sticky;
-  top: 71px;
+  top: 70px;
   z-index: 820;
   background-color: var(--color-parchment-deep);
   border-bottom: var(--rule-strong);
@@ -573,6 +603,13 @@
   gap: 1rem;
   font-family: var(--font-mono);
   font-size: 0.76rem;
+}
+
+@media (max-width: 768px) {
+  .story-acquisition-ribbon {
+    position: relative;
+    top: auto;
+  }
 }
 
 /* --------------------------------------------------------------------------

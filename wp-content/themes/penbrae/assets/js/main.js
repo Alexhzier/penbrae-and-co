@@ -1,16 +1,20 @@
 /**
  * PENBRAE & CO LTD — PRIMARY EDITORIAL & ACCESSIBILITY INTERACTIONS
  * Supports: Mobile touch navigation, Slide-over Basket Drawer, Documentary Audio Player,
- * Search Drawer, and Reduced-Motion-Safe Editorial Reveals.
+ * Newsletter validation, and Reduced-Motion-Safe Editorial Reveals.
  */
 (function () {
   'use strict';
 
+  var BASKET_STORAGE_KEY = 'penbrae_basket_v2';
+
   function initPageDynamicModules() {
     initDocumentaryAudioPlayers();
     initNewsletterForms();
+    initContactPreviewForms();
     initScrollSectionReveals();
     initStallAtmosphereInteractions();
+    renderBasketState();
     if (typeof window.PenbraeCommerceInit === 'function') {
       window.PenbraeCommerceInit();
     }
@@ -39,7 +43,7 @@
       toggleBtn.setAttribute('aria-expanded', String(!expanded));
       drawer.classList.toggle('is-open', !expanded);
       drawer.setAttribute('aria-hidden', String(expanded));
-      toggleBtn.textContent = !expanded ? 'Close [×]' : 'Index [≡]';
+      toggleBtn.textContent = !expanded ? 'Close [×]' : 'Menu [≡]';
     });
 
     document.addEventListener('keydown', function (e) {
@@ -98,59 +102,74 @@
       var addBtn = e.target.closest('[data-add-to-basket]');
       if (!addBtn) return;
 
-      // If inside a real WordPress WooCommerce form and WC AJAX is not overriding,
-      // we still update our client basket drawer and feedback state.
       e.preventDefault();
 
+      var qtyVal = parseInt(addBtn.getAttribute('data-product-qty') || '1', 10);
+      if (isNaN(qtyVal) || qtyVal < 1) qtyVal = 1;
+
       var item = {
-        id: addBtn.getAttribute('data-product-id') || 'lot-01',
-        title: addBtn.getAttribute('data-product-title') || 'Penbrae Rare Lot',
-        variant: addBtn.getAttribute('data-product-variant') || 'Standard Caddy',
-        price: parseFloat(addBtn.getAttribute('data-product-price') || '24.00'),
-        qty: parseInt(addBtn.getAttribute('data-product-qty') || '1', 10),
-        url: addBtn.getAttribute('data-product-url') || '/product/assam-golden-tip',
+        id: addBtn.getAttribute('data-product-id') || 'upper-assam-tippy-orthodox',
+        title: addBtn.getAttribute('data-product-title') || 'Upper Assam Tippy Orthodox Reserve',
+        variant: addBtn.getAttribute('data-product-variant') || '75g Archival Caddy',
+        price: parseFloat(addBtn.getAttribute('data-product-price') || '28.00'),
+        qty: qtyVal,
+        url: addBtn.getAttribute('data-product-url') || '/product/upper-assam-tippy-orthodox',
         region: addBtn.getAttribute('data-product-region') || 'Northeast India'
       };
 
       addToPenbraeBasket(item);
 
-      var originalText = addBtn.textContent;
+      if (!addBtn.hasAttribute('data-original-label')) {
+        addBtn.setAttribute('data-original-label', addBtn.textContent);
+      }
       addBtn.textContent = 'Added to Basket ✓';
       setTimeout(function () {
-        addBtn.textContent = originalText;
+        addBtn.textContent = addBtn.getAttribute('data-original-label') || 'Add to Basket +';
       }, 1400);
 
       openBasket();
     });
+
+    // Close basket drawer when clicking View Basket or Checkout inside drawer
+    if (drawer) {
+      drawer.addEventListener('click', function (e) {
+        var navLink = e.target.closest('a[href]');
+        if (navLink) {
+          closeBasket();
+        }
+      });
+    }
 
     renderBasketState();
   }
 
   function getBasketItems() {
     try {
-      var raw = localStorage.getItem('penbrae_basket_v1');
-      if (raw) return JSON.parse(raw);
-    } catch (err) {
-      // Fallback
-    }
-    return [
-      {
-        id: 'namrup-autumn-orthodox',
-        title: 'Upper Assam Tippy Orthodox Reserve',
-        variant: '75g Archival Caddy',
-        price: 28.00,
-        qty: 1,
-        url: '/product/upper-assam-tippy-orthodox',
-        region: 'Dibrugarh District, Upper Assam'
+      var raw = localStorage.getItem(BASKET_STORAGE_KEY);
+      if (!raw) return [];
+      var parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) {
+        return parsed.filter(function (item) {
+          return item && item.id && typeof item.price === 'number' && item.qty > 0;
+        });
       }
-    ];
+    } catch (err) {
+      // Fallback to empty array
+    }
+    return [];
   }
 
   function saveBasketItems(items) {
+    var clean = Array.isArray(items)
+      ? items.filter(function (i) { return i && i.qty > 0; })
+      : [];
     try {
-      localStorage.setItem('penbrae_basket_v1', JSON.stringify(items));
+      localStorage.setItem(BASKET_STORAGE_KEY, JSON.stringify(clean));
     } catch (err) {}
     renderBasketState();
+    try {
+      window.dispatchEvent(new CustomEvent('penbrae:basket-updated', { detail: { items: clean } }));
+    } catch (err) {}
   }
 
   function addToPenbraeBasket(newItem) {
@@ -159,17 +178,43 @@
       return i.id === newItem.id && i.variant === newItem.variant;
     });
     if (existing) {
-      existing.qty += newItem.qty;
+      existing.qty = Math.min(99, existing.qty + newItem.qty);
+      existing.price = newItem.price;
     } else {
       items.push(newItem);
     }
     saveBasketItems(items);
   }
 
+  function updateBasketItemQty(index, nextQty) {
+    var items = getBasketItems();
+    if (!items[index]) return;
+    if (nextQty <= 0) {
+      items.splice(index, 1);
+    } else {
+      items[index].qty = Math.min(99, Math.max(1, nextQty));
+    }
+    saveBasketItems(items);
+  }
+
+  function removeBasketItem(index) {
+    var items = getBasketItems();
+    if (!items[index]) return;
+    items.splice(index, 1);
+    saveBasketItems(items);
+  }
+
+  function clearBasket() {
+    saveBasketItems([]);
+  }
+
   window.PenbraeBasket = {
     getItems: getBasketItems,
     saveItems: saveBasketItems,
-    addItem: addToPenbraeBasket
+    addItem: addToPenbraeBasket,
+    updateQty: updateBasketItemQty,
+    removeItem: removeBasketItem,
+    clear: clearBasket
   };
 
   function renderBasketState() {
@@ -184,58 +229,97 @@
 
     var drawerContainer = document.getElementById('penbrae-basket-drawer-items');
     var drawerSubtotal = document.getElementById('penbrae-basket-drawer-subtotal');
+    var drawerCheckoutBtn = document.querySelector('[data-drawer-checkout-btn]');
+
     if (drawerSubtotal) {
       drawerSubtotal.textContent = '£' + subtotal.toFixed(2);
+    }
+
+    if (drawerCheckoutBtn) {
+      if (items.length === 0) {
+        drawerCheckoutBtn.setAttribute('aria-disabled', 'true');
+      } else {
+        drawerCheckoutBtn.removeAttribute('aria-disabled');
+      }
     }
 
     if (drawerContainer) {
       if (items.length === 0) {
         drawerContainer.innerHTML =
-          '<p style="color:var(--color-ink-secondary);padding:2rem 0;">Your dispatch ledger is currently empty. Explore the Tea, Spice, or Chilli Stalls to select rare seasonal lots.</p>';
+          '<div style="padding:2.5rem 0;text-align:center;">' +
+          '<p style="color:var(--color-ink-secondary);margin-bottom:1.25rem;">Your basket is currently empty. Explore the Tea, Spice, or Chilli Stalls to select seasonal lots.</p>' +
+          '<a href="/stalls" class="btn-editorial btn-editorial--outline" style="justify-content:center;">Browse The Stalls →</a>' +
+          '</div>';
       } else {
         drawerContainer.innerHTML = items
           .map(function (item, idx) {
             return (
-              '<div style="padding:1rem 0;border-bottom:var(--rule-hairline);display:flex;justify-content:space-between;gap:1rem;">' +
-              '<div>' +
-              '<div class="kicker-index" style="font-size:0.66rem;">' + escapeHtml(item.region) + '</div>' +
-              '<a href="' + escapeHtml(item.url) + '" style="font-family:var(--font-editorial);font-size:1.25rem;color:var(--color-charcoal);text-decoration:none;display:block;margin:0.2rem 0;">' +
+              '<div style="padding:1.1rem 0;border-bottom:var(--rule-hairline);display:flex;justify-content:space-between;gap:1rem;">' +
+              '<div style="flex:1;min-width:0;">' +
+              '<div style="font-family:var(--font-mono);font-size:0.66rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-ink-muted);">' + escapeHtml(item.region) + '</div>' +
+              '<a href="' + escapeHtml(item.url) + '" style="font-family:var(--font-editorial);font-size:1.25rem;color:var(--color-charcoal);text-decoration:none;display:block;margin:0.2rem 0;line-height:1.2;">' +
               escapeHtml(item.title) +
               '</a>' +
-              '<div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--color-ink-muted);">' +
-              escapeHtml(item.variant) + ' × ' + item.qty +
+              '<div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--color-ink-secondary);margin-bottom:0.65rem;">' +
+              escapeHtml(item.variant) + ' · £' + item.price.toFixed(2) + ' each' +
+              '</div>' +
+              '<div style="display:flex;align-items:center;gap:0.85rem;">' +
+              '<div class="qty-stepper" role="group" aria-label="Quantity for ' + escapeHtml(item.title) + '">' +
+              '<button type="button" class="qty-stepper__btn" data-drawer-qty-step="-1" data-drawer-idx="' + idx + '" aria-label="Decrease quantity">−</button>' +
+              '<input type="number" class="qty-stepper__input" min="1" max="99" value="' + item.qty + '" data-drawer-qty-input="' + idx + '" aria-label="Quantity">' +
+              '<button type="button" class="qty-stepper__btn" data-drawer-qty-step="1" data-drawer-idx="' + idx + '" aria-label="Increase quantity">+</button>' +
+              '</div>' +
+              '<button type="button" class="basket-remove-btn" data-remove-basket-idx="' + idx + '">Remove</button>' +
               '</div>' +
               '</div>' +
-              '<div style="text-align:right;display:flex;flex-direction:column;justify-content:space-between;">' +
-              '<span class="tabular-nums" style="font-family:var(--font-mono);font-size:0.9rem;">£' +
-              (item.price * item.qty).toFixed(2) +
-              '</span>' +
-              '<button type="button" data-remove-basket-idx="' + idx + '" style="background:none;border:none;font-family:var(--font-mono);font-size:0.68rem;text-transform:uppercase;color:var(--color-terracotta);cursor:pointer;padding:0.25rem 0;">Remove</button>' +
+              '<div style="text-align:right;font-family:var(--font-mono);font-size:0.92rem;font-weight:500;" class="tabular-nums">' +
+              '£' + (item.price * item.qty).toFixed(2) +
               '</div>' +
               '</div>'
             );
           })
           .join('');
 
+        drawerContainer.querySelectorAll('[data-drawer-qty-step]').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            var idx = parseInt(btn.getAttribute('data-drawer-idx'), 10);
+            var delta = parseInt(btn.getAttribute('data-drawer-qty-step'), 10);
+            var current = getBasketItems();
+            if (current[idx]) {
+              updateBasketItemQty(idx, current[idx].qty + delta);
+            }
+          });
+        });
+
+        drawerContainer.querySelectorAll('[data-drawer-qty-input]').forEach(function (inp) {
+          inp.addEventListener('change', function () {
+            var idx = parseInt(inp.getAttribute('data-drawer-qty-input'), 10);
+            var val = parseInt(inp.value || '1', 10);
+            updateBasketItemQty(idx, isNaN(val) ? 1 : val);
+          });
+        });
+
         drawerContainer.querySelectorAll('[data-remove-basket-idx]').forEach(function (btn) {
           btn.addEventListener('click', function () {
             var idx = parseInt(btn.getAttribute('data-remove-basket-idx'), 10);
-            var current = getBasketItems();
-            current.splice(idx, 1);
-            saveBasketItems(current);
+            removeBasketItem(idx);
           });
         });
       }
     }
   }
 
-  /* 3. Accessible Documentary Audio Player (Simulated + HTML5 Audio support) */
+  /* 3. Accessible Documentary Audio Player (Simulated Preview + HTML5 Audio support) */
   function initDocumentaryAudioPlayers() {
     var modules = document.querySelectorAll('[data-audio-module]');
     modules.forEach(function (mod) {
+      if (mod.getAttribute('data-audio-bound') === 'true') return;
+      mod.setAttribute('data-audio-bound', 'true');
+
       var playBtn = mod.querySelector('[data-audio-toggle]');
       var bar = mod.querySelector('[data-audio-bar]');
       var timeEl = mod.querySelector('[data-audio-time]');
+      var simNoteEl = mod.querySelector('[data-audio-sim-status]');
       var audioEl = mod.querySelector('audio');
       var durationSec = parseInt(mod.getAttribute('data-duration-sec') || '94', 10);
       var currentSec = 0;
@@ -247,28 +331,45 @@
       playBtn.addEventListener('click', function () {
         playing = !playing;
         playBtn.setAttribute('aria-pressed', String(playing));
-        playBtn.textContent = playing ? 'Pause ❚❚' : 'Listen ▶';
+        playBtn.textContent = playing ? 'Pause Preview ❚❚' : 'Listen (Demo) ▶';
+
+        if (simNoteEl) {
+          simNoteEl.textContent = playing
+            ? 'SIMULATED FIELD AUDIO PLAYBACK ACTIVE · READ FULL TRANSCRIPT BELOW'
+            : 'DEMO AUDIO PLAYER · SIMULATED TIMELINE & VERBATIM TRANSCRIPT';
+        }
 
         if (audioEl && audioEl.getAttribute('src')) {
           if (playing) audioEl.play().catch(function () {});
           else audioEl.pause();
         }
 
+        if (timer) {
+          clearInterval(timer);
+          timer = null;
+        }
+
         if (playing) {
           timer = setInterval(function () {
-            currentSec = (currentSec + 1) % (durationSec + 1);
+            currentSec = currentSec + 1;
+            if (currentSec > durationSec) {
+              currentSec = 0;
+              clearInterval(timer);
+              timer = null;
+              playing = false;
+              playBtn.setAttribute('aria-pressed', 'false');
+              playBtn.textContent = 'Listen (Demo) ▶';
+              if (bar) bar.style.width = '0%';
+              if (timeEl) timeEl.textContent = '00:00 / ' + formatTime(durationSec);
+              if (simNoteEl) {
+                simNoteEl.textContent = 'DEMO AUDIO PLAYER · SIMULATED TIMELINE & VERBATIM TRANSCRIPT';
+              }
+              return;
+            }
             var pct = Math.min(100, Math.round((currentSec / durationSec) * 100));
             if (bar) bar.style.width = pct + '%';
             if (timeEl) timeEl.textContent = formatTime(currentSec) + ' / ' + formatTime(durationSec);
-            if (currentSec >= durationSec) {
-              clearInterval(timer);
-              playing = false;
-              playBtn.setAttribute('aria-pressed', 'false');
-              playBtn.textContent = 'Listen ▶';
-            }
           }, 1000);
-        } else if (timer) {
-          clearInterval(timer);
         }
       });
     });
@@ -284,25 +385,53 @@
   function initNewsletterForms() {
     var forms = document.querySelectorAll('[data-penbrae-newsletter-form]');
     forms.forEach(function (form) {
+      if (form.getAttribute('data-newsletter-bound') === 'true') return;
+      form.setAttribute('data-newsletter-bound', 'true');
+
       form.addEventListener('submit', function (e) {
         var consent = form.querySelector('input[name="gdpr_consent"]');
+        var emailInp = form.querySelector('input[type="email"]');
         var statusEl = form.querySelector('[data-newsletter-status]');
         if (consent && !consent.checked) {
           e.preventDefault();
           if (statusEl) {
-            statusEl.textContent = 'Please confirm explicit marketing consent before subscribing to the Penbrae Dispatch.';
+            statusEl.textContent = 'Please confirm explicit UK GDPR marketing consent before subscribing.';
             statusEl.style.color = 'var(--color-oxblood)';
           }
           return;
         }
         if (form.getAttribute('data-ajax-preview') === 'true') {
           e.preventDefault();
+          var emailVal = emailInp ? emailInp.value.trim() : 'your address';
           if (statusEl) {
-            statusEl.textContent = 'Thank you. A double-opt-in confirmation has been queued for your address (Cardiff Dispatch Ledger).';
+            statusEl.textContent =
+              'Preview Mode Recorded: ' +
+              emailVal +
+              ' validated with explicit UK GDPR consent. (Live email dispatch requires production ESP integration.)';
             statusEl.style.color = 'var(--color-forest)';
           }
           form.reset();
         }
+      });
+    });
+  }
+
+  /* 4b. Contact Enquiry Preview Form */
+  function initContactPreviewForms() {
+    var forms = document.querySelectorAll('[data-penbrae-contact-form]');
+    forms.forEach(function (form) {
+      if (form.getAttribute('data-contact-bound') === 'true') return;
+      form.setAttribute('data-contact-bound', 'true');
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var statusEl = form.querySelector('[data-contact-status]');
+        if (statusEl) {
+          statusEl.textContent =
+            'Preview Mode: Your enquiry has been validated locally. (In production, enquiries route to the Penbrae & Co Cardiff desk via WordPress SMTP.)';
+          statusEl.style.color = 'var(--color-forest)';
+        }
+        form.reset();
       });
     });
   }
@@ -340,14 +469,12 @@
       { rootMargin: '0px 0px -6% 0px', threshold: 0.08 }
     );
 
-    targets.forEach(function (el, index) {
+    targets.forEach(function (el) {
       if (el.classList.contains('reveal-on-scroll')) return;
       var rect = el.getBoundingClientRect();
-      // Immediately reveal items already high in the initial viewport
       if (rect.top < window.innerHeight * 0.86) {
         el.classList.add('reveal-on-scroll', 'is-in-view');
       } else {
-        // Stagger siblings within the same grid row
         var parentChildren = el.parentElement ? Array.prototype.slice.call(el.parentElement.children) : [];
         var siblingIndex = Math.max(0, parentChildren.indexOf(el)) % 4;
         el.style.setProperty('--stagger-idx', String(siblingIndex));
@@ -359,9 +486,9 @@
 
   /* 6. Interactive Stall Environment Atmosphere Shifts (Home Triptych & /stalls Overview) */
   function initStallAtmosphereInteractions() {
-    // A. Home Page Stall Triptych hover atmosphere
     var triptych = document.querySelector('.stall-triptych');
-    if (triptych) {
+    if (triptych && triptych.getAttribute('data-triptych-bound') !== 'true') {
+      triptych.setAttribute('data-triptych-bound', 'true');
       var portals = triptych.querySelectorAll('.stall-portal');
       var parentSection = triptych.closest('.editorial-section');
 
@@ -400,7 +527,6 @@
       });
     }
 
-    // B. Stalls Overview (/stalls) Sticky Environment Bar & Scroll Spy
     var envBar = document.querySelector('[data-stalls-env-bar]');
     var stallSections = document.querySelectorAll('[data-stall-section]');
     if (envBar && stallSections.length && 'IntersectionObserver' in window) {
@@ -479,7 +605,6 @@
         .catch(function () {});
     }
 
-    // Prefetch on hover / touchstart for instant Stall & Page switching
     document.addEventListener(
       'mouseover',
       function (e) {
@@ -530,6 +655,22 @@
       });
     }
 
+    function syncHeadMetadata(newDoc) {
+      if (newDoc.title) {
+        document.title = newDoc.title;
+      }
+      var newDesc = newDoc.querySelector('meta[name="description"]');
+      var curDesc = document.querySelector('meta[name="description"]');
+      if (newDesc && curDesc) {
+        curDesc.setAttribute('content', newDesc.getAttribute('content') || '');
+      }
+      var newCanon = newDoc.querySelector('link[rel="canonical"]');
+      var curCanon = document.querySelector('link[rel="canonical"]');
+      if (newCanon && curCanon) {
+        curCanon.setAttribute('href', newCanon.getAttribute('href') || '');
+      }
+    }
+
     function navigateSmoothly(targetUrl, pushState, preserveStallScroll) {
       if (isTransitioning) return;
       var currentMain = document.getElementById('main-content');
@@ -542,7 +683,6 @@
       progressBar.classList.remove('is-completing');
       progressBar.classList.add('is-active');
 
-      // Immediately start morphing stall theme class if navigating to a stall
       if (targetUrl.indexOf('/stall/teas') === 0 || targetUrl.indexOf('/stall/tea') === 0) {
         document.body.className = 'stall-theme-teas';
       } else if (targetUrl.indexOf('/stall/spices') === 0 || targetUrl.indexOf('/stall/spice') === 0) {
@@ -555,7 +695,7 @@
       currentMain.classList.add('is-transitioning-out');
 
       var minFadeTime = new Promise(function (resolve) {
-        setTimeout(resolve, 210);
+        setTimeout(resolve, 190);
       });
 
       Promise.all([fetchPageHtml(targetUrl), minFadeTime])
@@ -570,20 +710,15 @@
             return;
           }
 
-          // Update document title & body class for atmosphere continuity
-          if (doc.title) {
-            document.title = doc.title;
-          }
+          syncHeadMetadata(doc);
           document.body.className = doc.body.className || '';
 
-          // Close mobile drawer if open
           var mobileDrawer = document.getElementById('penbrae-mobile-drawer');
           var mobileToggle = document.querySelector('[data-mobile-nav-toggle]');
           if (mobileDrawer && mobileDrawer.classList.contains('is-open') && mobileToggle) {
             mobileToggle.click();
           }
 
-          // Swap main content
           currentMain.innerHTML = newMain.innerHTML;
 
           if (pushState) {
@@ -598,22 +733,20 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }
 
-          // Trigger smooth enter animation
           currentMain.classList.remove('is-transitioning-out');
-          void currentMain.offsetWidth; // force reflow
+          void currentMain.offsetWidth;
           currentMain.classList.add('is-transitioning-in');
 
           progressBar.classList.remove('is-active');
           progressBar.classList.add('is-completing');
 
-          // Re-initialize interactive modules on new DOM
           initPageDynamicModules();
 
           setTimeout(function () {
             currentMain.classList.remove('is-transitioning-in');
             progressBar.classList.remove('is-completing');
             isTransitioning = false;
-          }, 560);
+          }, 520);
         })
         .catch(function () {
           isTransitioning = false;
@@ -629,6 +762,10 @@
       var link = e.target.closest('a[href]');
       if (!link) return;
       if (link.hasAttribute('download') || link.getAttribute('target') === '_blank') return;
+      if (link.getAttribute('aria-disabled') === 'true') {
+        e.preventDefault();
+        return;
+      }
 
       var rawHref = link.getAttribute('href') || '';
       if (rawHref.indexOf('#') === 0 || rawHref.indexOf('mailto:') === 0 || rawHref.indexOf('tel:') === 0) {
