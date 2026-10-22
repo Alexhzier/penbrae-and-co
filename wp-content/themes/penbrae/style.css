@@ -1,0 +1,20 @@
+/*
+Theme Name: Penbrae & Co — Editorial Commerce
+Theme URI: https://penbrae.co.uk
+Author: Penbrae & Co Ltd Creative Studio
+Author URI: https://penbrae.co.uk
+Description: Bespoke editorial e-commerce theme for Penbrae & Co Ltd (Cardiff, Wales). Designed for rare, handcrafted teas, spices, and chillies imported from Northeast India. Integrates WooCommerce with non-linear storytelling across Products, Makers, Provenance Stories, Regions, and the Journal.
+Version: 1.0.0
+Requires at least: 6.4
+Tested up to: 6.7
+Requires PHP: 8.1
+WC requires at least: 8.5
+WC tested up to: 9.4
+License: Proprietary — Penbrae & Co Ltd
+Text Domain: penbrae
+Tags: e-commerce, woocommerce, editorial, custom-menu, featured-images, accessibility-ready, block-patterns
+*/
+
+@import url('./assets/css/design-system.css');
+@import url('./assets/css/components.css');
+@import url('./assets/css/pages.css');

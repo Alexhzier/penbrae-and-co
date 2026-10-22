@@ -1,0 +1,15 @@
+{
+  "core": null,
+  "phpVersion": "8.2",
+  "plugins": [
+    "https://downloads.wordpress.org/plugin/woocommerce.latest-stable.zip"
+  ],
+  "themes": [
+    "./wp-content/themes/penbrae"
+  ],
+  "port": 8888,
+  "config": {
+    "WP_DEBUG": true,
+    "FS_METHOD": "direct"
+  }
+}

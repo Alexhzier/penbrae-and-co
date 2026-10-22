@@ -1,0 +1,657 @@
+/* ==========================================================================
+   PENBRAE & CO LTD — ART-DIRECTED PAGE COMPOSITIONS
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   PAGE 1: HOME — EDITORIAL LANDING MONOGRAPH
+   -------------------------------------------------------------------------- */
+.home-hero {
+  border-bottom: var(--rule-strong);
+  background-color: var(--color-parchment);
+}
+
+.home-hero__grid {
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+  min-height: calc(86vh - 90px);
+}
+
+.home-hero__editorial-column {
+  padding: var(--space-6) var(--gutter);
+  border-right: var(--rule-hairline);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-5);
+}
+
+.home-hero__issue-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: var(--space-3);
+  border-bottom: var(--rule-hairline);
+  font-family: var(--font-mono);
+  font-size: var(--text-index);
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+}
+
+.home-hero__headline {
+  font-size: clamp(2.55rem, 3.6vw, 4.4rem);
+  line-height: 1.03;
+  margin: var(--space-3) 0 var(--space-4) 0;
+}
+
+.home-hero__ledger-foot {
+  padding-top: var(--space-4);
+  border-top: var(--rule-hairline);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+  font-size: var(--text-caption);
+  color: var(--color-ink-secondary);
+}
+
+.home-hero__visual-column {
+  position: relative;
+  background-color: var(--color-forest);
+  color: var(--color-parchment);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: var(--space-6);
+  overflow: hidden;
+}
+
+.home-hero__visual-art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.92;
+}
+
+.home-hero__visual-overlay {
+  position: relative;
+  z-index: 2;
+  margin-top: auto;
+  background-color: rgba(23, 42, 33, 0.88);
+  border: var(--rule-light-on-dark);
+  padding: var(--space-4) var(--space-5);
+  max-width: 540px;
+  backdrop-filter: blur(4px);
+}
+
+@media (max-width: 1024px) {
+  .home-hero__grid {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+  .home-hero__editorial-column {
+    border-right: none;
+    border-bottom: var(--rule-hairline);
+  }
+  .home-hero__visual-column {
+    min-height: 460px;
+    padding: var(--space-5) var(--gutter);
+  }
+}
+
+/* Home & Page 2: Three Distinct Stall Environments */
+.stall-triptych {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: var(--rule-hairline);
+}
+
+.stall-portal {
+  position: relative;
+  padding: var(--space-6) var(--space-5);
+  border-right: var(--rule-hairline);
+  border-bottom: var(--rule-hairline);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 560px;
+  transition: background-color var(--duration-base) var(--ease-editorial);
+}
+
+.stall-portal:last-child {
+  border-right: none;
+}
+
+.stall-portal--teas {
+  background-color: #EFECE1;
+  border-top: 4px solid var(--color-forest);
+}
+
+.stall-portal--spices {
+  background-color: #F2E8DA;
+  border-top: 4px solid var(--color-terracotta);
+}
+
+.stall-portal--chillies {
+  background-color: #EFE4DF;
+  border-top: 4px solid var(--color-oxblood);
+}
+
+.stall-portal__number {
+  font-family: var(--font-mono);
+  font-size: var(--text-index);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: var(--space-3);
+  border-bottom: var(--rule-hairline);
+}
+
+.stall-portal__title {
+  font-size: clamp(2.1rem, 2.5vw, 3rem);
+  margin: var(--space-4) 0 var(--space-2) 0;
+}
+
+.stall-portal__mood {
+  font-family: var(--font-editorial);
+  font-style: italic;
+  font-size: 1.2rem;
+  color: var(--color-ink-secondary);
+  margin-bottom: var(--space-4);
+}
+
+.stall-portal__spec-list {
+  list-style: none;
+  padding: 0;
+  margin: var(--space-4) 0;
+  border-top: var(--rule-hairline);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+}
+
+.stall-portal__spec-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.6rem 0;
+  border-bottom: var(--rule-hairline);
+}
+
+@media (max-width: 1024px) {
+  .stall-triptych {
+    grid-template-columns: 1fr;
+  }
+  .stall-portal {
+    border-right: none;
+    min-height: auto;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   PAGE 3: INDIVIDUAL STALL ARCHIVE (TEA / SPICE / CHILLI)
+   -------------------------------------------------------------------------- */
+.stall-masthead {
+  background-color: var(--stall-banner-bg);
+  color: var(--stall-banner-ink);
+  padding: var(--space-7) 0 var(--space-6) 0;
+  border-bottom: var(--rule-strong);
+}
+
+.stall-masthead h1,
+.stall-masthead .lead-standfirst {
+  color: var(--stall-banner-ink);
+}
+
+.stall-masthead__ledger {
+  margin-top: var(--space-5);
+  padding-top: var(--space-4);
+  border-top: var(--rule-light-on-dark);
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-4);
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+}
+
+.stall-filter-bar {
+  background-color: var(--color-parchment-light);
+  border-bottom: var(--rule-strong);
+  padding: 1rem 0;
+  position: sticky;
+  top: 72px;
+  z-index: 800;
+}
+
+.stall-filter-bar__inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.filter-pill-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.filter-pill {
+  background: transparent;
+  border: var(--rule-hairline);
+  padding: 0.45rem 0.9rem;
+  min-height: 40px;
+  font-family: var(--font-mono);
+  font-size: 0.73rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-charcoal);
+  cursor: pointer;
+}
+
+.filter-pill[aria-pressed="true"],
+.filter-pill.is-active {
+  background-color: var(--stall-accent);
+  color: var(--color-parchment);
+  border-color: var(--stall-accent);
+}
+
+.stall-catalogue-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-5);
+  align-items: stretch;
+}
+
+.stall-catalogue-grid[data-visible-count="2"] {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.stall-catalogue-grid[data-visible-count="1"] {
+  grid-template-columns: minmax(0, 640px);
+}
+
+@media (max-width: 1024px) {
+  .stall-catalogue-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .stall-masthead__ledger {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .stall-catalogue-grid {
+    grid-template-columns: 1fr;
+  }
+  .stall-editorial-interlude {
+    grid-column: span 1;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   PAGE 4: PRODUCT DETAILS (PDP) — COMMERCE + STORYTELLING DOSSIER
+   -------------------------------------------------------------------------- */
+.pdp-dossier {
+  display: grid;
+  grid-template-columns: 7fr 5fr;
+  border-bottom: var(--rule-strong);
+}
+
+.pdp-gallery-column {
+  padding: var(--space-6) var(--gutter);
+  border-right: var(--rule-hairline);
+}
+
+.pdp-gallery-thumbs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+}
+
+.pdp-gallery-thumb {
+  border: var(--rule-hairline);
+  background: var(--color-parchment-light);
+  padding: 0.5rem;
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+}
+
+.pdp-gallery-thumb[aria-selected="true"] {
+  border-color: var(--color-forest);
+  background-color: var(--color-parchment-deep);
+}
+
+.pdp-purchase-column {
+  padding: var(--space-6) var(--gutter);
+  background-color: var(--color-parchment-light);
+}
+
+.pdp-price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: var(--space-4) 0;
+  margin: var(--space-4) 0;
+  border-top: var(--rule-hairline);
+  border-bottom: var(--rule-hairline);
+}
+
+.pdp-price-gbp {
+  font-family: var(--font-editorial);
+  font-size: 2.35rem;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.pdp-stock-badge {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-forest);
+  padding: 0.25rem 0.65rem;
+  border: 1px solid var(--color-forest);
+}
+
+.pdp-variant-group {
+  margin-bottom: var(--space-4);
+}
+
+.pdp-variant-options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.6rem;
+  margin-top: 0.5rem;
+}
+
+.pdp-variant-btn {
+  padding: 0.75rem 0.6rem;
+  min-height: 48px;
+  border: var(--rule-hairline);
+  background-color: var(--color-parchment);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-align: center;
+  cursor: pointer;
+}
+
+.pdp-variant-btn[aria-checked="true"] {
+  background-color: var(--color-charcoal);
+  color: var(--color-parchment);
+  border-color: var(--color-charcoal);
+}
+
+.pdp-purchase-actions {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 0.75rem;
+  margin: var(--space-4) 0;
+}
+
+.pdp-qty-input {
+  width: 100%;
+  min-height: 52px;
+  border: var(--rule-strong);
+  background-color: var(--color-parchment);
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  text-align: center;
+}
+
+/* Tasting Notes & Provenance Ledger Table */
+.pdp-ledger-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: var(--space-5) 0;
+  font-size: 0.92rem;
+}
+
+.pdp-ledger-table th,
+.pdp-ledger-table td {
+  padding: 0.85rem 0;
+  border-bottom: var(--rule-hairline);
+  text-align: left;
+  vertical-align: top;
+}
+
+.pdp-ledger-table th {
+  width: 38%;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+  font-weight: 500;
+}
+
+/* Scoville Heat Index Scale (For Chilli Stall Products — Editorial Typography, No Flame Icons) */
+.scoville-meter {
+  margin: var(--space-4) 0;
+  padding: var(--space-3);
+  border: var(--rule-hairline);
+  background-color: var(--color-parchment);
+}
+
+.scoville-meter__track {
+  height: 6px;
+  background-color: rgba(88, 27, 25, 0.16);
+  margin-top: 0.5rem;
+  position: relative;
+}
+
+.scoville-meter__fill {
+  height: 100%;
+  background-color: var(--color-oxblood);
+}
+
+/* Mobile Sticky Purchase Bar (Page 4 requirement) */
+.pdp-sticky-mobile-bar {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 950;
+  background-color: var(--color-parchment-light);
+  border-top: var(--rule-strong);
+  padding: 0.75rem var(--gutter);
+  box-shadow: 0 -4px 20px rgba(26, 25, 23, 0.08);
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+@media (max-width: 1024px) {
+  .pdp-dossier {
+    grid-template-columns: 1fr;
+  }
+  .pdp-gallery-column {
+    border-right: none;
+    border-bottom: var(--rule-hairline);
+  }
+}
+
+@media (max-width: 768px) {
+  .pdp-sticky-mobile-bar {
+    display: flex;
+  }
+  body.has-sticky-pdp-bar {
+    padding-bottom: 76px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   PAGE 5: MEET THE MAKERS — INTERACTIVE NORTHEAST INDIA MAP & DIRECTORY
+   -------------------------------------------------------------------------- */
+.makers-atlas-layout {
+  display: grid;
+  grid-template-columns: 7fr 5fr;
+  border-top: var(--rule-strong);
+  border-bottom: var(--rule-strong);
+  min-height: 640px;
+}
+
+.makers-map-stage {
+  position: relative;
+  min-height: 540px;
+  background-color: #E5DEC9;
+  border-right: var(--rule-hairline);
+}
+
+#penbrae-makers-map {
+  width: 100%;
+  height: 100%;
+  min-height: 540px;
+  z-index: 1;
+}
+
+.makers-preview-panel {
+  padding: var(--space-5);
+  background-color: var(--color-parchment-light);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Custom Leaflet Marker Pin */
+.penbrae-map-pin {
+  background-color: var(--color-forest);
+  color: var(--color-parchment);
+  border: 2px solid var(--color-brass-light);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px !important;
+  height: 34px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.penbrae-map-pin:hover,
+.penbrae-map-pin.is-active {
+  background-color: var(--color-oxblood);
+  transform: scale(1.15);
+}
+
+@media (max-width: 1024px) {
+  .makers-atlas-layout {
+    grid-template-columns: 1fr;
+  }
+  .makers-map-stage {
+    border-right: none;
+    border-bottom: var(--rule-hairline);
+    min-height: 400px;
+  }
+  #penbrae-makers-map {
+    min-height: 400px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   PAGE 7: PRODUCT STORY — UNOBTRUSIVE STICKY ACQUISITION RIBBON
+   -------------------------------------------------------------------------- */
+.story-acquisition-ribbon {
+  position: sticky;
+  top: 71px;
+  z-index: 820;
+  background-color: var(--color-parchment-deep);
+  border-bottom: var(--rule-strong);
+  padding: 0.65rem var(--gutter);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+}
+
+/* --------------------------------------------------------------------------
+   WOOCOMMERCE BASKET, CHECKOUT, ACCOUNT & LEGAL PAGES
+   -------------------------------------------------------------------------- */
+.commerce-ledger-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--color-parchment-light);
+  border: var(--rule-hairline);
+}
+
+.commerce-ledger-table th,
+.commerce-ledger-table td {
+  padding: 1.15rem 1.25rem;
+  border-bottom: var(--rule-hairline);
+  text-align: left;
+}
+
+.commerce-ledger-table th {
+  font-family: var(--font-mono);
+  font-size: 0.73rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+  background-color: var(--color-parchment-deep);
+}
+
+.editorial-form-field {
+  margin-bottom: var(--space-4);
+}
+
+.editorial-form-field label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-ink-secondary);
+  margin-bottom: 0.45rem;
+}
+
+.editorial-form-field input[type="text"],
+.editorial-form-field input[type="email"],
+.editorial-form-field input[type="tel"],
+.editorial-form-field input[type="password"],
+.editorial-form-field input[type="number"],
+.editorial-form-field select,
+.editorial-form-field textarea {
+  width: 100%;
+  min-height: 48px;
+  padding: 0.75rem 1rem;
+  background-color: var(--color-parchment-light);
+  border: var(--rule-strong);
+  font-family: var(--font-sans);
+  font-size: 0.98rem;
+  color: var(--color-charcoal);
+  border-radius: 0;
+}
+
+.editorial-form-field textarea {
+  min-height: 130px;
+}
+
+.consent-checkbox-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  padding: var(--space-3);
+  border: var(--rule-hairline);
+  background-color: var(--color-parchment);
+  margin: var(--space-4) 0;
+  font-size: 0.9rem;
+}
+
+.consent-checkbox-box input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  margin-top: 0.2rem;
+  accent-color: var(--color-forest);
+  flex-shrink: 0;
+}

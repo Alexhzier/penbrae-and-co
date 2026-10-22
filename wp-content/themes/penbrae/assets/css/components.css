@@ -1,0 +1,1152 @@
+/* ==========================================================================
+   PENBRAE & CO LTD — REUSABLE EDITORIAL & COMMERCE COMPONENTS
+   ========================================================================== */
+
+/* 1. DEVELOPMENT / SPECIMEN PROVENANCE BANNER & BADGES */
+.editorial-dispatch-bar {
+  background-color: var(--color-forest);
+  color: var(--color-parchment);
+  border-bottom: var(--rule-light-on-dark);
+  padding: 0.55rem var(--gutter);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.editorial-dispatch-bar__coords {
+  color: var(--color-brass-light);
+}
+
+/* 2. MINIMAL EDITORIAL MASTHEAD & NAVIGATION */
+.site-masthead {
+  position: sticky;
+  top: 0;
+  z-index: 900;
+  background-color: rgba(245, 240, 230, 0.96);
+  backdrop-filter: blur(6px);
+  border-bottom: var(--rule-hairline);
+  transition: border-color var(--duration-base) var(--ease-editorial);
+}
+
+.site-masthead__inner {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 1.1rem var(--gutter);
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.site-nav-primary {
+  display: flex;
+  align-items: center;
+  gap: 1.75rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.site-nav-primary a,
+.site-nav-utility a,
+.site-nav-utility button {
+  font-family: var(--font-sans);
+  font-size: 0.84rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-charcoal);
+  text-decoration: none;
+  background: none;
+  border: none;
+  padding: 0.4rem 0;
+  cursor: pointer;
+  position: relative;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.site-nav-primary a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 6px;
+  width: 100%;
+  height: 1px;
+  background-color: var(--color-charcoal);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform var(--duration-base) var(--ease-editorial);
+}
+
+.site-nav-primary a:hover::after,
+.site-nav-primary a[aria-current="page"]::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.site-brand {
+  text-align: center;
+  text-decoration: none;
+  color: var(--color-charcoal);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.site-brand__wordmark {
+  font-family: var(--font-editorial);
+  font-size: clamp(1.45rem, 2vw, 1.95rem);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.site-brand__sub {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+  margin-top: 0.3rem;
+}
+
+.site-nav-utility {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.basket-count-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.45rem;
+  height: 1.45rem;
+  padding: 0 0.35rem;
+  background-color: var(--color-forest);
+  color: var(--color-parchment);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Mobile Menu Trigger & Drawer */
+.mobile-menu-toggle {
+  display: none;
+  background: none;
+  border: var(--rule-hairline);
+  padding: 0.5rem 0.85rem;
+  min-height: 44px;
+  font-family: var(--font-mono);
+  font-size: var(--text-index);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-charcoal);
+  cursor: pointer;
+}
+
+.mobile-nav-drawer {
+  display: none;
+  background-color: var(--color-parchment-light);
+  border-bottom: var(--rule-strong);
+  padding: var(--space-5) var(--gutter);
+}
+
+.mobile-nav-drawer.is-open {
+  display: block;
+}
+
+.mobile-nav-drawer__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  border-top: var(--rule-hairline);
+}
+
+.mobile-nav-drawer__list li {
+  border-bottom: var(--rule-hairline);
+}
+
+.mobile-nav-drawer__list a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  font-family: var(--font-editorial);
+  font-size: 1.5rem;
+  color: var(--color-charcoal);
+  text-decoration: none;
+}
+
+@media (max-width: 1024px) {
+  .site-nav-primary {
+    display: none;
+  }
+  .mobile-menu-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    justify-self: start;
+  }
+  .site-nav-utility .hide-mobile {
+    display: none;
+  }
+}
+
+/* 3. BUTTONS & EDITORIAL ACTIONS (Zero rounded pills / zero SaaS clichés) */
+.btn-editorial,
+.button,
+.woocommerce a.button,
+.woocommerce button.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 48px;
+  padding: 0.8rem 1.5rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-index);
+  font-weight: 500;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--color-parchment);
+  background-color: var(--color-charcoal);
+  border: 1px solid var(--color-charcoal);
+  border-radius: 0;
+  cursor: pointer;
+  transition: background-color var(--duration-base) var(--ease-editorial),
+              color var(--duration-base) var(--ease-editorial),
+              border-color var(--duration-base) var(--ease-editorial);
+}
+
+.btn-editorial:hover,
+.button:hover {
+  background-color: var(--color-forest);
+  border-color: var(--color-forest);
+  color: var(--color-parchment);
+}
+
+.btn-editorial--outline {
+  background-color: transparent;
+  color: var(--color-charcoal);
+  border: var(--rule-strong);
+}
+
+.btn-editorial--outline:hover {
+  background-color: var(--color-charcoal);
+  color: var(--color-parchment);
+}
+
+.btn-editorial--light {
+  background-color: var(--color-parchment);
+  color: var(--color-charcoal);
+  border-color: var(--color-parchment);
+}
+
+.btn-editorial--light:hover {
+  background-color: var(--color-brass-light);
+  border-color: var(--color-brass-light);
+  color: var(--color-charcoal);
+}
+
+.link-editorial {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-index);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-charcoal);
+  text-decoration: none;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid var(--color-brass);
+  transition: gap var(--duration-base) var(--ease-editorial),
+              color var(--duration-base) var(--ease-editorial);
+}
+
+.link-editorial:hover {
+  gap: 0.85rem;
+  color: var(--color-terracotta);
+}
+
+/* 4. ART-DIRECTED PHOTOGRAPHIC PLATES & EDITORIAL FIGURES */
+.specimen-figure {
+  margin: 0;
+  position: relative;
+  background-color: var(--color-parchment-deep);
+  border: var(--rule-hairline);
+  overflow: hidden;
+}
+
+.specimen-figure__canvas {
+  position: relative;
+  width: 100%;
+  aspect-ratio: var(--aspect, 4 / 5);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: var(--space-4);
+  background-color: var(--plate-bg, #1D2D24);
+  color: var(--plate-ink, var(--color-parchment));
+  overflow: hidden;
+}
+
+.specimen-figure__canvas--landscape {
+  --aspect: 16 / 10;
+}
+
+.specimen-figure__canvas--cinematic {
+  --aspect: 21 / 9;
+}
+
+.specimen-figure__canvas--square {
+  --aspect: 1 / 1;
+}
+
+.specimen-figure__img,
+.product-specimen__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.85s var(--ease-editorial), filter 0.6s var(--ease-editorial);
+}
+
+.specimen-figure:hover .specimen-figure__img,
+.product-specimen:hover .product-specimen__img,
+.stall-portal:hover .stall-portal__photo img,
+.journal-card:hover .journal-card__media img {
+  transform: scale(1.035);
+}
+
+.specimen-figure__scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(20, 19, 17, 0.25) 0%, rgba(20, 19, 17, 0.05) 45%, rgba(20, 19, 17, 0.68) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.specimen-figure__badge {
+  position: relative;
+  z-index: 2;
+  align-self: flex-start;
+  background-color: rgba(245, 240, 230, 0.92);
+  color: var(--color-charcoal);
+  border: var(--rule-hairline);
+  padding: 0.28rem 0.65rem;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  backdrop-filter: blur(4px);
+}
+
+.specimen-figure__caption {
+  padding: 0.85rem var(--space-4);
+  border-top: var(--rule-hairline);
+  background-color: var(--color-parchment-light);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-3);
+  font-size: var(--text-caption);
+  color: var(--color-ink-secondary);
+}
+
+.specimen-figure__caption-id {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--color-ink-muted);
+  white-space: nowrap;
+}
+
+/* Editorial Photo Card Media Wrapper */
+.journal-card__media,
+.stall-portal__photo,
+.region-card__photo {
+  position: relative;
+  overflow: hidden;
+  border: var(--rule-hairline);
+  background-color: var(--color-parchment-deep);
+}
+
+.stall-portal__photo {
+  aspect-ratio: 16 / 10;
+  margin: var(--space-3) 0 var(--space-4) 0;
+}
+
+.stall-portal__photo img,
+.journal-card__media img,
+.region-card__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.85s var(--ease-editorial);
+}
+
+.region-card__photo {
+  aspect-ratio: 16 / 10;
+  margin-bottom: var(--space-3);
+  border-color: rgba(245, 240, 230, 0.22);
+}
+
+.journal-card__media {
+  aspect-ratio: 16 / 10;
+  margin-bottom: var(--space-3);
+}
+
+/* 5. PRODUCT SPECIMEN LEDGER ENTRY (Replaces Generic E-Commerce Cards) */
+.product-specimen {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: var(--color-parchment-light);
+  border: var(--rule-hairline);
+  transition: border-color var(--duration-base) var(--ease-editorial);
+}
+
+.product-specimen:hover {
+  border-color: var(--color-brass);
+}
+
+.product-specimen__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.15rem;
+  border-bottom: var(--rule-hairline);
+  font-family: var(--font-mono);
+  font-size: 0.71rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.product-specimen__media {
+  position: relative;
+  aspect-ratio: 4 / 3.75;
+  background-color: var(--color-parchment-deep);
+  border-bottom: var(--rule-hairline);
+  overflow: hidden;
+  display: block;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.product-specimen__body {
+  padding: 1.35rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  flex-grow: 1;
+}
+
+.product-specimen__region {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--stall-accent, var(--color-forest));
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.product-specimen__title {
+  font-family: var(--font-editorial);
+  font-size: 1.52rem;
+  line-height: 1.16;
+  min-height: 2.32em;
+  margin: 0;
+}
+
+.product-specimen__title a {
+  color: var(--color-charcoal);
+  text-decoration: none;
+}
+
+.product-specimen__notes {
+  font-size: 0.9rem;
+  line-height: 1.52;
+  min-height: 3.04em;
+  color: var(--color-ink-secondary);
+  margin: 0;
+}
+
+.product-specimen__provenance-links {
+  margin-top: auto;
+  padding-top: 0.85rem;
+  border-top: var(--rule-hairline);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.product-specimen__provenance-links a {
+  color: var(--color-ink-secondary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.product-specimen__provenance-links a:hover {
+  color: var(--color-charcoal);
+}
+
+.product-specimen__footer {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  border-top: var(--rule-hairline);
+  background-color: var(--color-parchment);
+}
+
+.product-specimen__price {
+  padding: 0.85rem 1.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.product-specimen__weight {
+  font-size: 0.75rem;
+  color: var(--color-ink-muted);
+  margin-left: 0.35rem;
+}
+
+.product-specimen__add-btn {
+  height: 100%;
+  min-height: 48px;
+  padding: 0 1.25rem;
+  border: none;
+  border-left: var(--rule-hairline);
+  background-color: transparent;
+  color: var(--color-charcoal);
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-editorial),
+              color var(--duration-fast) var(--ease-editorial);
+}
+
+.product-specimen__add-btn:hover {
+  background-color: var(--color-forest);
+  color: var(--color-parchment);
+}
+
+/* 6. NON-LINEAR PROVENANCE COMPASS (Products ↔ Makers ↔ Stories ↔ Regions ↔ Journal) */
+.provenance-compass {
+  background-color: var(--color-parchment-deep);
+  border-top: var(--rule-strong);
+  border-bottom: var(--rule-strong);
+  padding: var(--space-6) 0;
+}
+
+.provenance-compass__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin-bottom: var(--space-5);
+  padding-bottom: var(--space-4);
+  border-bottom: var(--rule-hairline);
+}
+
+.provenance-compass__nodes {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-top: var(--rule-hairline);
+  border-left: var(--rule-hairline);
+}
+
+.provenance-node {
+  padding: var(--space-4);
+  border-right: var(--rule-hairline);
+  border-bottom: var(--rule-hairline);
+  background-color: var(--color-parchment-light);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-3);
+  text-decoration: none;
+  color: var(--color-charcoal);
+  transition: background-color var(--duration-base) var(--ease-editorial);
+}
+
+.provenance-node:hover {
+  background-color: var(--color-parchment);
+}
+
+.provenance-node__type {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-terracotta);
+}
+
+.provenance-node__title {
+  font-family: var(--font-editorial);
+  font-size: 1.4rem;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.provenance-node__meta {
+  font-size: 0.85rem;
+  color: var(--color-ink-secondary);
+  margin: 0;
+}
+
+@media (max-width: 960px) {
+  .provenance-compass__nodes {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .provenance-compass__nodes {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 7. ACCESSIBLE DOCUMENTARY AUDIO PLAYER WITH TRANSCRIPT */
+.audio-field-module {
+  background-color: var(--color-parchment-light);
+  border: var(--rule-strong);
+  padding: var(--space-4) var(--space-5);
+  margin: var(--space-5) 0;
+}
+
+.audio-field-module__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.audio-field-module__controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-3) 0;
+  border-top: var(--rule-hairline);
+  border-bottom: var(--rule-hairline);
+}
+
+.audio-play-btn {
+  min-width: 48px;
+  min-height: 48px;
+  padding: 0 1rem;
+  background-color: var(--color-forest);
+  color: var(--color-parchment);
+  border: none;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+}
+
+.audio-progress-track {
+  flex-grow: 1;
+  height: 4px;
+  background-color: rgba(26, 25, 23, 0.15);
+  position: relative;
+}
+
+.audio-progress-bar {
+  width: 0%;
+  height: 100%;
+  background-color: var(--color-brass);
+  transition: width 0.2s linear;
+}
+
+.audio-transcript-details {
+  margin-top: var(--space-3);
+}
+
+.audio-transcript-details summary {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  color: var(--color-ink-secondary);
+  padding: 0.35rem 0;
+}
+
+.audio-transcript-body {
+  margin-top: var(--space-3);
+  padding: var(--space-3);
+  background-color: var(--color-parchment);
+  border-left: 2px solid var(--color-brass);
+  font-size: 0.92rem;
+  color: var(--color-ink-secondary);
+}
+
+/* 8. SLIDE-OVER MINI BASKET DRAWER */
+.basket-drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(26, 25, 23, 0.55);
+  z-index: 1100;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duration-base) var(--ease-editorial);
+}
+
+.basket-drawer-backdrop.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.basket-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: min(460px, 100vw);
+  height: 100dvh;
+  background-color: var(--color-parchment-light);
+  border-left: var(--rule-strong);
+  z-index: 1200;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform var(--duration-base) var(--ease-editorial);
+}
+
+.basket-drawer.is-open {
+  transform: translateX(0);
+}
+
+.basket-drawer__header {
+  padding: var(--space-4) var(--space-5);
+  border-bottom: var(--rule-hairline);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.basket-drawer__items {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: var(--space-4) var(--space-5);
+}
+
+.basket-drawer__footer {
+  padding: var(--space-4) var(--space-5);
+  border-top: var(--rule-strong);
+  background-color: var(--color-parchment);
+}
+
+/* 9. EDITORIAL COLOPHON FOOTER */
+.site-colophon {
+  background-color: var(--color-charcoal);
+  color: var(--color-parchment);
+  padding-top: var(--space-7);
+  padding-bottom: var(--space-6);
+  border-top: 2px solid var(--color-brass);
+}
+
+.site-colophon h2,
+.site-colophon h3,
+.site-colophon h4 {
+  color: var(--color-parchment);
+}
+
+.site-colophon a {
+  color: rgba(245, 240, 230, 0.82);
+  text-decoration: none;
+  transition: color var(--duration-fast);
+}
+
+.site-colophon a:hover {
+  color: var(--color-brass-light);
+}
+
+.site-colophon__grid {
+  display: grid;
+  grid-template-columns: 5fr 2fr 2fr 3fr;
+  gap: var(--space-5);
+  padding-bottom: var(--space-6);
+  border-bottom: var(--rule-light-on-dark);
+}
+
+.site-colophon__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  font-size: 0.92rem;
+}
+
+.site-colophon__bottom {
+  padding-top: var(--space-4);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: rgba(245, 240, 230, 0.62);
+  letter-spacing: 0.06em;
+}
+
+@media (max-width: 960px) {
+  .site-colophon__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .site-colophon__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==========================================================================
+   10. ART-DIRECTED SECTION, PAGE & STALL ENVIRONMENT TRANSITIONS
+   ========================================================================== */
+
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root) {
+  animation: penbraeViewFadeOut 220ms cubic-bezier(0.4, 0, 1, 1) both;
+}
+
+::view-transition-new(root) {
+  animation: penbraeViewFadeIn 480ms var(--ease-editorial) both;
+}
+
+@keyframes penbraeViewFadeOut {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(-8px); }
+}
+
+@keyframes penbraeViewFadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Ambient Body & Stall Surface Morphing */
+body {
+  transition:
+    background-color 650ms var(--ease-editorial),
+    color 420ms var(--ease-editorial);
+}
+
+body.stall-theme-teas {
+  background-color: #F4F1E6;
+}
+
+body.stall-theme-spices {
+  background-color: #F5ECE0;
+}
+
+body.stall-theme-chillies {
+  background-color: #F3EAE4;
+}
+
+/* Top Brass Editorial Progress Bar during Stall/Page Transitions */
+.penbrae-transition-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  z-index: 9999;
+  pointer-events: none;
+  background: linear-gradient(90deg, var(--color-forest), var(--color-brass), var(--color-terracotta), var(--color-oxblood));
+  transform: scaleX(0);
+  transform-origin: left center;
+  opacity: 0;
+  transition: transform 420ms var(--ease-editorial), opacity 260ms ease;
+}
+
+.penbrae-transition-bar.is-active {
+  opacity: 1;
+  transform: scaleX(0.72);
+}
+
+.penbrae-transition-bar.is-completing {
+  opacity: 0;
+  transform: scaleX(1);
+  transition: transform 220ms ease-out, opacity 280ms ease 120ms;
+}
+
+/* Smooth Main Content Cross-Fade & Atmosphere Glide */
+#main-content {
+  will-change: opacity, transform;
+  transition:
+    opacity 240ms cubic-bezier(0.4, 0, 1, 1),
+    transform 240ms cubic-bezier(0.4, 0, 1, 1);
+}
+
+#main-content.is-transitioning-out {
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+}
+
+#main-content.is-transitioning-in {
+  animation: penbraeMainEnter 560ms var(--ease-editorial) both;
+}
+
+@keyframes penbraeMainEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Stall Masthead Atmosphere & Hero Backdrop Settle */
+.stall-masthead {
+  transition:
+    background-color 650ms var(--ease-editorial),
+    color 450ms var(--ease-editorial);
+}
+
+.stall-masthead > img {
+  animation: penbraeStallBackdropSettle 1.15s var(--ease-editorial) both;
+}
+
+@keyframes penbraeStallBackdropSettle {
+  0% {
+    opacity: 0;
+    transform: scale(1.055);
+  }
+  100% {
+    opacity: 0.24;
+    transform: scale(1);
+  }
+}
+
+/* Stall Environment Switcher Pills inside Masthead */
+.stall-env-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0.95rem;
+  min-height: 40px;
+  font-family: var(--font-mono);
+  font-size: 0.73rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--color-parchment);
+  border: 1px solid rgba(245, 240, 230, 0.32);
+  background: rgba(0, 0, 0, 0.24);
+  transition:
+    background-color 280ms var(--ease-editorial),
+    border-color 280ms var(--ease-editorial),
+    color 280ms var(--ease-editorial),
+    transform 280ms var(--ease-editorial);
+}
+
+.stall-env-pill:hover {
+  background: rgba(245, 240, 230, 0.16);
+  border-color: var(--color-brass-light);
+  transform: translateY(-1px);
+}
+
+.stall-env-pill.is-active {
+  background: var(--color-parchment);
+  color: var(--color-charcoal);
+  border-color: var(--color-parchment);
+  font-weight: 600;
+}
+
+/* Sticky Stall Environment Bar on Page 2 (/stalls) */
+.stalls-environment-bar {
+  position: sticky;
+  top: 72px;
+  z-index: 820;
+  background-color: rgba(245, 240, 230, 0.94);
+  backdrop-filter: blur(8px);
+  border-bottom: var(--rule-strong);
+  transition: background-color 500ms var(--ease-editorial), border-color 500ms var(--ease-editorial);
+}
+
+.stalls-environment-bar[data-active-env="teas"] {
+  background-color: rgba(239, 236, 225, 0.95);
+  border-bottom-color: var(--color-forest);
+}
+
+.stalls-environment-bar[data-active-env="spices"] {
+  background-color: rgba(243, 232, 218, 0.95);
+  border-bottom-color: var(--color-terracotta);
+}
+
+.stalls-environment-bar[data-active-env="chillies"] {
+  background-color: rgba(239, 227, 222, 0.95);
+  border-bottom-color: var(--color-oxblood);
+}
+
+.stalls-environment-bar__inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 0.75rem var(--gutter);
+  max-width: var(--container-max);
+  margin: 0 auto;
+}
+
+.stalls-environment-bar__tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.stalls-env-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.95rem;
+  font-family: var(--font-mono);
+  font-size: 0.73rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--color-charcoal);
+  border: var(--rule-hairline);
+  background: var(--color-parchment-light);
+  transition: all 320ms var(--ease-editorial);
+}
+
+.stalls-env-tab__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  transition: transform 300ms var(--ease-editorial);
+}
+
+.stalls-env-tab.is-active[data-env-target="teas"] {
+  background: var(--color-forest);
+  color: var(--color-parchment);
+  border-color: var(--color-forest);
+}
+
+.stalls-env-tab.is-active[data-env-target="spices"] {
+  background: var(--color-terracotta);
+  color: var(--color-parchment);
+  border-color: var(--color-terracotta);
+}
+
+.stalls-env-tab.is-active[data-env-target="chillies"] {
+  background: var(--color-oxblood);
+  color: var(--color-parchment);
+  border-color: var(--color-oxblood);
+}
+
+/* Home Page Triptych Interactive Atmosphere Shift */
+.stall-triptych {
+  transition: background-color 550ms var(--ease-editorial);
+}
+
+.stall-portal {
+  transition:
+    background-color 480ms var(--ease-editorial),
+    transform 480ms var(--ease-editorial),
+    opacity 420ms var(--ease-editorial),
+    box-shadow 480ms var(--ease-editorial);
+}
+
+.stall-triptych.has-hovered-portal .stall-portal:not(.is-hovered) {
+  opacity: 0.82;
+}
+
+.stall-triptych .stall-portal.is-hovered {
+  transform: translateY(-5px);
+  box-shadow: 0 18px 38px -18px rgba(23, 42, 33, 0.22);
+  z-index: 2;
+}
+
+/* Scroll-Triggered Section & Card Reveals */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 720ms var(--ease-editorial),
+    transform 720ms var(--ease-editorial);
+  transition-delay: calc(var(--stagger-idx, 0) * 70ms);
+}
+
+.reveal-on-scroll.is-in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Smooth Catalogue Filtering & Sorting Transitions */
+[data-stall-catalogue] {
+  transition:
+    opacity 220ms var(--ease-editorial),
+    transform 220ms var(--ease-editorial);
+}
+
+[data-stall-catalogue].is-filtering {
+  opacity: 0.18;
+  transform: translateY(8px);
+}
+
+[data-specimen-item] {
+  transition:
+    opacity 360ms var(--ease-editorial),
+    transform 360ms var(--ease-editorial),
+    border-color var(--duration-base) var(--ease-editorial);
+}
+
+/* Smooth PDP Gallery Image Cross-Fade */
+[data-gallery-stage-img] {
+  transition:
+    opacity 260ms var(--ease-editorial),
+    transform 520ms var(--ease-editorial);
+}
+
+[data-gallery-stage-img].is-swapping {
+  opacity: 0.15;
+  transform: scale(1.025);
+}

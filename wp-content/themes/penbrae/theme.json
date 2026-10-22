@@ -1,0 +1,158 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/theme.json",
+  "version": 2,
+  "settings": {
+    "appearanceTools": true,
+    "layout": {
+      "contentSize": "720px",
+      "wideSize": "1360px"
+    },
+    "color": {
+      "custom": false,
+      "customGradient": false,
+      "defaultPalette": false,
+      "defaultGradients": false,
+      "palette": [
+        {
+          "slug": "parchment",
+          "color": "#F5F0E6",
+          "name": "Warm Parchment (Primary Canvas)"
+        },
+        {
+          "slug": "parchment-deep",
+          "color": "#EBE3D3",
+          "name": "Aged Ivory (Editorial Well)"
+        },
+        {
+          "slug": "parchment-light",
+          "color": "#FAF7F1",
+          "name": "Specimen Paper (Elevated)"
+        },
+        {
+          "slug": "forest",
+          "color": "#182B22",
+          "name": "Deep Forest Green (Brand Character)"
+        },
+        {
+          "slug": "charcoal",
+          "color": "#1C1B18",
+          "name": "Near-Black Charcoal (Primary Ink)"
+        },
+        {
+          "slug": "ink-muted",
+          "color": "#524E46",
+          "name": "Archival Slate (Secondary Copy)"
+        },
+        {
+          "slug": "terracotta",
+          "color": "#9E523B",
+          "name": "Muted Terracotta (Spice Warmth)"
+        },
+        {
+          "slug": "brass",
+          "color": "#9A7B3E",
+          "name": "Aged Brass (Restrained Accent)"
+        },
+        {
+          "slug": "oxblood",
+          "color": "#5C1D1B",
+          "name": "Deep Oxblood (Editorial Emphasis)"
+        }
+      ]
+    },
+    "typography": {
+      "customFontSize": false,
+      "dropCap": true,
+      "fontFamilies": [
+        {
+          "fontFamily": "'Cormorant Garamond', 'Newsreader', Georgia, serif",
+          "name": "Editorial Serif (Cormorant Garamond)",
+          "slug": "editorial"
+        },
+        {
+          "fontFamily": "'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+          "name": "Functional Sans (Plus Jakarta Sans)",
+          "slug": "sans"
+        },
+        {
+          "fontFamily": "'JetBrains Mono', 'Courier New', monospace",
+          "name": "Archival Index Mono",
+          "slug": "mono"
+        }
+      ],
+      "fontSizes": [
+        {
+          "slug": "xs",
+          "size": "0.75rem",
+          "name": "Index / Marginalia (12px)"
+        },
+        {
+          "slug": "sm",
+          "size": "0.875rem",
+          "name": "Caption / Specification (14px)"
+        },
+        {
+          "slug": "base",
+          "size": "1.0625rem",
+          "name": "Editorial Body (17px)"
+        },
+        {
+          "slug": "lg",
+          "size": "1.3125rem",
+          "name": "Lead Paragraph (21px)"
+        },
+        {
+          "slug": "xl",
+          "size": "1.75rem",
+          "name": "Subheading (28px)"
+        },
+        {
+          "slug": "2xl",
+          "size": "2.5rem",
+          "name": "Section Essay Title (40px)"
+        },
+        {
+          "slug": "3xl",
+          "size": "clamp(2.5rem, 4.8vw, 4.25rem)",
+          "name": "Masthead / Monograph Title"
+        }
+      ]
+    },
+    "spacing": {
+      "units": ["px", "rem", "vh", "vw", "%"],
+      "spacingSizes": [
+        { "slug": "20", "size": "0.5rem", "name": "Micro (8px)" },
+        { "slug": "30", "size": "1rem", "name": "Small (16px)" },
+        { "slug": "40", "size": "1.75rem", "name": "Medium (28px)" },
+        { "slug": "50", "size": "3rem", "name": "Large (48px)" },
+        { "slug": "60", "size": "5rem", "name": "Editorial Break (80px)" },
+        { "slug": "70", "size": "7.5rem", "name": "Chapter Interval (120px)" }
+      ]
+    }
+  },
+  "styles": {
+    "color": {
+      "background": "var(--wp--preset--color--parchment)",
+      "text": "var(--wp--preset--color--charcoal)"
+    },
+    "typography": {
+      "fontFamily": "var(--wp--preset--font-family--sans)",
+      "fontSize": "var(--wp--preset--font-size--base)",
+      "lineHeight": "1.68"
+    },
+    "elements": {
+      "heading": {
+        "typography": {
+          "fontFamily": "var(--wp--preset--font-family--editorial)",
+          "fontWeight": "400",
+          "lineHeight": "1.1"
+        }
+      },
+      "link": {
+        "color": {
+          "text": "var(--wp--preset--color--charcoal)"
+        }
+      }
+    }
+  }
+}

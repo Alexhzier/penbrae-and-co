@@ -1,0 +1,14 @@
+{
+  "name": "penbrae-and-co-preview",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Penbrae & Co Ltd — Editorial E-Commerce Preview (Cardiff & Northeast India)",
+  "scripts": {
+    "dev": "node preview-server/server.js",
+    "start": "node preview-server/server.js",
+    "build": "node scripts/build-vercel.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

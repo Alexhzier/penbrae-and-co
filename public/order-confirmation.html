@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Penbrae &amp; Co Ltd — Rare Teas, Spices &amp; Chillies from Northeast India (Cardiff)</title>
+  <meta name="description" content="Penbrae & Co Ltd — Cardiff-based importers of rare, handcrafted teas, spices, and chillies from Northeast India.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,600&family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="/assets/css/design-system.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+  <link rel="stylesheet" href="/assets/css/pages.css">
+</head>
+<body class="">
+<a class="skip-link" href="#main-content">Skip to main editorial content</a>
+
+<div class="editorial-dispatch-bar" role="region" aria-label="Provenance and Dispatch Notice">
+  <span>PENBRAE &amp; CO LTD · CARDIFF, WALES — SMALL-LOT IMPORTERS OF NORTHEAST INDIAN TEAS, SPICES &amp; CHILLIES</span>
+  <span class="editorial-dispatch-bar__coords">51°28′N 03°10′W ↔ 26°12′N 92°56′E · CURRENCY: GBP (£)</span>
+</div>
+
+<header class="site-masthead" role="banner">
+  <div class="site-masthead__inner">
+    <button type="button" class="mobile-menu-toggle" data-mobile-nav-toggle aria-expanded="false" aria-controls="penbrae-mobile-drawer">
+      Index [≡]
+    </button>
+
+    <nav aria-label="Primary Editorial Navigation">
+      <ul class="site-nav-primary">
+        <li><a href="/stalls" >The Stalls</a></li>
+        <li><a href="/stall/teas" >Teas</a></li>
+        <li><a href="/stall/spices" >Spices</a></li>
+        <li><a href="/stall/chillies" >Chillies</a></li>
+        <li><a href="/makers" >Meet the Makers</a></li>
+      </ul>
+    </nav>
+
+    <a href="/" class="site-brand" aria-label="Penbrae & Co Ltd — Home">
+      <span class="site-brand__wordmark">Penbrae &amp; Co</span>
+      <span class="site-brand__sub">Cardiff · Northeast India</span>
+    </a>
+
+    <div class="site-nav-utility">
+      <a href="/journal" class="hide-mobile" >Journal</a>
+      <a href="/about" class="hide-mobile" >Provenance</a>
+      <a href="/subscribe" class="hide-mobile" >Dispatch</a>
+      <a href="/my-account" class="hide-mobile" >Account</a>
+      <button type="button" data-basket-open aria-label="Open shopping basket drawer">
+        <span>Basket</span>
+        <span class="basket-count-pill" data-basket-count>1</span>
+      </button>
+    </div>
+  </div>
+
+  <nav id="penbrae-mobile-drawer" class="mobile-nav-drawer" aria-label="Mobile Navigation Index" aria-hidden="true">
+    <div class="kicker-index" style="margin-bottom:0.75rem;">Navigation Index — Products, Makers &amp; Stories</div>
+    <ul class="mobile-nav-drawer__list">
+      <li><a href="/stalls"><span>The Three Stalls Overview</span><span class="kicker-index">01</span></a></li>
+      <li><a href="/stall/teas"><span>The Tea Stall</span><span class="kicker-index">Assam &amp; Arunachal</span></a></li>
+      <li><a href="/stall/spices"><span>The Spice Stall</span><span class="kicker-index">Meghalaya &amp; Ziro</span></a></li>
+      <li><a href="/stall/chillies"><span>The Chilli Stall</span><span class="kicker-index">Nagaland &amp; Manipur</span></a></li>
+      <li><a href="/makers"><span>Meet the Makers (Interactive Atlas)</span><span class="kicker-index">Map</span></a></li>
+      <li><a href="/story/mist-over-the-brahmaputra-autumn-pluck"><span>Product Provenance Stories</span><span class="kicker-index">Archive</span></a></li>
+      <li><a href="/journal"><span>The Penbrae Journal</span><span class="kicker-index">Issue 01</span></a></li>
+      <li><a href="/about"><span>About Penbrae &amp; Co</span><span class="kicker-index">Cardiff</span></a></li>
+      <li><a href="/subscribe"><span>Subscribe to the Dispatch</span><span class="kicker-index">Letters</span></a></li>
+      <li><a href="/basket"><span>Basket &amp; Checkout</span><span class="kicker-index">GBP £</span></a></li>
+    </ul>
+  </nav>
+</header>
+
+<div id="penbrae-basket-backdrop" class="basket-drawer-backdrop"></div>
+<aside id="penbrae-basket-drawer" class="basket-drawer" role="dialog" aria-modal="true" aria-label="Shopping Basket Ledger" aria-hidden="true">
+  <div class="basket-drawer__header">
+    <div>
+      <div class="kicker-index">CARDIFF DISPATCH LEDGER</div>
+      <h2 style="font-size:1.55rem;margin:0.2rem 0 0 0;">Your Basket</h2>
+    </div>
+    <button type="button" data-basket-close class="filter-pill" aria-label="Close basket drawer">Close [×]</button>
+  </div>
+  <div id="penbrae-basket-drawer-items" class="basket-drawer__items"></div>
+  <div class="basket-drawer__footer">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:0.5rem;">
+      <span style="font-family:var(--font-mono);font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-ink-muted);">Estimated Subtotal (GBP)</span>
+      <span id="penbrae-basket-drawer-subtotal" class="tabular-nums" style="font-family:var(--font-editorial);font-size:1.75rem;">£28.00</span>
+    </div>
+    <p style="font-size:0.8rem;color:var(--color-ink-muted);margin-bottom:1rem;">
+      UK shipping &amp; applicable taxes are calculated at checkout via configured WooCommerce shipping zones.
+    </p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
+      <a href="/basket" class="btn-editorial btn-editorial--outline" style="justify-content:center;">View Basket</a>
+      <a href="/checkout" class="btn-editorial" style="justify-content:center;">Checkout →</a>
+    </div>
+  </div>
+</aside>
+
+<main id="main-content" role="main">
+<section class="editorial-section">
+  <div class="penbrae-container">
+    <div class="editorial-grid">
+      <aside class="col-editorial-marginalia">
+        <span class="kicker-index">DISPATCH DOSSIER RECORDED · TEST ENVIRONMENT</span>
+        <h1 style="font-size:2.3rem;margin-top:0.4rem;">Thank You. Your Order Has Been Logged in the Cardiff Ledger.</h1>
+      </aside>
+      <div class="col-editorial-essay prose-measure">
+        <p class="lead-standfirst">Reference: PB-TEST-2026-084 · Status: Test Mode Verification Order (No Live Payment Captured).</p><p>While your seasonal lots are prepared, we invite you to explore the provenance stories and maker profiles connected to your harvest.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="provenance-compass" aria-label="Non-Linear Provenance Exploration">
+  <div class="penbrae-container">
+    <div class="provenance-compass__header">
+      <div>
+        <span class="kicker-index">NON-LINEAR PROVENANCE GRAPH · CONTINUE EXPLORING</span>
+        <h2 style="font-size:2rem;margin:0.35rem 0 0 0;">Follow the Thread Across Ingredient, Maker, Region &amp; Essay</h2>
+      </div>
+      <a href="/makers" class="link-editorial">Open Northeast India Interactive Atlas →</a>
+    </div>
+    <div class="provenance-compass__nodes">
+      <a href="/product/upper-assam-tippy-orthodox" class="provenance-node">
+        <span class="provenance-node__type">01 · THE INGREDIENT (PRODUCT)</span>
+        <h3 class="provenance-node__title">Upper Assam Tippy Orthodox Reserve (Lot 26-A)</h3>
+        <p class="provenance-node__meta">Tasting profile, preparation notes &amp; acquire in GBP (£) →</p>
+      </a>
+      <a href="/maker/upper-assam-orthodox-collective" class="provenance-node">
+        <span class="provenance-node__type">02 · THE PRODUCER (MAKER PROFILE)</span>
+        <h3 class="provenance-node__title">Brahmaputra Smallholder Tea Collective</h3>
+        <p class="provenance-node__meta">Producer biography, field audio &amp; harvest discipline →</p>
+      </a>
+      <a href="/story/mist-over-the-brahmaputra-autumn-pluck" class="provenance-node">
+        <span class="provenance-node__type">03 · PROVENANCE MONOGRAPH (STORY)</span>
+        <h3 class="provenance-node__title">Mist Over the Brahmaputra: The Autumn Tippy Pluck</h3>
+        <p class="provenance-node__meta">Read the long-form documentary story of this harvest →</p>
+      </a>
+      <a href="/journal/smoke-mist-and-limestone-terroir" class="provenance-node">
+        <span class="provenance-node__type">04 · THE JOURNAL &amp; REGION</span>
+        <h3 class="provenance-node__title">Smoke, Mist &amp; Limestone: Reading the Terroir of Northeast India</h3>
+        <p class="provenance-node__meta">Regional cultural essays &amp; culinary pairing dispatches →</p>
+      </a>
+    </div>
+  </div>
+</section></main>
+<footer class="site-colophon" role="contentinfo">
+  <div class="penbrae-container">
+    <div class="site-colophon__grid">
+      <div>
+        <div class="kicker-index" style="color:var(--color-brass-light);margin-bottom:0.75rem;">COLOPHON · PENBRAE &amp; CO LTD</div>
+        <h2 style="font-size:2.1rem;line-height:1.12;margin-bottom:1rem;">Rare single-harvest teas, heirloom rhizomes, and smoked chillies from Northeast India, curated in Cardiff.</h2>
+        <p style="color:rgba(245,240,230,0.74);max-width:48ch;font-size:0.95rem;">Every seasonal lot is documented alongside the makers who cultivate it, the altitude and micro-climate of its origin, and the craft traditions that shape its character.</p>
+        <div style="margin-top:1.5rem;font-family:var(--font-mono);font-size:0.74rem;color:var(--color-brass-light);letter-spacing:0.08em;">REGISTERED IN WALES · PENBRAE &amp; CO LTD · CARDIFF, UK</div>
+      </div>
+      <div>
+        <h3 style="font-family:var(--font-mono);font-size:0.75rem;letter-spacing:0.11em;text-transform:uppercase;color:var(--color-brass-light);margin-bottom:1.1rem;">The Three Stalls</h3>
+        <ul class="site-colophon__list">
+          <li><a href="/stalls">All Stalls Overview</a></li>
+          <li><a href="/stall/teas">The Tea Stall (Assam &amp; Arunachal)</a></li>
+          <li><a href="/stall/spices">The Spice Stall (Meghalaya &amp; Ziro)</a></li>
+          <li><a href="/stall/chillies">The Chilli Stall (Nagaland &amp; Manipur)</a></li>
+          <li><a href="/product/upper-assam-tippy-orthodox">Featured Lot: Tippy Orthodox Reserve</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 style="font-family:var(--font-mono);font-size:0.75rem;letter-spacing:0.11em;text-transform:uppercase;color:var(--color-brass-light);margin-bottom:1.1rem;">Editorial &amp; Origins</h3>
+        <ul class="site-colophon__list">
+          <li><a href="/makers">Meet the Makers (Interactive Map)</a></li>
+          <li><a href="/maker/upper-assam-orthodox-collective">Maker Dossier: Upper Assam Collective</a></li>
+          <li><a href="/story/mist-over-the-brahmaputra-autumn-pluck">Product Story: Autumn Tippy Pluck</a></li>
+          <li><a href="/journal">The Penbrae Journal</a></li>
+          <li><a href="/about">About Penbrae &amp; Co</a></li>
+          <li><a href="/subscribe">Subscribe to Dispatch</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 style="font-family:var(--font-mono);font-size:0.75rem;letter-spacing:0.11em;text-transform:uppercase;color:var(--color-brass-light);margin-bottom:1.1rem;">Commerce &amp; Governance</h3>
+        <ul class="site-colophon__list">
+          <li><a href="/basket">Shopping Basket</a></li>
+          <li><a href="/checkout">Checkout (Stripe Test Mode Ready)</a></li>
+          <li><a href="/my-account">Customer Account</a></li>
+          <li><a href="/shipping-returns">Shipping &amp; Returns Information</a></li>
+          <li><a href="/privacy-policy">Privacy Policy &amp; UK GDPR</a></li>
+          <li><a href="/terms-and-conditions">Terms &amp; Conditions</a></li>
+          <li><a href="/contact">Contact &amp; Cardiff Enquiries</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="site-colophon__bottom">
+      <span>&copy; 2026 Penbrae &amp; Co Ltd. All rights reserved. Prices displayed in GBP (£).</span>
+      <span>CARDIFF, WALES · SMALL-LOT IMPORTERS OF NORTHEAST INDIAN TEAS, SPICES &amp; CHILLIES</span>
+    </div>
+  </div>
+</footer>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="/assets/js/makers-map.js"></script>
+<script src="/assets/js/commerce.js"></script>
+<script src="/assets/js/main.js"></script>
+</body>
+</html>

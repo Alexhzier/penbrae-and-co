@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Penbrae &amp; Co Ltd — Rare Teas, Spices &amp; Chillies from Northeast India (Cardiff)</title>
+  <meta name="description" content="Penbrae & Co Ltd — Cardiff-based importers of rare, handcrafted teas, spices, and chillies from Northeast India.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,600&family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="/assets/css/design-system.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+  <link rel="stylesheet" href="/assets/css/pages.css">
+</head>
+<body class="">
+<a class="skip-link" href="#main-content">Skip to main editorial content</a>
+
+<div class="editorial-dispatch-bar" role="region" aria-label="Provenance and Dispatch Notice">
+  <span>PENBRAE &amp; CO LTD · CARDIFF, WALES — SMALL-LOT IMPORTERS OF NORTHEAST INDIAN TEAS, SPICES &amp; CHILLIES</span>
+  <span class="editorial-dispatch-bar__coords">51°28′N 03°10′W ↔ 26°12′N 92°56′E · CURRENCY: GBP (£)</span>
+</div>
+
+<header class="site-masthead" role="banner">
+  <div class="site-masthead__inner">
+    <button type="button" class="mobile-menu-toggle" data-mobile-nav-toggle aria-expanded="false" aria-controls="penbrae-mobile-drawer">
+      Index [≡]
+    </button>
+
+    <nav aria-label="Primary Editorial Navigation">
+      <ul class="site-nav-primary">
+        <li><a href="/stalls" >The Stalls</a></li>
+        <li><a href="/stall/teas" >Teas</a></li>
+        <li><a href="/stall/spices" >Spices</a></li>
+        <li><a href="/stall/chillies" >Chillies</a></li>
+        <li><a href="/makers" >Meet the Makers</a></li>
+      </ul>
+    </nav>
+
+    <a href="/" class="site-brand" aria-label="Penbrae & Co Ltd — Home">
+      <span class="site-brand__wordmark">Penbrae &amp; Co</span>
+      <span class="site-brand__sub">Cardiff · Northeast India</span>
+    </a>
+
+    <div class="site-nav-utility">
+      <a href="/journal" class="hide-mobile" >Journal</a>
+      <a href="/about" class="hide-mobile" >Provenance</a>
+      <a href="/subscribe" class="hide-mobile" >Dispatch</a>
+      <a href="/my-account" class="hide-mobile" >Account</a>
+      <button type="button" data-basket-open aria-label="Open shopping basket drawer">
+        <span>Basket</span>
+        <span class="basket-count-pill" data-basket-count>1</span>
+      </button>
+    </div>
+  </div>
+
+  <nav id="penbrae-mobile-drawer" class="mobile-nav-drawer" aria-label="Mobile Navigation Index" aria-hidden="true">
+    <div class="kicker-index" style="margin-bottom:0.75rem;">Navigation Index — Products, Makers &amp; Stories</div>
+    <ul class="mobile-nav-drawer__list">
+      <li><a href="/stalls"><span>The Three Stalls Overview</span><span class="kicker-index">01</span></a></li>
+      <li><a href="/stall/teas"><span>The Tea Stall</span><span class="kicker-index">Assam &amp; Arunachal</span></a></li>
+      <li><a href="/stall/spices"><span>The Spice Stall</span><span class="kicker-index">Meghalaya &amp; Ziro</span></a></li>
+      <li><a href="/stall/chillies"><span>The Chilli Stall</span><span class="kicker-index">Nagaland &amp; Manipur</span></a></li>
+      <li><a href="/makers"><span>Meet the Makers (Interactive Atlas)</span><span class="kicker-index">Map</span></a></li>
+      <li><a href="/story/mist-over-the-brahmaputra-autumn-pluck"><span>Product Provenance Stories</span><span class="kicker-index">Archive</span></a></li>
+      <li><a href="/journal"><span>The Penbrae Journal</span><span class="kicker-index">Issue 01</span></a></li>
+      <li><a href="/about"><span>About Penbrae &amp; Co</span><span class="kicker-index">Cardiff</span></a></li>
+      <li><a href="/subscribe"><span>Subscribe to the Dispatch</span><span class="kicker-index">Letters</span></a></li>
+      <li><a href="/basket"><span>Basket &amp; Checkout</span><span class="kicker-index">GBP £</span></a></li>
+    </ul>
+  </nav>
+</header>
+
+<div id="penbrae-basket-backdrop" class="basket-drawer-backdrop"></div>
+<aside id="penbrae-basket-drawer" class="basket-drawer" role="dialog" aria-modal="true" aria-label="Shopping Basket Ledger" aria-hidden="true">
+  <div class="basket-drawer__header">
+    <div>
+      <div class="kicker-index">CARDIFF DISPATCH LEDGER</div>
+      <h2 style="font-size:1.55rem;margin:0.2rem 0 0 0;">Your Basket</h2>
+    </div>
+    <button type="button" data-basket-close class="filter-pill" aria-label="Close basket drawer">Close [×]</button>
+  </div>
+  <div id="penbrae-basket-drawer-items" class="basket-drawer__items"></div>
+  <div class="basket-drawer__footer">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:0.5rem;">
+      <span style="font-family:var(--font-mono);font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-ink-muted);">Estimated Subtotal (GBP)</span>
+      <span id="penbrae-basket-drawer-subtotal" class="tabular-nums" style="font-family:var(--font-editorial);font-size:1.75rem;">£28.00</span>
+    </div>
+    <p style="font-size:0.8rem;color:var(--color-ink-muted);margin-bottom:1rem;">
+      UK shipping &amp; applicable taxes are calculated at checkout via configured WooCommerce shipping zones.
+    </p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
+      <a href="/basket" class="btn-editorial btn-editorial--outline" style="justify-content:center;">View Basket</a>
+      <a href="/checkout" class="btn-editorial" style="justify-content:center;">Checkout →</a>
+    </div>
+  </div>
+</aside>
+
+<main id="main-content" role="main">
+<section class="home-hero" aria-label="Editorial Monograph Cover">
+  <div class="home-hero__grid">
+    <div class="home-hero__editorial-column">
+      <div class="home-hero__issue-meta">
+        <span>MONOGRAPH NO. 01 · AUTUMN / WINTER</span>
+        <span>CARDIFF ↔ NORTHEAST INDIA</span>
+      </div>
+      <div>
+        <span class="kicker-index">SINGLE-HARVEST INGREDIENT HOUSE</span>
+        <h1 class="home-hero__headline">Where River Mist, Limestone &amp; Alder Smoke Shape the Harvest.</h1>
+        <p class="lead-standfirst">Rare orthodox teas, heirloom rhizomes, and hearth-smoked chillies from smallholder gardens across Northeast India—curated in Cardiff.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:1rem;margin-top:var(--space-5);">
+          <a href="/stalls" class="btn-editorial"><span>Enter The Three Stalls</span><span aria-hidden="true">→</span></a>
+          <a href="/makers" class="btn-editorial btn-editorial--outline"><span>Explore Maker Atlas</span></a>
+        </div>
+      </div>
+      <div class="home-hero__ledger-foot">
+        <div>
+          <div style="font-family:var(--font-mono);font-size:0.7rem;text-transform:uppercase;color:var(--color-ink-muted);">ORIGIN CORRIDOR</div>
+          <strong>Assam · Meghalaya · Nagaland · Arunachal · Manipur</strong>
+        </div>
+        <div>
+          <div style="font-family:var(--font-mono);font-size:0.7rem;text-transform:uppercase;color:var(--color-ink-muted);">HOME PORT</div>
+          <strong>Cardiff, Wales · GBP (£)</strong>
+        </div>
+      </div>
+    </div>
+    <div class="home-hero__visual-column">
+      <img class="home-hero__visual-art" src="/assets/images/hero-assam-mist.jpg" alt="Morning mist rolling over tea terraces and shade trees in Upper Assam">
+      <div class="specimen-figure__scrim"></div>
+      <div style="position:relative;z-index:2;display:flex;justify-content:space-between;align-items:center;">
+        <span class="specimen-figure__badge">UPPER ASSAM · 27°28′N 94°54′E</span>
+        <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--color-brass-light);">PLATE I</span>
+      </div>
+      <div class="home-hero__visual-overlay">
+        <span class="kicker-index" style="color:var(--color-brass-light);">FEATURED ARRIVAL · LOT 26-A</span>
+        <h2 style="font-size:1.95rem;margin:0.35rem 0;color:var(--color-parchment);">Upper Assam Tippy Orthodox Reserve</h2>
+        <p style="font-size:0.9rem;color:rgba(245,240,230,0.86);margin-bottom:0.85rem;">Late-November whole-leaf pluck rich in downy golden tips. Notes of toasted malt, heather honey, and orchard plum.</p>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding-top:0.75rem;border-top:var(--rule-light-on-dark);">
+          <a href="/product/upper-assam-tippy-orthodox" class="link-editorial" style="color:var(--color-parchment);border-color:var(--color-brass-light);">Inspect Lot (£28.00) →</a>
+          <a href="/story/mist-over-the-brahmaputra-autumn-pluck" style="font-family:var(--font-mono);font-size:0.72rem;color:var(--color-brass-light);text-decoration:underline;">Provenance Story</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="editorial-section" aria-label="Brand Philosophy">
+  <div class="penbrae-container">
+    <div class="editorial-grid" style="align-items:center;">
+      <div class="col-span-5">
+        <figure class="specimen-figure">
+          <div class="specimen-figure__canvas" style="--aspect:4/4.6;">
+            <img class="specimen-figure__img" src="/assets/images/tea-infusion-cup.jpg" alt="Amber orthodox tea infusion in stoneware cup on parchment" loading="lazy">
+            <span class="specimen-figure__badge">CARDIFF CUPPING TABLE</span>
+          </div>
+          <figcaption class="specimen-figure__caption">
+            <span>First infusion of Lot 26-A steeped at 92°C.</span>
+            <span class="specimen-figure__caption-id">FIG. 02</span>
+          </figcaption>
+        </figure>
+      </div>
+      <div class="col-span-7" style="padding-left:var(--space-4);">
+        <span class="kicker-index">01 · QUIET LUXURY &amp; PROVENANCE</span>
+        <h2 style="font-size:clamp(2.1rem, 3.1vw, 3.25rem);line-height:1.12;margin:0.5rem 0 var(--space-4) 0;">An ingredient is never anonymous. Behind every leaf, rhizome, and smoked pod stands a landscape and a human hand.</h2>
+        <p style="color:var(--color-ink-secondary);max-width:56ch;">From our tasting room in Cardiff, Penbrae &amp; Co documents and imports small-lot harvests from Assam, Meghalaya, Nagaland, Arunachal Pradesh, and Manipur—preserving the exact garden, harvest week, and craft tradition of every lot.</p>
+        <div style="margin-top:var(--space-4);">
+          <a href="/about" class="link-editorial">Read the Penbrae Manifesto →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="editorial-section" style="padding-bottom:0;border-bottom:none;" aria-label="The Three Stalls">
+  <div class="penbrae-container" style="margin-bottom:var(--space-5);">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:1rem;">
+      <div>
+        <span class="kicker-index">02 · THREE CURATED EDITORIAL ENVIRONMENTS</span>
+        <h2 style="margin:0.35rem 0 0 0;">Enter The Stalls</h2>
+      </div>
+      <a href="/stalls" class="link-editorial">Compare All Three Stalls →</a>
+    </div>
+  </div>
+  <div class="stall-triptych">
+    <article class="stall-portal stall-portal--teas">
+      <div>
+        <div class="stall-portal__number"><span>STALL I · CAMELLIA SINENSIS</span><span>ASSAM &amp; ARUNACHAL</span></div>
+        <div class="stall-portal__photo">
+          <img src="/assets/images/stall-tea-orthodox.jpg" alt="Whole-leaf orthodox Assam tea with golden tips" loading="lazy">
+        </div>
+        <h3 class="stall-portal__title">The Tea Stall</h3>
+        <div class="stall-portal__mood">Calm, ceremonial, delicate, contemplative.</div>
+        <p style="color:var(--color-ink-secondary);font-size:0.94rem;">Unblended orthodox Assamica, high-altitude white buds, and Singpho hearth-smoked bamboo teas.</p>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding-top:1rem;border-top:var(--rule-hairline);">
+        <a href="/stall/teas" class="btn-editorial">Enter Tea Stall →</a>
+        <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--color-ink-muted);">From £24.00</span>
+      </div>
+    </article>
+    <article class="stall-portal stall-portal--spices">
+      <div>
+        <div class="stall-portal__number"><span>STALL II · RHIZOMES &amp; BARKS</span><span>MEGHALAYA &amp; ZIRO</span></div>
+        <div class="stall-portal__photo">
+          <img src="/assets/images/stall-spice-lakadong.jpg" alt="Freshly sliced Lakadong turmeric rhizomes and wild hill peppercorns" loading="lazy">
+        </div>
+        <h3 class="stall-portal__title">The Spice Stall</h3>
+        <div class="stall-portal__mood">Warm, textured, aromatic, expressive.</div>
+        <p style="color:var(--color-ink-secondary);font-size:0.94rem;">High-curcumin Lakadong turmeric from the West Jaintia Hills, sun-cured Sohra ginger, and citrus wild pepper.</p>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding-top:1rem;border-top:var(--rule-hairline);">
+        <a href="/stall/spices" class="btn-editorial" style="background:var(--color-terracotta);border-color:var(--color-terracotta);">Enter Spice Stall →</a>
+        <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--color-ink-muted);">From £16.00</span>
+      </div>
+    </article>
+    <article class="stall-portal stall-portal--chillies">
+      <div>
+        <div class="stall-portal__number"><span>STALL III · CAPSICUM CHINENSE</span><span>NAGALAND &amp; MANIPUR</span></div>
+        <div class="stall-portal__photo">
+          <img src="/assets/images/stall-chilli-smoked.jpg" alt="Whole alder-smoked crimson Naga King Chilli pods" loading="lazy">
+        </div>
+        <h3 class="stall-portal__title">The Chilli Stall</h3>
+        <div class="stall-portal__mood">Bold, energetic, intense, sophisticated.</div>
+        <p style="color:var(--color-ink-secondary);font-size:0.94rem;">Alder-smoked Naga King Chilli from Mon District and sun-ripened crimson Hathei chillies from Ukhrul Ridge.</p>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding-top:1rem;border-top:var(--rule-hairline);">
+        <a href="/stall/chillies" class="btn-editorial" style="background:var(--color-oxblood);border-color:var(--color-oxblood);">Enter Chilli Stall →</a>
+        <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--color-ink-muted);">From £19.50</span>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="editorial-section editorial-section--deep" aria-label="Featured Harvest and Maker Story">
+  <div class="penbrae-container">
+    <div class="editorial-grid">
+      <div class="col-span-6" style="background:var(--color-parchment-light);border:var(--rule-strong);padding:var(--space-5);">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:0.75rem;border-bottom:var(--rule-hairline);margin-bottom:1rem;">
+          <span class="kicker-index">03 · FEATURED RARE LOT</span>
+          <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--color-ink-muted);">LOT 26-C · NAGALAND</span>
+        </div>
+        <div class="journal-card__media" style="aspect-ratio:16/9;">
+          <img src="/assets/images/stall-chilli-smoked.jpg" alt="Whole Alder-Smoked Naga King Chilli Pods" loading="lazy">
+        </div>
+        <h2 style="font-size:2rem;margin:0.5rem 0 0.25rem 0;"><a href="/product/alder-smoked-naga-king-chilli" style="color:var(--color-charcoal);text-decoration:none;">Whole Alder-Smoked Naga King Chilli Pods</a></h2>
+        <div class="latin-taxonomy" style="margin-bottom:0.85rem;">Capsicum chinense · Mon District, Nagaland · 1,460m ASL</div>
+        <p style="color:var(--color-ink-secondary);font-size:0.94rem;">Cured for fourteen days on bamboo racks above smouldering alder-wood hearths. Slow-building warmth layered with dried sour cherry and woodsmoke.</p>
+        <div style="padding:1rem 0;margin:1rem 0;border-top:var(--rule-hairline);border-bottom:var(--rule-hairline);display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <span class="tabular-nums" style="font-family:var(--font-editorial);font-size:1.85rem;">£22.00</span>
+            <span style="font-family:var(--font-mono);font-size:0.74rem;color:var(--color-ink-muted);margin-left:0.5rem;">/ 40g Glass Jar</span>
+          </div>
+          <button type="button" class="btn-editorial"
+            data-add-to-basket
+            data-product-id="alder-smoked-naga-king-chilli"
+            data-product-title="Whole Alder-Smoked Naga King Chilli Pods"
+            data-product-variant="40g Sealed Glass Jar"
+            data-product-price="22.00"
+            data-product-qty="1"
+            data-product-url="/product/alder-smoked-naga-king-chilli"
+            data-product-region="Mon District, Nagaland">Add to Basket +</button>
+        </div>
+        <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:0.75rem;">
+          <a href="/product/alder-smoked-naga-king-chilli" class="link-editorial">Tasting Dossier →</a>
+          <a href="/story/alder-smoke-and-monsoon-mist" class="link-editorial">Read Product Story →</a>
+        </div>
+      </div>
+
+      <div class="col-span-6" style="background:var(--color-parchment-light);border:var(--rule-strong);padding:var(--space-5);">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:0.75rem;border-bottom:var(--rule-hairline);margin-bottom:1rem;">
+          <span class="kicker-index">04 · FEATURED MAKER DOCUMENTARY</span>
+          <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--color-ink-muted);">DOSSIER M-01 · UPPER ASSAM</span>
+        </div>
+        <div class="journal-card__media" style="aspect-ratio:16/9;">
+          <img src="/assets/images/maker-hands-crafting.jpg" alt="Artisan hands rolling withered tea leaves on woven bamboo tray" loading="lazy">
+        </div>
+        <h2 style="font-size:2rem;margin:0.5rem 0 0.25rem 0;"><a href="/maker/upper-assam-orthodox-collective" style="color:var(--color-charcoal);text-decoration:none;">Brahmaputra Smallholder Tea Collective</a></h2>
+        <div class="latin-taxonomy" style="margin-bottom:0.85rem;">Dibrugarh &amp; Tinsukia, Upper Assam · 27°28′N 94°54′E</div>
+        
+<div class="audio-field-module" data-audio-module data-duration-sec="94" role="region" aria-label="Field Recording: Morning Pluck & Bamboo Rolling Table (Dibrugarh)">
+  <div class="audio-field-module__top">
+    <span class="kicker-index">DOCUMENTARY FIELD AUDIO</span>
+    <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--color-ink-muted);">27°28′N 94°54′E · Upper Assam · 01:34</span>
+  </div>
+  <h3 style="font-size:1.3rem;margin-bottom:0.65rem;">Field Recording: Morning Pluck & Bamboo Rolling Table (Dibrugarh)</h3>
+  <div class="audio-field-module__controls">
+    <button type="button" class="audio-play-btn" data-audio-toggle aria-pressed="false">Listen ▶</button>
+    <div class="audio-progress-track" aria-hidden="true">
+      <div class="audio-progress-bar" data-audio-bar></div>
+    </div>
+    <span class="tabular-nums" data-audio-time style="font-family:var(--font-mono);font-size:0.75rem;color:var(--color-ink-muted);">00:00 / 01:34</span>
+  </div>
+  <details class="audio-transcript-details">
+    <summary>Read Verbatim Audio Transcript</summary>
+    <div class="audio-transcript-body">
+      <p style="margin:0;">Ambient sound of morning mist dripping from shade trees onto broad Camellia sinensis var. assamica leaves, followed by the rhythmic hand-rolling of withered leaf across woven bamboo tables.</p>
+    </div>
+  </details>
+</div>
+        <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:0.75rem;margin-top:1rem;">
+          <a href="/maker/upper-assam-orthodox-collective" class="btn-editorial btn-editorial--outline">Read Maker Profile →</a>
+          <a href="/makers" class="link-editorial">Locate on Map →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="editorial-section editorial-section--forest" aria-label="Northeast India Origins">
+  <div class="penbrae-container">
+    <div class="editorial-grid" style="margin-bottom:var(--space-5);">
+      <div class="col-span-5">
+        <span class="kicker-index">05 · GEOGRAPHY OF ORIGIN</span>
+        <h2 style="margin-top:0.5rem;">The Landscapes of Northeast India</h2>
+      </div>
+      <div class="col-span-7">
+        <p class="lead-standfirst">From the misty floodplains of the Brahmaputra at 140 metres to cloud-wrapped limestone plateaus and ridges above 1,700 metres.</p>
+      </div>
+    </div>
+    <div class="editorial-grid">
+      <div class="col-span-4">
+        <div class="region-card__photo">
+          <img src="/assets/images/hero-assam-mist.jpg" alt="Upper Assam tea gardens in morning fog" loading="lazy">
+        </div>
+        <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--color-brass-light);">27°28′N 94°54′E · 140m ASL</div>
+        <h3 style="margin:0.35rem 0;">Upper Assam</h3>
+        <p style="font-size:0.9rem;color:rgba(245,240,230,0.8);">Alluvial clay and heavy river fog nurturing tippy orthodox Assamica and Singpho bamboo-smoked teas.</p>
+        <a href="/stall/teas" class="link-editorial" style="color:var(--color-brass-light);">Explore Assam Lots →</a>
+      </div>
+      <div class="col-span-4">
+        <div class="region-card__photo">
+          <img src="/assets/images/landscape-meghalaya-hills.jpg" alt="Cloud-wrapped limestone hills of Meghalaya" loading="lazy">
+        </div>
+        <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--color-brass-light);">25°26′N 92°17′E · 1,280m ASL</div>
+        <h3 style="margin:0.35rem 0;">Meghalaya Plateau</h3>
+        <p style="font-size:0.9rem;color:rgba(245,240,230,0.8);">Limestone uplands in West Jaintia and Sohra yielding high-curcumin Lakadong turmeric and heirloom hill ginger.</p>
+        <a href="/stall/spices" class="link-editorial" style="color:var(--color-brass-light);">Explore Meghalaya Lots →</a>
+      </div>
+      <div class="col-span-4">
+        <div class="region-card__photo">
+          <img src="/assets/images/journal-preservation-loft.jpg" alt="Traditional bamboo drying loft in Nagaland" loading="lazy">
+        </div>
+        <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--color-brass-light);">26°43′N 95°01′E · 1,460m ASL</div>
+        <h3 style="margin:0.35rem 0;">Nagaland &amp; Manipur Uplands</h3>
+        <p style="font-size:0.9rem;color:rgba(245,240,230,0.8);">Terraced ridges cultivating alder-smoked Raja Mircha and Sirarakhong Hathei crimson chillies.</p>
+        <a href="/stall/chillies" class="link-editorial" style="color:var(--color-brass-light);">Explore Nagaland &amp; Manipur →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="editorial-section" aria-label="The Penbrae Journal">
+  <div class="penbrae-container">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:1rem;margin-bottom:var(--space-5);">
+      <div>
+        <span class="kicker-index">06 · THE PENBRAE JOURNAL · ISSUE 01</span>
+        <h2 style="margin:0.35rem 0 0 0;">Essays on Terroir, Craft &amp; Culinary Tradition</h2>
+      </div>
+      <a href="/journal" class="link-editorial">Read Full Journal Archive →</a>
+    </div>
+    <div class="editorial-grid">
+      <article class="col-span-7 journal-card" style="border:var(--rule-hairline);background:var(--color-parchment-light);padding:var(--space-5);">
+        <div class="journal-card__media">
+          <img src="/assets/images/journal-preservation-loft.jpg" alt="Woven bamboo trays inside a traditional drying loft" loading="lazy">
+        </div>
+        <span class="kicker-index">LEAD ESSAY · TERROIR &amp; TRADITION</span>
+        <h3 style="font-size:2.1rem;margin:0.4rem 0 0.75rem 0;"><a href="/journal/smoke-mist-and-limestone-terroir" style="color:var(--color-charcoal);text-decoration:none;">Smoke, Mist &amp; Limestone: Why Preservation Is the Second Harvest of Northeast India</a></h3>
+        <p style="color:var(--color-ink-secondary);font-size:0.95rem;">From bamboo smoke-lofts in Mon District to sun-warmed slate courtyards in Meghalaya, how preservation shapes flavour.</p>
+        <a href="/journal/smoke-mist-and-limestone-terroir" class="link-editorial">Read Essay (8 Min Read) →</a>
+      </article>
+      <div class="col-span-5" style="display:flex;flex-direction:column;gap:var(--space-4);">
+        <article class="journal-card" style="border:var(--rule-hairline);background:var(--color-parchment-light);padding:var(--space-4);">
+          <div class="journal-card__media" style="aspect-ratio:21/9;">
+            <img src="/assets/images/stall-tea-orthodox.jpg" alt="Orthodox Assam tea leaves" loading="lazy">
+          </div>
+          <span class="kicker-index">TEA CEREMONY &amp; VESSEL</span>
+          <h3 style="font-size:1.45rem;margin:0.35rem 0;"><a href="/journal/orthodox-vs-ctc-assam-leaf" style="color:var(--color-charcoal);text-decoration:none;">Beyond the Breakfast Blend: Reading Whole-Leaf Orthodox Assam</a></h3>
+          <a href="/journal/orthodox-vs-ctc-assam-leaf" class="link-editorial">Read Article →</a>
+        </article>
+        <article class="journal-card" style="border:var(--rule-hairline);background:var(--color-parchment-light);padding:var(--space-4);">
+          <div class="journal-card__media" style="aspect-ratio:21/9;">
+            <img src="/assets/images/stall-spice-lakadong.jpg" alt="Lakadong turmeric and spices" loading="lazy">
+          </div>
+          <span class="kicker-index">CULINARY NOTES</span>
+          <h3 style="font-size:1.45rem;margin:0.35rem 0;"><a href="/journal/tempering-lakadong-and-smoked-chilli" style="color:var(--color-charcoal);text-decoration:none;">Tempering in Warm Fat: Lakadong &amp; Alder-Smoked Chilli</a></h3>
+          <a href="/journal/tempering-lakadong-and-smoked-chilli" class="link-editorial">Read Article →</a>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="editorial-section" aria-label="Field Notes and Visual Dispatches">
+  <div class="penbrae-container">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:1rem;margin-bottom:var(--space-5);">
+      <div>
+        <span class="kicker-index">FIELD NOTES ARCHIVE · VISUAL NOTEBOOK</span>
+        <h2 style="margin:0.35rem 0 0 0;">Dispatches from Cardiff &amp; Northeast India</h2>
+      </div>
+      <span style="font-family:var(--font-mono);font-size:0.74rem;color:var(--color-ink-muted);">@penbraeandco · Server-Cached Visual Feed</span>
+    </div>
+    <div class="editorial-grid editorial-grid--ruled">
+      
+      <article class="col-span-3 journal-card" style="display:flex;flex-direction:column;justify-content:space-between;gap:0.85rem;background:var(--color-parchment-light);">
+        <div>
+          <div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:0.68rem;color:var(--color-ink-muted);margin-bottom:0.65rem;">
+            <span>FIELD-01</span><span>Autumn Dispatch</span>
+          </div>
+          <div class="journal-card__media" style="aspect-ratio:1/1;margin-bottom:0.85rem;">
+            <img src="/assets/images/hero-assam-mist.jpg" alt="Dibrugarh, Upper Assam" loading="lazy">
+          </div>
+          <p style="font-size:0.88rem;color:var(--color-ink-secondary);margin:0;">Morning river mist lifting off smallholder Assamica plots before the late-November pluck.</p>
+        </div>
+        <div style="font-family:var(--font-mono);font-size:0.68rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-terracotta);">Dibrugarh, Upper Assam</div>
+      </article>
+      <article class="col-span-3 journal-card" style="display:flex;flex-direction:column;justify-content:space-between;gap:0.85rem;background:var(--color-parchment-light);">
+        <div>
+          <div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:0.68rem;color:var(--color-ink-muted);margin-bottom:0.65rem;">
+            <span>FIELD-02</span><span>Winter Harvest</span>
+          </div>
+          <div class="journal-card__media" style="aspect-ratio:1/1;margin-bottom:0.85rem;">
+            <img src="/assets/images/stall-spice-lakadong.jpg" alt="West Jaintia Hills, Meghalaya" loading="lazy">
+          </div>
+          <p style="font-size:0.88rem;color:var(--color-ink-secondary);margin:0;">Freshly washed Lakadong turmeric rhizomes split for sun-curing on woven bamboo mats.</p>
+        </div>
+        <div style="font-family:var(--font-mono);font-size:0.68rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-terracotta);">West Jaintia Hills, Meghalaya</div>
+      </article>
+      <article class="col-span-3 journal-card" style="display:flex;flex-direction:column;justify-content:space-between;gap:0.85rem;background:var(--color-parchment-light);">
+        <div>
+          <div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:0.68rem;color:var(--color-ink-muted);margin-bottom:0.65rem;">
+            <span>FIELD-03</span><span>Hearth Archive</span>
+          </div>
+          <div class="journal-card__media" style="aspect-ratio:1/1;margin-bottom:0.85rem;">
+            <img src="/assets/images/stall-chilli-smoked.jpg" alt="Mon District, Nagaland" loading="lazy">
+          </div>
+          <p style="font-size:0.88rem;color:var(--color-ink-secondary);margin:0;">Alder-wood smoke rising through the slatted loft where whole Raja Mircha pods cure.</p>
+        </div>
+        <div style="font-family:var(--font-mono);font-size:0.68rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-terracotta);">Mon District, Nagaland</div>
+      </article>
+      <article class="col-span-3 journal-card" style="display:flex;flex-direction:column;justify-content:space-between;gap:0.85rem;background:var(--color-parchment-light);">
+        <div>
+          <div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:0.68rem;color:var(--color-ink-muted);margin-bottom:0.65rem;">
+            <span>FIELD-04</span><span>Cardiff Desk</span>
+          </div>
+          <div class="journal-card__media" style="aspect-ratio:1/1;margin-bottom:0.85rem;">
+            <img src="/assets/images/tea-infusion-cup.jpg" alt="Cardiff Cupping Room" loading="lazy">
+          </div>
+          <p style="font-size:0.88rem;color:var(--color-ink-secondary);margin:0;">Stoneware vessels and brass scales prepared in Cardiff for arrival inspection of Lot 26-A.</p>
+        </div>
+        <div style="font-family:var(--font-mono);font-size:0.68rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-terracotta);">Cardiff Cupping Room</div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="editorial-section editorial-section--deep" aria-label="Subscribe to the Penbrae Dispatch">
+  <div class="penbrae-container">
+    <div class="editorial-grid">
+      <div class="col-span-6">
+        <span class="kicker-index">07 · THE PENBRAE DISPATCH</span>
+        <h2 style="margin-top:0.4rem;">Seasonal Harvest Letters &amp; First-Lot Allocations</h2>
+        <p style="color:var(--color-ink-secondary);">Subscribers receive field dispatches from Northeast India, maker interviews, and 48-hour advance notice when limited seasonal lots arrive in Cardiff.</p>
+      </div>
+      <div class="col-span-6">
+        <form method="post" data-penbrae-newsletter-form data-ajax-preview="true" style="background:var(--color-parchment-light);padding:var(--space-5);border:var(--rule-strong);">
+          <div class="editorial-form-field">
+            <label for="home-subscriber-email">Electronic Mail Address</label>
+            <input type="email" id="home-subscriber-email" name="subscriber_email" required placeholder="reader@domain.co.uk">
+          </div>
+          <div class="consent-checkbox-box">
+            <input type="checkbox" id="home-gdpr-consent" name="gdpr_consent" value="1" required>
+            <label for="home-gdpr-consent">I explicitly consent to receive editorial dispatches and seasonal harvest notices from Penbrae &amp; Co Ltd (UK GDPR).</label>
+          </div>
+          <button type="submit" class="btn-editorial" style="width:100%;justify-content:center;">Register for the Seasonal Dispatch →</button>
+          <p data-newsletter-status aria-live="polite" style="margin-top:0.75rem;font-family:var(--font-mono);font-size:0.76rem;"></p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+<footer class="site-colophon" role="contentinfo">
+  <div class="penbrae-container">
+    <div class="site-colophon__grid">
+      <div>
+        <div class="kicker-index" style="color:var(--color-brass-light);margin-bottom:0.75rem;">COLOPHON · PENBRAE &amp; CO LTD</div>
+        <h2 style="font-size:2.1rem;line-height:1.12;margin-bottom:1rem;">Rare single-harvest teas, heirloom rhizomes, and smoked chillies from Northeast India, curated in Cardiff.</h2>
+        <p style="color:rgba(245,240,230,0.74);max-width:48ch;font-size:0.95rem;">Every seasonal lot is documented alongside the makers who cultivate it, the altitude and micro-climate of its origin, and the craft traditions that shape its character.</p>
+        <div style="margin-top:1.5rem;font-family:var(--font-mono);font-size:0.74rem;color:var(--color-brass-light);letter-spacing:0.08em;">REGISTERED IN WALES · PENBRAE &amp; CO LTD · CARDIFF, UK</div>
+      </div>
+      <div>
+        <h3 style="font-family:var(--font-mono);font-size:0.75rem;letter-spacing:0.11em;text-transform:uppercase;color:var(--color-brass-light);margin-bottom:1.1rem;">The Three Stalls</h3>
+        <ul class="site-colophon__list">
+          <li><a href="/stalls">All Stalls Overview</a></li>
+          <li><a href="/stall/teas">The Tea Stall (Assam &amp; Arunachal)</a></li>
+          <li><a href="/stall/spices">The Spice Stall (Meghalaya &amp; Ziro)</a></li>
+          <li><a href="/stall/chillies">The Chilli Stall (Nagaland &amp; Manipur)</a></li>
+          <li><a href="/product/upper-assam-tippy-orthodox">Featured Lot: Tippy Orthodox Reserve</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 style="font-family:var(--font-mono);font-size:0.75rem;letter-spacing:0.11em;text-transform:uppercase;color:var(--color-brass-light);margin-bottom:1.1rem;">Editorial &amp; Origins</h3>
+        <ul class="site-colophon__list">
+          <li><a href="/makers">Meet the Makers (Interactive Map)</a></li>
+          <li><a href="/maker/upper-assam-orthodox-collective">Maker Dossier: Upper Assam Collective</a></li>
+          <li><a href="/story/mist-over-the-brahmaputra-autumn-pluck">Product Story: Autumn Tippy Pluck</a></li>
+          <li><a href="/journal">The Penbrae Journal</a></li>
+          <li><a href="/about">About Penbrae &amp; Co</a></li>
+          <li><a href="/subscribe">Subscribe to Dispatch</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 style="font-family:var(--font-mono);font-size:0.75rem;letter-spacing:0.11em;text-transform:uppercase;color:var(--color-brass-light);margin-bottom:1.1rem;">Commerce &amp; Governance</h3>
+        <ul class="site-colophon__list">
+          <li><a href="/basket">Shopping Basket</a></li>
+          <li><a href="/checkout">Checkout (Stripe Test Mode Ready)</a></li>
+          <li><a href="/my-account">Customer Account</a></li>
+          <li><a href="/shipping-returns">Shipping &amp; Returns Information</a></li>
+          <li><a href="/privacy-policy">Privacy Policy &amp; UK GDPR</a></li>
+          <li><a href="/terms-and-conditions">Terms &amp; Conditions</a></li>
+          <li><a href="/contact">Contact &amp; Cardiff Enquiries</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="site-colophon__bottom">
+      <span>&copy; 2026 Penbrae &amp; Co Ltd. All rights reserved. Prices displayed in GBP (£).</span>
+      <span>CARDIFF, WALES · SMALL-LOT IMPORTERS OF NORTHEAST INDIAN TEAS, SPICES &amp; CHILLIES</span>
+    </div>
+  </div>
+</footer>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="/assets/js/makers-map.js"></script>
+<script src="/assets/js/commerce.js"></script>
+<script src="/assets/js/main.js"></script>
+</body>
+</html>
