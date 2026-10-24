@@ -10,11 +10,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 $basket_count = ( function_exists( 'WC' ) && WC()->cart ) ? WC()->cart->get_cart_contents_count() : 0;
-?><!DOCTYPE html>
+?><!--
+  PENBRAE & CO. LTD · ARCHIVAL FIELD MONOGRAPH & EDITORIAL COMMERCE
+  Concept, Design & Full-Stack Engineering by Alexhzier (https://github.com/Alexhzier)
+  All Rights Reserved · Registered Portfolio Project
+-->
+<!DOCTYPE html>
 <html <?php language_attributes(); ?>>
 <head>
 	<meta charset="<?php bloginfo( 'charset' ); ?>">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="author" content="Alexhzier">
+	<meta name="creator" content="Alexhzier">
+	<meta name="copyright" content="Copyright © 2026 Alexhzier. All rights reserved.">
 	<link rel="icon" type="image/svg+xml" href="<?php echo esc_url( PENBRAE_THEME_URI . '/assets/images/favicon.svg' ); ?>">
 	<?php wp_head(); ?>
 </head>

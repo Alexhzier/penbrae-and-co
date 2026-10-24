@@ -537,6 +537,11 @@ function renderHeader(activePath, bodyClass = '', seo = {}) {
     name: 'Penbrae & Co Ltd',
     url: SITE_URL,
     logo: SITE_URL + '/assets/images/favicon.svg',
+    creator: {
+      '@type': 'Person',
+      name: 'Alexhzier',
+      url: 'https://github.com/Alexhzier'
+    },
     description: 'Cardiff-based purveyors of small-lot single-harvest teas, heirloom rhizomes, and smoked chillies from Northeast India.',
     address: {
       '@type': 'PostalAddress',
@@ -558,13 +563,21 @@ function renderHeader(activePath, bodyClass = '', seo = {}) {
     '@graph': graph
   });
 
-  return `<!DOCTYPE html>
+  return `<!--
+  PENBRAE & CO. LTD · ARCHIVAL FIELD MONOGRAPH & EDITORIAL COMMERCE
+  Concept, Design & Full-Stack Engineering by Alexhzier (https://github.com/Alexhzier)
+  All Rights Reserved · Registered Portfolio Project
+-->
+<!DOCTYPE html>
 <html lang="en-GB">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${escapeAttr(pageTitle)}</title>
   <meta name="description" content="${escapeAttr(pageDesc)}">
+  <meta name="author" content="Alexhzier">
+  <meta name="creator" content="Alexhzier">
+  <meta name="copyright" content="Copyright © 2026 Alexhzier. All rights reserved.">
   ${robotsMeta}
   <link rel="canonical" href="${escapeAttr(canonicalUrl)}">
   <meta property="og:site_name" content="Penbrae &amp; Co Ltd">
@@ -808,8 +821,14 @@ function renderFooter() {
       </div>
     </div>
     <div class="site-colophon__bottom">
-      <span>&copy; 2026 Penbrae &amp; Co Ltd. All rights reserved. Prices displayed in GBP (£).</span>
-      <span>PORTFOLIO PROTOTYPE · DEMONSTRATION CATALOGUE, AUDIO TRANSCRIPTS &amp; SANDBOX CHECKOUT</span>
+      <div>
+        <span>&copy; 2026 Penbrae &amp; Co Ltd. All rights reserved.</span>
+        <span style="display:inline-block;margin:0 0.5rem;color:var(--color-brass);">·</span>
+        <span>Concept, Design &amp; Full-Stack Engineering by <a href="https://github.com/Alexhzier" target="_blank" rel="noopener noreferrer" style="color:var(--color-brass-light);text-decoration:underline;text-underline-offset:3px;font-weight:500;">Alexhzier</a></span>
+      </div>
+      <div>
+        <span>PORTFOLIO DEMONSTRATION · CARDIFF ↔ NORTHEAST INDIA</span>
+      </div>
     </div>
   </div>
 </footer>

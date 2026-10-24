@@ -1,10 +1,23 @@
 /**
  * PENBRAE & CO LTD — PRIMARY EDITORIAL & ACCESSIBILITY INTERACTIONS
+ * Concept, Design & Full-Stack Engineering by Alexhzier (https://github.com/Alexhzier)
+ * Copyright © 2026 Alexhzier. All Rights Reserved.
+ *
  * Supports: Mobile touch navigation, Slide-over Basket Drawer, Documentary Audio Player,
  * Newsletter validation, and Reduced-Motion-Safe Editorial Reveals.
  */
 (function () {
   'use strict';
+
+  try {
+    if (typeof console !== 'undefined' && console.log) {
+      console.log(
+        '%c PENBRAE & CO. %c Concept, Design & Engineering by Alexhzier (https://github.com/Alexhzier) ',
+        'background:#2D3B2D;color:#F8F4EC;font-family:serif;font-size:11px;padding:3px 6px;font-weight:bold;border-radius:2px 0 0 2px;',
+        'background:#8C6D3F;color:#F8F4EC;font-family:sans-serif;font-size:11px;padding:3px 6px;border-radius:0 2px 2px 0;'
+      );
+    }
+  } catch (e) {}
 
   var BASKET_STORAGE_KEY = 'penbrae_basket_v2';
 

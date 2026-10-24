@@ -8,7 +8,7 @@
 [![WordPress](https://img.shields.io/badge/WordPress-6.6%20%2B%20WooCommerce%209.4-21759B?style=for-the-badge&logo=wordpress&logoColor=white)](./wp-content/themes/penbrae)
 [![JavaScript](https://img.shields.io/badge/Frontend-Vanilla%20ES6%2B%20(Zero%20Bloat)-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](./wp-content/themes/penbrae/assets/js)
 [![Accessibility](https://img.shields.io/badge/WCAG-2.2%20AA%20Compliant-4CAF50?style=for-the-badge)](./qa_audit_report.md)
-[![License](https://img.shields.io/badge/Architecture-Custom%20Editorial%20System-8C6D3F?style=for-the-badge)](#architecture--engineering)
+[![License](https://img.shields.io/badge/License-Proprietary%20%C2%A9%20Alexhzier-8C6D3F?style=for-the-badge)](./LICENSE)
 
 <br/>
 
@@ -221,5 +221,14 @@ A comprehensive automated QA audit was run across the codebase to ensure zero de
 - **Concept, Design & Full-Stack Development**: [Alexhzier](https://github.com/Alexhzier)
 - **Typography**: Fraunces (Editorial Display Serif), IBM Plex Sans (Body Copy), JetBrains Mono (Ledger & Metadata)
 - **Color Temperature**: Natural unbleached parchment (`#F8F4EC`), carbon ink (`#1A1815`), Assam aged brass (`#8C6D3F`), terracotta (`#8A4B38`), and smoked oxblood (`#5C1E1E`).
+
+---
+
+## ✦ Intellectual Property & Copyright Notice
+
+This project is an original concept and portfolio creation by **Alexhzier**. All custom design systems, layouts, editorial photography arrangements, brand storytelling, and source code are protected under copyright law:
+
+> **Copyright © 2026 Alexhzier. All Rights Reserved.**  
+> Redistribution, rehosting, unauthorized commercial exploitation, or claiming authorship of this work is strictly prohibited. Detailed terms of use are specified in [LICENSE](./LICENSE).
 
 *Registered in Wales · Penbrae & Co. Ltd · Cardiff, UK*

@@ -71,8 +71,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</div>
 
 		<div class="site-colophon__bottom">
-			<span>&copy; <?php echo esc_html( gmdate( 'Y' ) ); ?> <?php esc_html_e( 'Penbrae & Co Ltd. All rights reserved. Prices displayed in GBP (£).', 'penbrae' ); ?></span>
-			<span><?php esc_html_e( 'CARDIFF, WALES · SMALL-LOT IMPORTERS OF NORTHEAST INDIAN TEAS, SPICES & CHILLIES', 'penbrae' ); ?></span>
+			<div>
+				<span>&copy; <?php echo esc_html( gmdate( 'Y' ) ); ?> <?php esc_html_e( 'Penbrae & Co Ltd. All rights reserved.', 'penbrae' ); ?></span>
+				<span style="display:inline-block;margin:0 0.5rem;color:var(--color-brass);">·</span>
+				<span><?php esc_html_e( 'Concept, Design & Full-Stack Engineering by', 'penbrae' ); ?> <a href="https://github.com/Alexhzier" target="_blank" rel="noopener noreferrer" style="color:var(--color-brass-light);text-decoration:underline;text-underline-offset:3px;font-weight:500;">Alexhzier</a></span>
+			</div>
+			<div>
+				<span><?php esc_html_e( 'PORTFOLIO DEMONSTRATION · CARDIFF ↔ NORTHEAST INDIA', 'penbrae' ); ?></span>
+			</div>
 		</div>
 	</div>
 </footer>
