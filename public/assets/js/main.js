@@ -51,12 +51,12 @@
     }
 
     if (document.readyState === 'complete') {
-      setTimeout(dismiss, 750);
+      setTimeout(dismiss, 2000);
     } else {
       window.addEventListener('load', function () {
-        setTimeout(dismiss, 750);
+        setTimeout(dismiss, 2000);
       });
-      setTimeout(dismiss, 1500);
+      setTimeout(dismiss, 2800);
     }
   }
 
