@@ -1002,13 +1002,12 @@
   height: 100%;
   width: 0%;
   background: linear-gradient(90deg, var(--color-brass), var(--color-brass-light));
-  animation: penbraePreload 3s linear forwards;
+  transition: width 35ms linear;
 }
 
-@keyframes penbraePreload {
-  0% { width: 0%; }
-  50% { width: 68%; }
-  100% { width: 100%; }
+.preloader-tea-leaf {
+  transition: transform 0.25s ease;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.35));
 }
 
 

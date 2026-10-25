@@ -40,6 +40,37 @@
     var preloader = document.getElementById('penbrae-preloader');
     if (!preloader) return;
 
+    var percentEl = document.getElementById('penbrae-preload-percent');
+    var barEl = document.getElementById('penbrae-preload-bar');
+    var leafClips = [
+      document.getElementById('penbrae-leaf-clip-rect-1'),
+      document.getElementById('penbrae-leaf-clip-rect-2'),
+      document.getElementById('penbrae-leaf-clip-rect-3'),
+      document.getElementById('penbrae-leaf-clip-rect-4')
+    ];
+
+    var currentPercent = 0;
+    var intervalTime = 30; // 30ms * 100 = 3000ms (strict 3.0 seconds, sequential 0->100)
+    var interval = null;
+
+    function updateLeaves(p) {
+      // 4 botanical tea leaves filling up proportionally across 0% to 100%
+      for (var i = 0; i < 4; i++) {
+        var startP = i * 25;
+        var leafP = Math.max(0, Math.min(100, (p - startP) * 4));
+        // SVG viewBox is 0 0 32 32. Fill from bottom to top:
+        var fillH = (leafP / 100) * 32;
+        var fillY = 32 - fillH;
+        if (leafClips[i]) {
+          leafClips[i].setAttribute('y', fillY.toFixed(2));
+          leafClips[i].setAttribute('height', fillH.toFixed(2));
+        }
+      }
+    }
+
+    // Initialize leaves at 0
+    updateLeaves(0);
+
     function dismiss() {
       if (preloader.classList.contains('is-loaded')) return;
       preloader.classList.add('is-loaded');
@@ -50,14 +81,21 @@
       }, 500);
     }
 
-    if (document.readyState === 'complete') {
-      setTimeout(dismiss, 3000);
-    } else {
-      window.addEventListener('load', function () {
-        setTimeout(dismiss, 3000);
-      });
-      setTimeout(dismiss, 3600);
-    }
+    interval = setInterval(function () {
+      currentPercent += 1;
+      if (percentEl) {
+        percentEl.textContent = currentPercent + '%';
+      }
+      if (barEl) {
+        barEl.style.width = currentPercent + '%';
+      }
+      updateLeaves(currentPercent);
+
+      if (currentPercent >= 100) {
+        clearInterval(interval);
+        setTimeout(dismiss, 100);
+      }
+    }, intervalTime);
   }
 
   window.PenbraeEditorialInit = initPageDynamicModules;
