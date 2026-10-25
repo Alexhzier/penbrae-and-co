@@ -602,6 +602,17 @@ function renderHeader(activePath, bodyClass = '', seo = {}) {
   <script type="application/ld+json">${jsonLdString}</script>
 </head>
 <body class="${bodyClass}">
+<div id="penbrae-preloader" class="editorial-preloader" aria-hidden="true">
+  <div class="editorial-preloader__inner">
+    <div class="kicker-index" style="color:var(--color-brass-light);margin-bottom:0.5rem;letter-spacing:0.18em;">CARDIFF DISPATCH · PROVENANCE LEDGER</div>
+    <div class="editorial-preloader__logo">PENBRAE &amp; CO.</div>
+    <div class="editorial-preloader__sub">Single-Harvest Teas · Heirloom Rhizomes · Hearth-Smoked Chillies</div>
+    <div class="editorial-preloader__track">
+      <div class="editorial-preloader__bar"></div>
+    </div>
+    <div class="editorial-preloader__status" style="font-family:var(--font-mono);font-size:0.68rem;color:rgba(245,240,230,0.6);margin-top:0.75rem;letter-spacing:0.08em;">UPPER ASSAM ↔ MEGHALAYA ↔ NAGALAND</div>
+  </div>
+</div>
 <a class="skip-link" href="#main-content">Skip to main content</a>
 
 <div class="editorial-dispatch-bar" role="region" aria-label="Provenance and Dispatch Notice">

@@ -36,9 +36,34 @@
     }
   }
 
+  function initPreloader() {
+    var preloader = document.getElementById('penbrae-preloader');
+    if (!preloader) return;
+
+    function dismiss() {
+      if (preloader.classList.contains('is-loaded')) return;
+      preloader.classList.add('is-loaded');
+      setTimeout(function () {
+        if (preloader && preloader.parentNode) {
+          preloader.parentNode.removeChild(preloader);
+        }
+      }, 500);
+    }
+
+    if (document.readyState === 'complete') {
+      setTimeout(dismiss, 750);
+    } else {
+      window.addEventListener('load', function () {
+        setTimeout(dismiss, 750);
+      });
+      setTimeout(dismiss, 1500);
+    }
+  }
+
   window.PenbraeEditorialInit = initPageDynamicModules;
 
   document.addEventListener('DOMContentLoaded', function () {
+    initPreloader();
     initMobileNavigation();
     initBasketDrawer();
     initPageDynamicModules();

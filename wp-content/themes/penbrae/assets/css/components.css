@@ -943,8 +943,74 @@
 }
 
 /* ==========================================================================
-   10. ART-DIRECTED SECTION, PAGE & STALL ENVIRONMENT TRANSITIONS
+   11. ARCHIVAL EDITORIAL PRELOADER SCREEN
    ========================================================================== */
+.editorial-preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background-color: var(--color-charcoal);
+  color: var(--color-parchment);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--space-4);
+  transition: opacity 0.45s var(--ease-editorial), visibility 0.45s;
+}
+
+.editorial-preloader.is-loaded {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.editorial-preloader__inner {
+  max-width: 460px;
+  width: 100%;
+}
+
+.editorial-preloader__logo {
+  font-family: var(--font-editorial);
+  font-size: clamp(2rem, 5vw, 2.75rem);
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  color: var(--color-parchment);
+  margin-bottom: 0.4rem;
+}
+
+.editorial-preloader__sub {
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  color: rgba(245, 240, 230, 0.72);
+  margin-bottom: 1.5rem;
+}
+
+.editorial-preloader__track {
+  width: 100%;
+  height: 2px;
+  background-color: rgba(245, 240, 230, 0.15);
+  overflow: hidden;
+  position: relative;
+  border-radius: 2px;
+}
+
+.editorial-preloader__bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--color-brass), var(--color-brass-light));
+  animation: penbraePreload 1.1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes penbraePreload {
+  0% { width: 0%; }
+  50% { width: 68%; }
+  100% { width: 100%; }
+}
+
 
 @view-transition {
   navigation: auto;
