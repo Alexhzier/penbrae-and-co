@@ -32,12 +32,10 @@ $basket_count = ( function_exists( 'WC' ) && WC()->cart ) ? WC()->cart->get_cart
 <!-- Archival Editorial Preloader with 4 Botanical Tea Leaves -->
 <div id="penbrae-preloader" class="editorial-preloader" aria-hidden="true">
 	<div class="editorial-preloader__inner">
-		<div class="kicker-index" style="color:var(--color-brass-light);margin-bottom:0.5rem;letter-spacing:0.18em;"><?php esc_html_e( 'CARDIFF DISPATCH · PROVENANCE LEDGER', 'penbrae' ); ?></div>
 		<div class="editorial-preloader__logo">PENBRAE &amp; CO.</div>
-		<div class="editorial-preloader__sub"><?php esc_html_e( 'Single-Harvest Teas · Heirloom Rhizomes · Hearth-Smoked Chillies', 'penbrae' ); ?></div>
 		
 		<!-- 4 Tea Leaves Botanical Progress Indicator -->
-		<div class="preloader-tea-leaves" style="display:flex;justify-content:center;align-items:center;gap:1.1rem;margin:1.4rem 0 0.8rem 0;">
+		<div class="preloader-tea-leaves" style="display:flex;justify-content:center;align-items:center;gap:1.1rem;margin:1.5rem 0 1rem 0;">
 			<svg viewBox="0 0 32 32" width="38" height="38" class="preloader-tea-leaf" aria-hidden="true">
 				<defs>
 					<clipPath id="penbraeLeafClip1">
@@ -98,7 +96,6 @@ $basket_count = ( function_exists( 'WC' ) && WC()->cart ) ? WC()->cart->get_cart
 		<div class="editorial-preloader__track">
 			<div id="penbrae-preload-bar" class="editorial-preloader__bar" style="width:0%;"></div>
 		</div>
-		<div class="editorial-preloader__status" style="font-family:var(--font-mono);font-size:0.68rem;color:rgba(245,240,230,0.6);margin-top:0.75rem;letter-spacing:0.08em;"><?php esc_html_e( 'UPPER ASSAM ↔ MEGHALAYA ↔ NAGALAND', 'penbrae' ); ?></div>
 	</div>
 </div>
 
