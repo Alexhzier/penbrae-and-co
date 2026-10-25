@@ -1002,7 +1002,7 @@
   height: 100%;
   width: 0%;
   background: linear-gradient(90deg, var(--color-brass), var(--color-brass-light));
-  animation: penbraePreload 2.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: penbraePreload 3s linear forwards;
 }
 
 @keyframes penbraePreload {
